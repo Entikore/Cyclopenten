@@ -6,6 +6,12 @@
 </picture>
 </h1>
 
+<p>
+  <img src="https://img.shields.io/github/actions/workflow/status/Entikore/Cyclopenten/android.yml?branch=main"/>
+  <img src="https://img.shields.io/badge/API%20level-24%2B-brightgreen"/>
+  <img src="https://img.shields.io/github/license/Entikore/Cyclopenten?color=informational"/>
+</p>
+
 This is a demo application to try modern Android development using Compose, Hilt, Coroutines, Flow,
 Jetpack and Material Design based on MVVM architecture.
 
