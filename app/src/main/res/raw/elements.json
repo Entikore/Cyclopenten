@@ -1,0 +1,1653 @@
+[
+  {
+    "atomicNumber": 1,
+    "iupacGroup": 1,
+    "period": 1,
+    "category": "Nonmetals",
+    "symbol": "H",
+    "name": "Hydrogen",
+    "choices": [
+      "Hydrogen",
+      "Hafnium",
+      "Helium",
+      "Holmium"
+    ]
+  },
+  {
+    "atomicNumber": 2,
+    "iupacGroup": 18,
+    "period": 1,
+    "category": "Noble Gases",
+    "symbol": "He",
+    "name": "Helium",
+    "choices": [
+      "Helium",
+      "Helix",
+      "Hefnium",
+      "Hesitanium"
+    ]
+  },
+  {
+    "atomicNumber": 3,
+    "iupacGroup": 1,
+    "period": 2,
+    "category": "Alkali Metals",
+    "symbol": "Li",
+    "name": "Lithium",
+    "choices": [
+      "Lithium",
+      "Lawrencium",
+      "Lithiotanite",
+      "Libertius"
+    ]
+  },
+  {
+    "atomicNumber": 4,
+    "iupacGroup": 2,
+    "period": 2,
+    "category": "Alkaline Earth Metals",
+    "symbol": "Be",
+    "name": "Beryllium",
+    "choices": [
+      "Beryllium",
+      "Berkelium",
+      "Bismuth",
+      "Berode"
+    ]
+  },
+  {
+    "atomicNumber": 5,
+    "iupacGroup": 13,
+    "period": 2,
+    "category": "Semimetals",
+    "symbol": "B",
+    "name": "Boron",
+    "choices": [
+      "Boron",
+      "Basalt",
+      "Bhorium",
+      "Bhoron"
+    ]
+  },
+  {
+    "atomicNumber": 6,
+    "iupacGroup": 14,
+    "period": 2,
+    "category": "Nonmetals",
+    "symbol": "C",
+    "name": "Carbon",
+    "choices": [
+      "Carbon",
+      "Calcium",
+      "Copper",
+      "Chromium"
+    ]
+  },
+  {
+    "atomicNumber": 7,
+    "iupacGroup": 15,
+    "period": 2,
+    "category": "Nonmetals",
+    "symbol": "N",
+    "name": "Nitrogen",
+    "choices": [
+      "Nitrogen",
+      "Nickel",
+      "Neon",
+      "Nobelium"
+    ]
+  },
+  {
+    "atomicNumber": 8,
+    "iupacGroup": 16,
+    "period": 2,
+    "category": "Nonmetals",
+    "symbol": "O",
+    "name": "Oxygen",
+    "choices": [
+      "Oxygen",
+      "Osmium",
+      "Opium",
+      "Oxide"
+    ]
+  },
+  {
+    "atomicNumber": 9,
+    "iupacGroup": 17,
+    "period": 2,
+    "category": "Halogens",
+    "symbol": "F",
+    "name": "Fluorine",
+    "choices": [
+      "Fluorine",
+      "Fermium",
+      "Francium",
+      "Fermine"
+    ]
+  },
+  {
+    "atomicNumber": 10,
+    "iupacGroup": 18,
+    "period": 2,
+    "category": "Noble Gases",
+    "symbol": "Ne",
+    "name": "Neon",
+    "choices": [
+      "Neon",
+      "Neodymium",
+      "Neutron",
+      "Neptunium"
+    ]
+  },
+  {
+    "atomicNumber": 11,
+    "iupacGroup": 1,
+    "period": 3,
+    "category": "Alkali Metals",
+    "symbol": "Na",
+    "name": "Sodium",
+    "choices": [
+      "Sodium",
+      "Natron",
+      "Narcoticum",
+      "Potassium"
+    ]
+  },
+  {
+    "atomicNumber": 12,
+    "iupacGroup": 2,
+    "period": 3,
+    "category": "Alkaline Earth Metals",
+    "symbol": "Mg",
+    "name": "Magnesium",
+    "choices": [
+      "Magnesium",
+      "Magnesite",
+      "Manganese",
+      "Magneticum"
+    ]
+  },
+  {
+    "atomicNumber": 13,
+    "iupacGroup": 13,
+    "period": 3,
+    "category": "Post-Transition Metals",
+    "symbol": "Al",
+    "name": "Aluminum",
+    "choices": [
+      "Aluminum",
+      "Alosinium",
+      "Aclamin",
+      "Ablatium"
+    ]
+  },
+  {
+    "atomicNumber": 14,
+    "iupacGroup": 14,
+    "period": 3,
+    "category": "Semimetals",
+    "symbol": "Si",
+    "name": "Silicon",
+    "choices": [
+      "Silicon",
+      "Silver",
+      "Sincerium",
+      "Silicate"
+    ]
+  },
+  {
+    "atomicNumber": 15,
+    "iupacGroup": 15,
+    "period": 3,
+    "category": "Nonmetals",
+    "symbol": "P",
+    "name": "Phosphorus",
+    "choices": [
+      "Phosphorus",
+      "Platinum",
+      "Polonium",
+      "Protactinium"
+    ]
+  },
+  {
+    "atomicNumber": 16,
+    "iupacGroup": 16,
+    "period": 3,
+    "category": "Nonmetals",
+    "symbol": "S",
+    "name": "Sulfur",
+    "choices": [
+      "Sulfur",
+      "Silver",
+      "Sterilium",
+      "Silicon"
+    ]
+  },
+  {
+    "atomicNumber": 17,
+    "iupacGroup": 17,
+    "period": 3,
+    "category": "Halogens",
+    "symbol": "Cl",
+    "name": "Chlorine",
+    "choices": [
+      "Chlorine",
+      "Calcium",
+      "Californium",
+      "Chloroform"
+    ]
+  },
+  {
+    "atomicNumber": 18,
+    "iupacGroup": 18,
+    "period": 3,
+    "category": "Noble Gases",
+    "symbol": "Ar",
+    "name": "Argon",
+    "choices": [
+      "Argon",
+      "Americium",
+      "Arsenic",
+      "Arson"
+    ]
+  },
+  {
+    "atomicNumber": 19,
+    "iupacGroup": 1,
+    "period": 4,
+    "category": "Alkali Metals",
+    "symbol": "K",
+    "name": "Potassium",
+    "choices": [
+      "Potassium",
+      "Krypton",
+      "Kineticium",
+      "Potaton"
+    ]
+  },
+  {
+    "atomicNumber": 20,
+    "iupacGroup": 2,
+    "period": 4,
+    "category": "Alkaline Earth Metals",
+    "symbol": "Ca",
+    "name": "Calcium",
+    "choices": [
+      "Calcium",
+      "Cadmium",
+      "Californium",
+      "Carbon"
+    ]
+  },
+  {
+    "atomicNumber": 21,
+    "iupacGroup": 3,
+    "period": 4,
+    "category": "Transition Metals",
+    "symbol": "Sc",
+    "name": "Scandium",
+    "choices": [
+      "Scandium",
+      "Silicon",
+      "Syncithium",
+      "Scandinavium"
+    ]
+  },
+  {
+    "atomicNumber": 22,
+    "iupacGroup": 4,
+    "period": 4,
+    "category": "Transition Metals",
+    "symbol": "Ti",
+    "name": "Titanium",
+    "choices": [
+      "Titanium",
+      "Terbium",
+      "Thallium",
+      "Tin"
+    ]
+  },
+  {
+    "atomicNumber": 23,
+    "iupacGroup": 5,
+    "period": 4,
+    "category": "Transition Metals",
+    "symbol": "V",
+    "name": "Vanadium",
+    "choices": [
+      "Vanadium",
+      "Visceron",
+      "Vitamin",
+      "Veganium"
+    ]
+  },
+  {
+    "atomicNumber": 24,
+    "iupacGroup": 6,
+    "period": 4,
+    "category": "Transition Metals",
+    "symbol": "Cr",
+    "name": "Chromium",
+    "choices": [
+      "Chromium",
+      "Chlorine",
+      "Cerium",
+      "Carbon"
+    ]
+  },
+  {
+    "atomicNumber": 25,
+    "iupacGroup": 7,
+    "period": 4,
+    "category": "Transition Metals",
+    "symbol": "Mn",
+    "name": "Manganese",
+    "choices": [
+      "Manganese",
+      "Magnesium",
+      "Meitnerium",
+      "Molybdenum"
+    ]
+  },
+  {
+    "atomicNumber": 26,
+    "iupacGroup": 8,
+    "period": 4,
+    "category": "Transition Metals",
+    "symbol": "Fe",
+    "name": "Iron",
+    "choices": [
+      "Iron",
+      "Fermium",
+      "Iridium",
+      "Fluorine"
+    ]
+  },
+  {
+    "atomicNumber": 27,
+    "iupacGroup": 9,
+    "period": 4,
+    "category": "Transition Metals",
+    "symbol": "Co",
+    "name": "Cobalt",
+    "choices": [
+      "Cobalt",
+      "Copper",
+      "Calcium",
+      "Carbon"
+    ]
+  },
+  {
+    "atomicNumber": 28,
+    "iupacGroup": 10,
+    "period": 4,
+    "category": "Transition Metals",
+    "symbol": "Ni",
+    "name": "Nickel",
+    "choices": [
+      "Nickel",
+      "Neptunium",
+      "Nihonium",
+      "Nitrogen"
+    ]
+  },
+  {
+    "atomicNumber": 29,
+    "iupacGroup": 11,
+    "period": 4,
+    "category": "Transition Metals",
+    "symbol": "Cu",
+    "name": "Copper",
+    "choices": [
+      "Copper",
+      "Cerium",
+      "Curium",
+      "Copernicium"
+    ]
+  },
+  {
+    "atomicNumber": 30,
+    "iupacGroup": 12,
+    "period": 4,
+    "category": "Transition Metals",
+    "symbol": "Zn",
+    "name": "Zinc",
+    "choices": [
+      "Zinc",
+      "Zirconium",
+      "Zin",
+      "Zenith"
+    ]
+  },
+  {
+    "atomicNumber": 31,
+    "iupacGroup": 13,
+    "period": 4,
+    "category": "Post-Transition Metals",
+    "symbol": "Ga",
+    "name": "Gallium",
+    "choices": [
+      "Gallium",
+      "Gadolinium",
+      "Germanium",
+      "Gauzin"
+    ]
+  },
+  {
+    "atomicNumber": 32,
+    "iupacGroup": 14,
+    "period": 4,
+    "category": "Semimetals",
+    "symbol": "Ge",
+    "name": "Germanium",
+    "choices": [
+      "Germanium",
+      "Gentrit",
+      "Generositium",
+      "Gem"
+    ]
+  },
+  {
+    "atomicNumber": 33,
+    "iupacGroup": 15,
+    "period": 4,
+    "category": "Semimetals",
+    "symbol": "As",
+    "name": "Arsenic",
+    "choices": [
+      "Arsenic",
+      "Astatine",
+      "Asthmarium",
+      "Asphamine"
+    ]
+  },
+  {
+    "atomicNumber": 34,
+    "iupacGroup": 16,
+    "period": 4,
+    "category": "Nonmetals",
+    "symbol": "Se",
+    "name": "Selenium",
+    "choices": [
+      "Selenium",
+      "Seaborgium",
+      "Silver",
+      "Septatium"
+    ]
+  },
+  {
+    "atomicNumber": 35,
+    "iupacGroup": 17,
+    "period": 4,
+    "category": "Halogens",
+    "symbol": "Br",
+    "name": "Bromine",
+    "choices": [
+      "Bromine",
+      "Beryllium",
+      "Bohrium",
+      "Boron"
+    ]
+  },
+  {
+    "atomicNumber": 36,
+    "iupacGroup": 18,
+    "period": 4,
+    "category": "Noble Gases",
+    "symbol": "Kr",
+    "name": "Krypton",
+    "choices": [
+      "Krypton",
+      "Kryptonite",
+      "Kindred",
+      "Krafton"
+    ]
+  },
+  {
+    "atomicNumber": 37,
+    "iupacGroup": 1,
+    "period": 5,
+    "category": "Alkali Metals",
+    "symbol": "Rb",
+    "name": "Rubidium",
+    "choices": [
+      "Rubidium",
+      "Rabon",
+      "Rubicon",
+      "Rhenium"
+    ]
+  },
+  {
+    "atomicNumber": 38,
+    "iupacGroup": 2,
+    "period": 5,
+    "category": "Alkaline Earth Metals",
+    "symbol": "Sr",
+    "name": "Strontium",
+    "choices": [
+      "Strontium",
+      "Sulfur",
+      "Silver",
+      "Samarium"
+    ]
+  },
+  {
+    "atomicNumber": 39,
+    "iupacGroup": 3,
+    "period": 5,
+    "category": "Transition Metals",
+    "symbol": "Y",
+    "name": "Yttrium",
+    "choices": [
+      "Yttrium",
+      "Ytterbium",
+      "Yawnium",
+      "Yankin"
+    ]
+  },
+  {
+    "atomicNumber": 40,
+    "iupacGroup": 4,
+    "period": 5,
+    "category": "Transition Metals",
+    "symbol": "Zr",
+    "name": "Zirconium",
+    "choices": [
+      "Zirconium",
+      "Zeronin",
+      "Zebranium",
+      "Ziptite"
+    ]
+  },
+  {
+    "atomicNumber": 41,
+    "iupacGroup": 5,
+    "period": 5,
+    "category": "Transition Metals",
+    "symbol": "Nb",
+    "name": "Niobium",
+    "choices": [
+      "Niobium",
+      "Nobelium",
+      "Newbrontium",
+      "Niobit"
+    ]
+  },
+  {
+    "atomicNumber": 42,
+    "iupacGroup": 6,
+    "period": 5,
+    "category": "Transition Metals",
+    "symbol": "Mo",
+    "name": "Molybdenum",
+    "choices": [
+      "Molybdenum",
+      "Moscovium",
+      "Malocclusion",
+      "Manifoldium"
+    ]
+  },
+  {
+    "atomicNumber": 43,
+    "iupacGroup": 7,
+    "period": 5,
+    "category": "Transition Metals",
+    "symbol": "Tc",
+    "name": "Technetium",
+    "choices": [
+      "Technetium",
+      "Tchibonium",
+      "Thulicinin",
+      "Tecnon"
+    ]
+  },
+  {
+    "atomicNumber": 44,
+    "iupacGroup": 8,
+    "period": 5,
+    "category": "Transition Metals",
+    "symbol": "Ru",
+    "name": "Ruthenium",
+    "choices": [
+      "Ruthenium",
+      "Rutherfordium",
+      "Rubidium",
+      "Radium"
+    ]
+  },
+  {
+    "atomicNumber": 45,
+    "iupacGroup": 9,
+    "period": 5,
+    "category": "Transition Metals",
+    "symbol": "Rh",
+    "name": "Rhodium",
+    "choices": [
+      "Rhodium",
+      "Rholandium",
+      "Rhenium",
+      "Rutherfordium"
+    ]
+  },
+  {
+    "atomicNumber": 46,
+    "iupacGroup": 10,
+    "period": 5,
+    "category": "Transition Metals",
+    "symbol": "Pd",
+    "name": "Palladium",
+    "choices": [
+      "Palladium",
+      "Praseodymium",
+      "Praseodymium",
+      "Pladium"
+    ]
+  },
+  {
+    "atomicNumber": 47,
+    "iupacGroup": 11,
+    "period": 5,
+    "category": "Transition Metals",
+    "symbol": "Ag",
+    "name": "Silver",
+    "choices": [
+      "Silver",
+      "Agon",
+      "Gold",
+      "Agranium"
+    ]
+  },
+  {
+    "atomicNumber": 48,
+    "iupacGroup": 12,
+    "period": 5,
+    "category": "Transition Metals",
+    "symbol": "Cd",
+    "name": "Cadmium",
+    "choices": [
+      "Cadmium",
+      "Cadiac",
+      "Carbon",
+      "Cardinol"
+    ]
+  },
+  {
+    "atomicNumber": 49,
+    "iupacGroup": 13,
+    "period": 5,
+    "category": "Post-Transition Metals",
+    "symbol": "In",
+    "name": "Indium",
+    "choices": [
+      "Indium",
+      "Iron",
+      "Iodine",
+      "Infinitium"
+    ]
+  },
+  {
+    "atomicNumber": 50,
+    "iupacGroup": 14,
+    "period": 5,
+    "category": "Post-Transition Metals",
+    "symbol": "Sn",
+    "name": "Tin",
+    "choices": [
+      "Tin",
+      "Titanium",
+      "Silicon",
+      "Scandium"
+    ]
+  },
+  {
+    "atomicNumber": 51,
+    "iupacGroup": 15,
+    "period": 5,
+    "category": "Semimetals",
+    "symbol": "Sb",
+    "name": "Antimony",
+    "choices": [
+      "Antimony",
+      "Seaborgium",
+      "Actinium",
+      "Sambraium"
+    ]
+  },
+  {
+    "atomicNumber": 52,
+    "iupacGroup": 16,
+    "period": 5,
+    "category": "Semimetals",
+    "symbol": "Te",
+    "name": "Tellurium",
+    "choices": [
+      "Tellurium",
+      "Terbium",
+      "Tebalt",
+      "Technetium"
+    ]
+  },
+  {
+    "atomicNumber": 53,
+    "iupacGroup": 17,
+    "period": 5,
+    "category": "Halogens",
+    "symbol": "I",
+    "name": "Iodine",
+    "choices": [
+      "Iodine",
+      "Iridium",
+      "Iron",
+      "Indium"
+    ]
+  },
+  {
+    "atomicNumber": 54,
+    "iupacGroup": 18,
+    "period": 5,
+    "category": "Noble Gases",
+    "symbol": "Xe",
+    "name": "Xenon",
+    "choices": [
+      "Xenon",
+      "Xebec",
+      "Xerophyte",
+      "Xenthophon"
+    ]
+  },
+  {
+    "atomicNumber": 55,
+    "iupacGroup": 1,
+    "period": 6,
+    "category": "Alkali Metals",
+    "symbol": "Cs",
+    "name": "Cesium",
+    "choices": [
+      "Cesium",
+      "Calcium",
+      "Cerium",
+      "Cesanite"
+    ]
+  },
+  {
+    "atomicNumber": 56,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Alkaline Earth Metals",
+    "symbol": "Ba",
+    "name": "Barium",
+    "choices": [
+      "Barium",
+      "Baryllium",
+      "Bramine",
+      "Baharium"
+    ]
+  },
+  {
+    "atomicNumber": 57,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Transition Metals",
+    "symbol": "La",
+    "name": "Lanthanum",
+    "choices": [
+      "Lanthanum",
+      "Lawrencium",
+      "Laudanum",
+      "Lathin"
+    ]
+  },
+  {
+    "atomicNumber": 58,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Lanthanide",
+    "symbol": "Ce",
+    "name": "Cerium",
+    "choices": [
+      "Cerium",
+      "Cesium",
+      "Cebalt",
+      "Cedmium"
+    ]
+  },
+  {
+    "atomicNumber": 59,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Lanthanide",
+    "symbol": "Pr",
+    "name": "Praseodymium",
+    "choices": [
+      "Praseodymium",
+      "Phosphorus",
+      "Promethium",
+      "Protactinium"
+    ]
+  },
+  {
+    "atomicNumber": 60,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Lanthanide",
+    "symbol": "Nd",
+    "name": "Neodymium",
+    "choices": [
+      "Neodymium",
+      "Nodium",
+      "Noradium",
+      "Neodubnium"
+    ]
+  },{
+  "atomicNumber": 61,
+  "iupacGroup": 2,
+  "period": 6,
+  "category": "Lanthanide",
+  "symbol": "Pm",
+  "name": "Promethium",
+  "choices": [
+    "Promethium",
+    "Platnium",
+    "Polonium",
+    "Protactinium"
+  ]
+},
+  {
+    "atomicNumber": 62,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Lanthanide",
+    "symbol": "Sm",
+    "name": "Samarium",
+    "choices": [
+      "Samarium",
+      "Sodium",
+      "Strontium",
+      "Selenium"
+    ]
+  },
+  {
+    "atomicNumber": 63,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Lanthanide",
+    "symbol": "Eu",
+    "name": "Europium",
+    "choices": [
+      "Europium",
+      "Erbium",
+      "Einsteinium",
+      "Eublisin"
+    ]
+  },
+  {
+    "atomicNumber": 64,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Lanthanide",
+    "symbol": "Gd",
+    "name": "Gadolinium",
+    "choices": [
+      "Gadolinium",
+      "Gold",
+      "Glandin",
+      "Glissadium"
+    ]
+  },
+  {
+    "atomicNumber": 65,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Lanthanide",
+    "symbol": "Tb",
+    "name": "Terbium",
+    "choices": [
+      "Terbium",
+      "Tabium",
+      "Tuberculosis",
+      "Tuberculoid"
+    ]
+  },
+  {
+    "atomicNumber": 66,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Lanthanide",
+    "symbol": "Dy",
+    "name": "Dysprosium",
+    "choices": [
+      "Dysprosium",
+      "Dystopium",
+      "Dyslexium",
+      "Dynamium"
+    ]
+  },
+  {
+    "atomicNumber": 67,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Lanthanide",
+    "symbol": "Ho",
+    "name": "Holmiun",
+    "choices": [
+      "Holmiun",
+      "Hydrogen",
+      "Hofnium",
+      "Holocaine"
+    ]
+  },
+  {
+    "atomicNumber": 68,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Lanthanide",
+    "symbol": "Er",
+    "name": "Erbium",
+    "choices": [
+      "Erbium",
+      "Europium",
+      "Eruditin",
+      "Eratosthenes"
+    ]
+  },
+  {
+    "atomicNumber": 69,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Lanthanide",
+    "symbol": "Tm",
+    "name": "Thulium",
+    "choices": [
+      "Thulium",
+      "Thorium",
+      "Thallium",
+      "Tellurium"
+    ]
+  },
+  {
+    "atomicNumber": 70,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Lanthanide",
+    "symbol": "Yb",
+    "name": "Ytterbium",
+    "choices": [
+      "Ytterbium",
+      "Yttrium",
+      "Ytterbia",
+      "Ytterbite"
+    ]
+  },
+  {
+    "atomicNumber": 71,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Lanthanide",
+    "symbol": "Lu",
+    "name": "Lutetium",
+    "choices": [
+      "Lutetium",
+      "Lanthanum",
+      "Lawrencium",
+      "Lithium"
+    ]
+  },
+  {
+    "atomicNumber": 72,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Transition Metals",
+    "symbol": "Hf",
+    "name": "Hafnium",
+    "choices": [
+      "Hafnium",
+      "Hafnon",
+      "Hafun",
+      "Hefnium"
+    ]
+  },
+  {
+    "atomicNumber": 73,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Transition Metals",
+    "symbol": "Ta",
+    "name": "Tantalum",
+    "choices": [
+      "Tantalum",
+      "Titanium",
+      "Thallium",
+      "Transium"
+    ]
+  },
+  {
+    "atomicNumber": 74,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Transition Metals",
+    "symbol": "W",
+    "name": "Tungsten",
+    "choices": [
+      "Tungsten",
+      "Wharium",
+      "Wambin",
+      "Twugnium"
+    ]
+  },
+  {
+    "atomicNumber": 75,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Transition Metals",
+    "symbol": "Re",
+    "name": "Rhenium",
+    "choices": [
+      "Rhenium",
+      "Roentgenium",
+      "Ruthenium",
+      "Rutherfordium"
+    ]
+  },
+  {
+    "atomicNumber": 76,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Transition Metals",
+    "symbol": "Os",
+    "name": "Osmium",
+    "choices": [
+      "Osmium",
+      "Oganesson",
+      "Omissium",
+      "Orchestrium"
+    ]
+  },
+  {
+    "atomicNumber": 77,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Transition Metals",
+    "symbol": "Ir",
+    "name": "Iridium",
+    "choices": [
+      "Iridium",
+      "Iron",
+      "Illustratium",
+      "Iratium"
+    ]
+  },
+  {
+    "atomicNumber": 78,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Transition Metals",
+    "symbol": "Pt",
+    "name": "Platinum",
+    "choices": [
+      "Platinum",
+      "Plutonium",
+      "Potassium",
+      "Promethium"
+    ]
+  },
+  {
+    "atomicNumber": 79,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Transition Metals",
+    "symbol": "Au",
+    "name": "Gold",
+    "choices": [
+      "Gold",
+      "Silver",
+      "Aluminium",
+      "Gadolinium"
+    ]
+  },
+  {
+    "atomicNumber": 80,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Transition Metals",
+    "symbol": "Hg",
+    "name": "Mercury",
+    "choices": [
+      "Mercury",
+      "Hydrogen",
+      "Heritagon",
+      "Magnesium"
+    ]
+  },
+  {
+    "atomicNumber": 81,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Post-Transition Metals",
+    "symbol": "Tl",
+    "name": "Thallium",
+    "choices": [
+      "Thallium",
+      "Thulium",
+      "Tellurium",
+      "Tantalum"
+    ]
+  },
+  {
+    "atomicNumber": 82,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Post-Transition Metals",
+    "symbol": "Pb",
+    "name": "Lead",
+    "choices": [
+      "Lead",
+      "Palladium",
+      "Labium",
+      "Probarium"
+    ]
+  },
+  {
+    "atomicNumber": 83,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Post-Transition Metals",
+    "symbol": "Bi",
+    "name": "Bismuth",
+    "choices": [
+      "Bismuth",
+      "Bohrium",
+      "Bromine",
+      "Barium"
+    ]
+  },
+  {
+    "atomicNumber": 84,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Semimetals",
+    "symbol": "Po",
+    "name": "Polonium",
+    "choices": [
+      "Polonium",
+      "Phosphorus",
+      "Plutonium",
+      "Potassium"
+    ]
+  },
+  {
+    "atomicNumber": 85,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Halogens",
+    "symbol": "At",
+    "name": "Astatine",
+    "choices": [
+      "Astatine",
+      "Actinium",
+      "Antimony",
+      "Atrophy"
+    ]
+  },
+  {
+    "atomicNumber": 86,
+    "iupacGroup": 2,
+    "period": 6,
+    "category": "Noble Gases",
+    "symbol": "Rn",
+    "name": "Radon",
+    "choices": [
+      "Radon",
+      "Ruthenium",
+      "Roentgenium",
+      "Rhenium"
+    ]
+  },
+  {
+    "atomicNumber": 87,
+    "iupacGroup": 1,
+    "period": 7,
+    "category": "Alkali Metals",
+    "symbol": "Fr",
+    "name": "Francium",
+    "choices": [
+      "Francium",
+      "Fermium",
+      "Flerovium",
+      "Fluorine"
+    ]
+  },
+  {
+    "atomicNumber": 88,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Alkaline Earth Metals",
+    "symbol": "Ra",
+    "name": "Radium",
+    "choices": [
+      "Radium",
+      "Radish",
+      "Radon",
+      "Radomium"
+    ]
+  },
+  {
+    "atomicNumber": 89,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Transition Metals",
+    "symbol": "Ac",
+    "name": "Actinium",
+    "choices": [
+      "Actinium",
+      "Americium",
+      "Arsenic",
+      "Acreaginium"
+    ]
+  },
+  {
+    "atomicNumber": 90,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "Th",
+    "name": "Thorium",
+    "choices": [
+      "Thorium",
+      "Thulium",
+      "Thallium",
+      "Throntium"
+    ]
+  },
+  {
+    "atomicNumber": 91,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "Pa",
+    "name": "Protactinium",
+    "choices": [
+      "Protactinium",
+      "Palladium",
+      "Platinum",
+      "Praseodymium"
+    ]
+  },
+  {
+    "atomicNumber": 92,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "U",
+    "name": "Uranium",
+    "choices": [
+      "Uranium",
+      "Uronium",
+      "Usmine",
+      "Uranine"
+    ]
+  },
+  {
+    "atomicNumber": 93,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "Np",
+    "name": "Neptunium",
+    "choices": [
+      "Neptunium",
+      "Nosphorus",
+      "Neuropium",
+      "Noprobliarium"
+    ]
+  },
+  {
+    "atomicNumber": 94,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "Pu",
+    "name": "Plutonium",
+    "choices": [
+      "Plutonium",
+      "Palladium",
+      "Platinum",
+      "Potassium"
+    ]
+  },
+  {
+    "atomicNumber": 95,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "Am",
+    "name": "Americium",
+    "choices": [
+      "Americium",
+      "Aluminum",
+      "Antimony",
+      "Amitin"
+    ]
+  },
+  {
+    "atomicNumber": 96,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "Cm",
+    "name": "Curium",
+    "choices": [
+      "Curium",
+      "Cadmium",
+      "Calcium",
+      "Cerium"
+    ]
+  },
+  {
+    "atomicNumber": 97,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "Bk",
+    "name": "Berkelium",
+    "choices": [
+      "Berkelium",
+      "Bankium",
+      "Bokinarium",
+      "Beakinin"
+    ]
+  },
+  {
+    "atomicNumber": 98,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "Cf",
+    "name": "Californium",
+    "choices": [
+      "Californium",
+      "Calfium",
+      "Centrifugin",
+      "Chamfin"
+    ]
+  },
+  {
+    "atomicNumber": 99,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "Es",
+    "name": "Einsteinium",
+    "choices": [
+      "Einsteinium",
+      "Ellipsodium",
+      "Ensemblium",
+      "Epsomium"
+    ]
+  },
+  {
+    "atomicNumber": 100,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "Fm",
+    "name": "Fermium",
+    "choices": [
+      "Fermium",
+      "Francium",
+      "Flerovium",
+      "Figmentium"
+    ]
+  },
+  {
+    "atomicNumber": 101,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "Md",
+    "name": "Mendelevium",
+    "choices": [
+      "Mendelevium",
+      "Molybdenum",
+      "Malladium",
+      "Mandelevium"
+    ]
+  },
+  {
+    "atomicNumber": 102,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "No",
+    "name": "Nobelium",
+    "choices": [
+      "Nobelium",
+      "Neon",
+      "Niobium",
+      "Nihonium"
+    ]
+  },
+  {
+    "atomicNumber": 103,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Actinides",
+    "symbol": "Lr",
+    "name": "Lawrencium",
+    "choices": [
+      "Lawrencium",
+      "Livermorium",
+      "Lapidarium",
+      "Laborium"
+    ]
+  },
+  {
+    "atomicNumber": 104,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Transition Metals",
+    "symbol": "Rf",
+    "name": "Rutherfordium",
+    "choices": [
+      "Rutherfordium",
+      "Radagstium",
+      "Rathershortium",
+      "Refracterium"
+    ]
+  },
+  {
+    "atomicNumber": 105,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Transition Metals",
+    "symbol": "Db",
+    "name": "Dubnium",
+    "choices": [
+      "Dubnium",
+      "Dubinin",
+      "Decibelium",
+      "Dubnine"
+    ]
+  },
+  {
+    "atomicNumber": 106,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Transition Metals",
+    "symbol": "Sg",
+    "name": "Seaborgium",
+    "choices": [
+      "Seaborgium",
+      "Sogium",
+      "Sagolat",
+      "Seborgium"
+    ]
+  },
+  {
+    "atomicNumber": 107,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Transition Metals",
+    "symbol": "Bh",
+    "name": "Bohrium",
+    "choices": [
+      "Bohrium",
+      "Borium",
+      "Bismuth",
+      "Bhutan"
+    ]
+  },
+  {
+    "atomicNumber": 108,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Transition Metals",
+    "symbol": "Hs",
+    "name": "Hassium",
+    "choices": [
+      "Hassium",
+      "Hasnium",
+      "Haselnium",
+      "Haselit"
+    ]
+  },
+  {
+    "atomicNumber": 109,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Transition Metals",
+    "symbol": "Mt",
+    "name": "Meitnerium",
+    "choices": [
+      "Meitnerium",
+      "Malnutrium",
+      "Manzantion",
+      "Matterin"
+    ]
+  },
+  {
+    "atomicNumber": 110,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Transition Metals",
+    "symbol": "Ds",
+    "name": "Darmstadtium",
+    "choices": [
+      "Darmstadtium",
+      "Dysprosium",
+      "Dysplasia",
+      "Daganese"
+    ]
+  },
+  {
+    "atomicNumber": 111,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Transition Metals",
+    "symbol": "Rg",
+    "name": "Roentgenium",
+    "choices": [
+      "Roentgenium",
+      "Ruegenium",
+      "Rhodium",
+      "Ragon"
+    ]
+  },
+  {
+    "atomicNumber": 112,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Transition Metals",
+    "symbol": "Cn",
+    "name": "Copernicium",
+    "choices": [
+      "Copernicium",
+      "Californium",
+      "Carbon",
+      "Chlorine"
+    ]
+  },
+  {
+    "atomicNumber": 113,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Unknown",
+    "symbol": "Nh",
+    "name": "Nihonium",
+    "choices": [
+      "Nihonium",
+      "Niohbium",
+      "Nohelium",
+      "Nhaddeline"
+    ]
+  },
+  {
+    "atomicNumber": 114,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Unknown",
+    "symbol": "Fl",
+    "name": "Flerovium",
+    "choices": [
+      "Flerovium",
+      "Fluorine",
+      "Falconin",
+      "Feasilin"
+    ]
+  },
+  {
+    "atomicNumber": 115,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Unknown",
+    "symbol": "Mc",
+    "name": "Moscovium",
+    "choices": [
+      "Moscovium",
+      "Mercury",
+      "Mecendelevium",
+      "Mickel"
+    ]
+  },
+  {
+    "atomicNumber": 116,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Unknown",
+    "symbol": "Lv",
+    "name": "Livermorium",
+    "choices": [
+      "Livermorium",
+      "Lavendium",
+      "Lavrencium",
+      "Livtanin"
+    ]
+  },
+  {
+    "atomicNumber": 117,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Unknown",
+    "symbol": "Ts",
+    "name": "Tennessine",
+    "choices": [
+      "Tennessine",
+      "Tungsten",
+      "Tassium",
+      "Tennissine"
+    ]
+  },
+  {
+    "atomicNumber": 118,
+    "iupacGroup": 2,
+    "period": 7,
+    "category": "Unknown",
+    "symbol": "Og",
+    "name": "Oganesson",
+    "choices": [
+      "Oganesson",
+      "Ogbomosho",
+      "Ogamine",
+      "Ogaden"
+    ]
+  }
+]

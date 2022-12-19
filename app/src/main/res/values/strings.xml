@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">Cyclopenten</string>
+
+    <!-- Navigation -->
+    <string name="screen_start">Start Screen</string>
+    <string name="screen_difficulty">Difficulty Screen</string>
+    <string name="screen_game">Game Screen</string>
+    <string name="screen_score">Score Screen</string>
+    <string name="screen_settings">Settings Screen</string>
+    <string name="nav_arg_score">score</string>
+    <string name="nav_arg_winner">winner</string>
+
+    <!-- Start Screen -->
+    <string name="app_logo">App logo</string>
+    <string name="btn_new_game">New Game</string>
+    <string name="btn_continue">Continue</string>
+    <string name="btn_highscore">Highscore</string>
+    <string name="btn_settings">Settings</string>
+
+    <!-- Difficulty Screen -->
+    <string name="txt_difficulty_title">Choose your difficulty</string>
+    <string name="btn_difficulty_easy">Easy</string>
+    <string name="btn_difficulty_hard">Hard</string>
+    <string name="txt_title_different_difficulties">Different Difficulties</string>
+    <string name="txt_difficulty_explanation">Easy: Choose your answer from 4 options. Each correct answer is worth 10 points. The game is over when your answer is wrong three times. \nHard: Enter your answer in a text field. Each correct answer is worth 15 points. The game is over when your answer is wrong four times.</string>
+    <string name="txt_icon_content_description">Help icon</string>
+
+    <!-- Game Screen -->
+    <string name="txt_game_title">Name the element</string>
+    <string name="txt_lives">Lives:</string>
+    <string name="txt_score">Score:</string>
+    <string name="txt_final_score">"You got %1$s points."</string>
+    <string name="content_description_lives_symbol">Lives left symbol</string>
+    <string name="content_description_lost_lives_symbol">Lives lost symbol</string>
+
+    <!-- Highscore Screen -->
+    <string name="txt_scoreboard">Scoreboard</string>
+    <string name="txt_game_won">Congratulations you won!</string>
+    <string name="txt_game_lost">Game Over!</string>
+    <string name="txt_enter_name">Enter your name</string>
+    <string name="btn_ok">OK</string>
+
+    <!-- Settings Screen -->
+    <string name="txt_settings">Settings</string>
+    <string name="txt_settings_music">Background Music</string>
+    <string name="txt_settings_sound_effects">Sound Effects</string>
+    <string name="btn_delete_scoreboard">Delete Scoreboard</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_confirm">Confirm</string>
+    <string name="txt_delete_scoreboard">Delete Scoreboard</string>
+    <string name="txt_delete_scoreboard_clarification">This will reset your Scoreboard, can not be undone!</string>
+</resources>

@@ -1,0 +1,70 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  codesmell:
+    name: Lint
+    uses: ./.github/workflows/launch_gradle_commands.yml
+    secrets:
+      GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
+    with:
+      commands: lint ktlintCheck
+
+  unitTest:
+    name: Unit Tests
+    uses: ./.github/workflows/launch_gradle_commands.yml
+    secrets:
+      GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
+    with:
+      commands: testReleaseUnitTest
+
+  generateApks:
+    name: Generate APKs
+    uses: ./.github/workflows/launch_gradle_commands.yml
+    secrets:
+      GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
+    with:
+      commands: assembleDebug assembleDebugAndroidTest
+      uploadArtifacts: true
+
+  uiTests:
+    name: UI Tests on Firebase Test Labs
+    needs: generateApks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download App Debug APK
+        id: app-debug-download
+        uses: actions/download-artifact@v3
+        with:
+          name: app-debug
+
+      - name: Download Android Test APK
+        id: android-test-download
+        uses: actions/download-artifact@v3
+        with:
+          name: android-test
+
+      - id: auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCLOUD_AUTH }}
+      - name: Login to Google Cloud
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Set current project
+        run: gcloud config set project ${{ secrets.FIREBASE_PROJECT_ID }}
+
+      - name: Run Instrumentation Tests in Firebase Test Lab
+        env:
+          APP_DEBUG_LOCATION: app-debug.apk
+          ANDROID_TEST_LOCATION: app-debug-androidTest.apk
+          DEVICE_MODEL: Nexus9,version=24,locale=en,orientation=portrait
+        run: gcloud firebase test android run --type instrumentation --app $APP_DEBUG_LOCATION --test $ANDROID_TEST_LOCATION --device model=$DEVICE_MODEL --use-orchestrator --num-flaky-test-attempts 2

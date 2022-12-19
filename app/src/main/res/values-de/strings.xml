@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cyclopenten</string>
+
+    <!-- Navigation -->
+    <string name="screen_start">Start Bildschirm</string>
+    <string name="screen_difficulty">Schwierigkeitsgrad Bildschirm</string>
+    <string name="screen_game">Spiel Bildschirm</string>
+    <string name="screen_score">Punkte Bildschirm</string>
+    <string name="screen_settings">Einstellungen Bildschirm</string>
+    <string name="nav_arg_score">Punkte</string>
+    <string name="nav_arg_winner">Gewinner</string>
+
+    <!-- Start Screen -->
+    <string name="app_logo">App Logo</string>
+    <string name="btn_new_game">Neues Spiel</string>
+    <string name="btn_continue">Fortsetzen</string>
+    <string name="btn_highscore">Bestenliste</string>
+    <string name="btn_settings">Einstellungen</string>
+
+    <!-- Difficulty Screen -->
+    <string name="txt_difficulty_title">Wähle deinen Schwierigkeitsgrad</string>
+    <string name="btn_difficulty_easy">Leicht</string>
+    <string name="btn_difficulty_hard">Schwer</string>
+    <string name="txt_title_different_difficulties">Verschiedene Schwierigkeitsgrade</string>
+    <string name="txt_difficulty_explanation">Leicht: Wähle eine Antwort aus 4 Optionen aus. Jede richtige Antwort ist 10 Punkte wert. Das Spiel ist vorbei, wenn dreimal falsch geantwortet wurde. \nSchwer: Gebe eine Antwort in ein Textfeld ein. Jede richtige Antwort ist 15 Punkte wert. Das Spiel ist vorbei, wenn viermal falsch geantwortet wurde.</string>
+    <string name="txt_icon_content_description">Hilfe-Symbol</string>
+
+    <!-- Game Screen -->
+    <string name="txt_game_title">Welches Element wird gesucht?</string>
+    <string name="txt_lives">Leben:</string>
+    <string name="txt_score">Punkte:</string>
+    <string name="txt_final_score">"Du hast %1$s Punkte."</string>
+    <string name="content_description_lives_symbol">Restliche Leben Symbol</string>
+    <string name="content_description_lost_lives_symbol">Verlorene Leben Symbol</string>
+
+    <!-- Highscore Screen -->
+    <string name="txt_scoreboard">Bestenliste</string>
+    <string name="txt_game_won">Glückswunsch du hast gewonnen!</string>
+    <string name="txt_game_lost">Verloren!</string>
+    <string name="txt_enter_name">Gib deinen Namen ein</string>
+    <string name="btn_ok">OK</string>
+
+    <!-- Settings Screen -->
+    <string name="txt_settings">Einstellungen</string>
+    <string name="txt_settings_music">Hintergrundmusik</string>
+    <string name="txt_settings_sound_effects">Soundeffekte</string>
+    <string name="btn_delete_scoreboard">Bestenliste löschen</string>
+    <string name="btn_cancel">Abbrechen</string>
+    <string name="btn_confirm">Bestätigen</string>
+    <string name="txt_delete_scoreboard">Möchtest du die Bestenliste löschen?</string>
+    <string name="txt_delete_scoreboard_clarification">Dies wird deine Bestenliste unwiderruflich löschen, dieser Vorgang kann nicht rückgängig gemacht werden.</string>
+</resources>

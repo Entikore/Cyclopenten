@@ -1,0 +1,60 @@
+buildscript {
+    ext.navigationVersion = '2.5.3'
+    ext.hiltVersion = '2.44.2'
+    ext.kotlinVersion = '1.7.10'
+    ext.androidGradleVersion = '7.3.1'
+
+    repositories {
+        // Make sure that you have the following two repositories
+        google()  // Google's Maven repository
+        mavenCentral()  // Maven Central repository
+
+    }
+
+    dependencies {
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "com.android.tools.build:gradle:$androidGradleVersion"
+    }
+}
+
+plugins {
+    id 'com.android.application' version "$androidGradleVersion" apply false
+    id 'com.android.library' version "$androidGradleVersion" apply false
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    // Sdk
+    minSdkVersion = 24
+    targetSdkVersion = 33
+    compileSdkVersion = 33
+
+    // dependencies
+    activityComposeVersion = '1.6.1'
+    androidXCoreVersion = '1.9.0'
+    androidXTestCoreVersion = '1.5.0'
+    androidXTestExtKotlinRunnerVersion = '1.1.4'
+    androidXTestRulesVersion = '1.4.1-alpha06'
+    archLifecycleVersion = '2.6.0-alpha03'
+    archTestingVersion = '2.1.0'
+    composeCompilerVersion = '1.3.1'
+    composeVersion = '1.3.2'
+    coroutinesVersion = '1.6.4'
+    espressoVersion = '3.5.0'
+    gsonVersion = '2.10'
+    hamcrestVersion = '1.3'
+    hiltAndroidXVersion = '1.0.0'
+    junitVersion = '4.13.2'
+    materialComposeVersion = '1.3.1'
+    mockitoVersion = '4.0.0'
+    moshiVersion = '1.14.0'
+    preferencesVersion = '1.0.0'
+    robolectricVersion = '4.9'
+    roomVersion = '2.4.3'
+    timberVersion = '5.0.1'
+    truthVersion = '1.1.3'
+}
