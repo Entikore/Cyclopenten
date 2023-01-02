@@ -53,7 +53,7 @@ ext {
     mockitoVersion = '4.0.0'
     moshiVersion = '1.14.0'
     preferencesVersion = '1.0.0'
-    robolectricVersion = '4.9'
+    robolectricVersion = '4.9.2'
     roomVersion = '2.4.3'
     timberVersion = '5.0.1'
     truthVersion = '1.1.3'
