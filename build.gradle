@@ -1,8 +1,8 @@
 buildscript {
     ext.navigationVersion = '2.5.3'
-    ext.hiltVersion = '2.44.2'
-    ext.kotlinVersion = '1.7.20'
-    ext.androidGradleVersion = '7.4.0'
+    ext.hiltVersion = '2.45'
+    ext.kotlinVersion = '1.8.10'
+    ext.androidGradleVersion = '7.4.1'
 
     repositories {
         // Make sure that you have the following two repositories
@@ -32,30 +32,5 @@ ext {
     minSdkVersion = 24
     targetSdkVersion = 33
     compileSdkVersion = 33
-
-    // dependencies
-    activityComposeVersion = '1.6.1'
-    androidXCoreVersion = '1.9.0'
-    androidXTestCoreVersion = '1.5.0'
-    androidXTestExtKotlinRunnerVersion = '1.1.5'
-    androidXTestRulesVersion = '1.4.1-alpha06'
-    archLifecycleVersion = '2.6.0-alpha03'
-    archTestingVersion = '2.1.0'
-    composeCompilerVersion = '1.3.2'
     composeVersion = '1.3.3'
-    coroutinesVersion = '1.6.4'
-    espressoVersion = '3.5.1'
-    gsonVersion = '2.10.1'
-    hamcrestVersion = '1.3'
-    hiltAndroidXVersion = '1.0.0'
-    junitVersion = '4.13.2'
-    materialComposeVersion = '1.3.1'
-    mockitoVersion = '4.1.0'
-    mockitoAndroidVersion = '5.1.0'
-    moshiVersion = '1.14.0'
-    preferencesVersion = '1.0.0'
-    robolectricVersion = '4.9.2'
-    roomVersion = '2.5.0'
-    timberVersion = '5.0.1'
-    truthVersion = '1.1.3'
 }
