@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Cyclopenten"
-include ':app'
+include(":app")
