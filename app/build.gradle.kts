@@ -66,81 +66,94 @@ ktlint {
 }
 
 dependencies {
+    val androidTestVersion = "1.5.0"
+    val androidTestJunitVersion = "1.1.5"
+    val archCoreVersion = "2.2.0"
+    val composeVersion = "1.4.1"
+    val coroutineVersion = "1.6.4"
+    val espressoVersion = "3.5.1"
+    val hiltVersion = "2.45"
+    val lifecycleVersion = "2.6.1"
+    val mockitoKotlinVersion = "4.1.0"
+    val moshiVersion = "1.14.0"
+    val navigationTestVersion = "2.5.3"
+    val roomVersion = "2.5.1"
+
     // App dependencies
     implementation("com.jakewharton.timber:timber:5.0.1")
-    implementation("com.squareup.moshi:moshi:1.14.0")
-    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+    implementation("com.squareup.moshi:moshi:$moshiVersion")
+    implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
     implementation("com.google.code.gson:gson:2.10.1")
 
     // Architecture Components
     implementation("androidx.core:core-ktx:1.10.0")
-    implementation("androidx.room:room-runtime:2.5.1")
-    kapt("androidx.room:room-compiler:2.5.1")
-    implementation("androidx.room:room-ktx:2.5.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.45")
-    kapt("com.google.dagger:hilt-compiler:2.45")
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     // Jetpack Compose
     implementation("androidx.activity:activity-compose:1.7.0")
-    implementation("androidx.compose.ui:ui:1.4.1")
+    implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.runtime:runtime-livedata:1.5.0-alpha02")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.4.1")
-    implementation("androidx.compose.material:material:1.4.1")
-    implementation("androidx.compose.material:material-icons-extended:1.4.1")
-    implementation("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+    implementation("androidx.compose.material:material:$composeVersion")
+    implementation("androidx.compose.material:material-icons-extended:$composeVersion")
+    implementation("androidx.navigation:navigation-compose:$navigationTestVersion")
 
     // Dependencies for local unit tests
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.hamcrest:hamcrest-all:1.3")
-    testImplementation("androidx.arch.core:core-testing:2.2.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation("androidx.arch.core:core-testing:$archCoreVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
     testImplementation("org.robolectric:robolectric:4.9.2")
-    testImplementation("androidx.navigation:navigation-testing:2.5.3")
-    testImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    testImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
-    testImplementation("androidx.test.espresso:espresso-intents:3.5.1")
+    testImplementation("androidx.navigation:navigation-testing:$navigationTestVersion")
+    testImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
+    testImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion")
+    testImplementation("androidx.test.espresso:espresso-intents:$espressoVersion")
     testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("androidx.compose.ui:ui-test-junit4:1.4.1")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    testImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     // JVM tests - Hilt
-    testImplementation("com.google.dagger:hilt-android-testing:2.45")
-    kaptTest("com.google.dagger:hilt-compiler:2.45")
+    testImplementation("com.google.dagger:hilt-android-testing:$hiltVersion")
+    kaptTest("com.google.dagger:hilt-compiler:$hiltVersion")
 
     // AndroidX Test - JVM testing
-    testImplementation("androidx.test:core-ktx:1.5.0")
-    testImplementation("androidx.test.ext:junit-ktx:1.1.5")
-    testImplementation("androidx.test:rules:1.5.0")
-    implementation("androidx.test:core:1.5.0")
+    testImplementation("androidx.test:core-ktx:$androidTestVersion")
+    testImplementation("androidx.test.ext:junit-ktx:$androidTestJunitVersion")
+    testImplementation("androidx.test:rules:$androidTestVersion")
+    implementation("androidx.test:core:$androidTestVersion")
 
     // AndroidX Test - Instrumented testing
-    androidTestImplementation("androidx.test:core-ktx:1.5.0")
-    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.5")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("androidx.room:room-testing:2.5.1")
-    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
-    androidTestImplementation("androidx.navigation:navigation-testing:2.5.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
-    androidTestImplementation("androidx.test.espresso.idling:idling-concurrent:3.5.1")
+    androidTestImplementation("androidx.test:core-ktx:$androidTestVersion")
+    androidTestImplementation("androidx.test.ext:junit-ktx:$androidTestJunitVersion")
+    androidTestImplementation("androidx.test:rules:$androidTestVersion")
+    androidTestImplementation("androidx.room:room-testing:$roomVersion")
+    androidTestImplementation("androidx.arch.core:core-testing:$archCoreVersion")
+    androidTestImplementation("androidx.navigation:navigation-testing:$navigationTestVersion")
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:$espressoVersion")
+    androidTestImplementation("androidx.test.espresso.idling:idling-concurrent:$espressoVersion")
     androidTestImplementation("org.robolectric:annotations:4.9.2")
-    implementation("androidx.test.espresso:espresso-idling-resource:3.5.1")
+    implementation("androidx.test.espresso:espresso-idling-resource:$espressoVersion")
     androidTestImplementation("org.mockito:mockito-android:5.1.1")
-    androidTestImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.1")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.1")
+    androidTestImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 
     // AndroidX Test - Hilt testing
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.45")
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.45")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:$hiltVersion")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:$hiltVersion")
 }
