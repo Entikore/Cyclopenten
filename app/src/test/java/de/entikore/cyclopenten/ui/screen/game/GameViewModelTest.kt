@@ -1,7 +1,6 @@
 package de.entikore.cyclopenten.ui.screen.game
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import de.entikore.cyclopenten.GoodUnitTestData
@@ -18,7 +17,6 @@ import de.entikore.cyclopenten.ui.theme.ColorTheme
 import de.entikore.cyclopenten.util.Constants.SCORE_INCREASE_EASY_DIFF
 import de.entikore.cyclopenten.util.Constants.SCORE_INCREASE_HARD_DIFF
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -66,9 +64,11 @@ class GameViewModelTest {
 
         // soundEffectPreferenceUseCase gets invoked on viewmodel init
         mainCoroutineRule.launch {
-            `when`(soundEffectPreferenceUseCase.invoke()).thenReturn(flow {
-                UserPreferences(musicOn = false, soundEffectOn = false)
-            })
+            `when`(soundEffectPreferenceUseCase.invoke()).thenReturn(
+                flow {
+                    UserPreferences(musicOn = false, soundEffectOn = false)
+                }
+            )
         }
 
         viewModel = GameViewModel(
