@@ -1,12 +1,14 @@
 package de.entikore.cyclopenten.ui.screen.game
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import de.entikore.cyclopenten.GoodUnitTestData
 import de.entikore.cyclopenten.MainCoroutineRule
 import de.entikore.cyclopenten.data.FakeRepository
 import de.entikore.cyclopenten.data.Result
+import de.entikore.cyclopenten.data.UserPreferences
 import de.entikore.cyclopenten.domain.usecases.DeleteSaveGameUseCase
 import de.entikore.cyclopenten.domain.usecases.GetChemicalElementsUseCase
 import de.entikore.cyclopenten.domain.usecases.GetSaveGameUseCase
@@ -16,6 +18,9 @@ import de.entikore.cyclopenten.ui.theme.ColorTheme
 import de.entikore.cyclopenten.util.Constants.SCORE_INCREASE_EASY_DIFF
 import de.entikore.cyclopenten.util.Constants.SCORE_INCREASE_HARD_DIFF
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -23,6 +28,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
@@ -58,6 +64,13 @@ class GameViewModelTest {
         soundEffectPreferenceUseCase = mock(SoundEffectPreferenceUseCase::class.java)
         savedStateHandle = mock(SavedStateHandle::class.java)
 
+        // soundEffectPreferenceUseCase gets invoked on viewmodel init
+        mainCoroutineRule.launch {
+            `when`(soundEffectPreferenceUseCase.invoke()).thenReturn(flow {
+                UserPreferences(musicOn = false, soundEffectOn = false)
+            })
+        }
+
         viewModel = GameViewModel(
             getChemicalElementsUseCaseTest,
             getSaveGameUseCase,
@@ -84,7 +97,7 @@ class GameViewModelTest {
             answerOptions = firstElement.choices
         )
         expectedGameState.setDifficulty(false)
-
+        advanceUntilIdle()
         assertThat(viewModel.gameState.value).isEqualTo(expectedGameState)
     }
 
@@ -104,12 +117,14 @@ class GameViewModelTest {
             answerOptions = firstElement.choices
         )
         gameStateBeforeReset.setDifficulty(false)
+        advanceUntilIdle()
         // check current game state is as expected
         assertThat(viewModel.gameState.value).isEqualTo(gameStateBeforeReset)
 
         viewModel.resetGameState()
 
         val defaultGameScreenState = GameScreenState()
+        advanceUntilIdle()
         assertThat(viewModel.gameState.value).isEqualTo(defaultGameScreenState)
     }
 
@@ -127,7 +142,6 @@ class GameViewModelTest {
         viewModel.evaluateAnswer(rightAnswer)
 
         advanceUntilIdle()
-
         assertThat(viewModel.gameState.value.score).isEqualTo(SCORE_INCREASE_EASY_DIFF)
     }
 
@@ -140,6 +154,7 @@ class GameViewModelTest {
         val currentScore = currentGameState.score
         val difficulty = currentGameState.hardDifficulty
         // difficulty is hard, score should be incremented by 10
+        advanceUntilIdle()
         assertThat(difficulty).isTrue()
         assertThat(currentScore).isEqualTo(0)
 
@@ -159,6 +174,7 @@ class GameViewModelTest {
         val currentLives = currentGameState.lives
         val currentLostLives = currentGameState.lostLives
         val difficulty = currentGameState.hardDifficulty
+        advanceUntilIdle()
         // difficulty is easy, score should be incremented by 10
         assertThat(difficulty).isFalse()
         assertThat(currentScore).isEqualTo(0)
