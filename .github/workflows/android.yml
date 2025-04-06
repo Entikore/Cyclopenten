@@ -42,13 +42,13 @@ jobs:
 
       - name: Download App Debug APK
         id: app-debug-download
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: app-debug
 
       - name: Download Android Test APK
         id: android-test-download
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: android-test
 
@@ -57,7 +57,7 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCLOUD_AUTH }}
       - name: Login to Google Cloud
-        uses: google-github-actions/setup-gcloud@v1
+        uses: google-github-actions/setup-gcloud@v2
 
       - name: Set current project
         run: gcloud config set project ${{ secrets.FIREBASE_PROJECT_ID }}

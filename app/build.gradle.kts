@@ -3,19 +3,18 @@ import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")
     id("dagger.hilt.android.plugin")
     id("org.jlleitschuh.gradle.ktlint") version "11.1.0"
-    id("com.google.devtools.ksp").version("1.6.10-1.0.4")
+    id("com.google.devtools.ksp")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "de.entikore.cyclopenten"
         minSdk = 24
-        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -67,45 +66,45 @@ ktlint {
 }
 
 dependencies {
-    val androidTestVersion = "1.5.0"
-    val androidTestJunitVersion = "1.1.5"
+    val androidTestVersion = "1.6.1"
+    val androidTestJunitVersion = "1.2.1"
     val archCoreVersion = "2.2.0"
-    val composeVersion = "1.4.3"
-    val coroutineVersion = "1.7.1"
-    val espressoVersion = "3.5.1"
-    val hiltVersion = "2.46.1"
-    val lifecycleVersion = "2.6.1"
-    val mockitoKotlinVersion = "5.0.0"
-    val moshiVersion = "1.15.0"
-    val navigationTestVersion = "2.6.0"
-    val roomVersion = "2.5.1"
+    val composeVersion = "1.7.8"
+    val coroutineVersion = "1.9.0"
+    val espressoVersion = "3.6.1"
+    val hiltVersion = "2.53.1"
+    val lifecycleVersion = "2.8.7"
+    val mockitoKotlinVersion = "5.4.0"
+    val moshiVersion = "1.15.1"
+    val navigationTestVersion = "2.8.9"
+    val roomVersion = "2.6.1"
 
     // App dependencies
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("com.squareup.moshi:moshi:$moshiVersion")
     implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
     ksp("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:2.11.0")
 
     // Architecture Components
-    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.room:room-runtime:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.1.4")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:$hiltVersion")
-    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    ksp("com.google.dagger:hilt-compiler:$hiltVersion")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // Jetpack Compose
-    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.activity:activity-compose:1.10.1")
     implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.0-alpha01")
+    implementation("androidx.compose.runtime:runtime-livedata:1.7.8")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation("androidx.compose.material:material:$composeVersion")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
@@ -122,13 +121,13 @@ dependencies {
     testImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
     testImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion")
     testImplementation("androidx.test.espresso:espresso-intents:$espressoVersion")
-    testImplementation("com.google.truth:truth:1.1.5")
+    testImplementation("com.google.truth:truth:1.4.4")
     testImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     // JVM tests - Hilt
     testImplementation("com.google.dagger:hilt-android-testing:$hiltVersion")
-    kaptTest("com.google.dagger:hilt-compiler:$hiltVersion")
+    kspTest("com.google.dagger:hilt-compiler:$hiltVersion")
 
     // AndroidX Test - JVM testing
     testImplementation("androidx.test:core-ktx:$androidTestVersion")
@@ -156,5 +155,5 @@ dependencies {
 
     // AndroidX Test - Hilt testing
     androidTestImplementation("com.google.dagger:hilt-android-testing:$hiltVersion")
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:$hiltVersion")
+    kspAndroidTest("com.google.dagger:hilt-android-compiler:$hiltVersion")
 }
