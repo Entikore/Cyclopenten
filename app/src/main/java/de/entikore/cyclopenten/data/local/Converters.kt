@@ -1,55 +1,56 @@
 package de.entikore.cyclopenten.data.local
 
 import androidx.room.TypeConverter
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import de.entikore.cyclopenten.data.local.entity.ChemicalElement
+import kotlinx.serialization.json.Json
 import timber.log.Timber
 
 class Converters {
 
+    private val json = Json { ignoreUnknownKeys = true }
+
     @TypeConverter
-    fun toChoicesList(json: String): List<String> {
+    fun toChoicesList(value: String): List<String> {
         return try {
-            Gson().fromJson(json, object : TypeToken<ArrayList<String>>() {}.type)
+            json.decodeFromString<List<String>>(value)
         } catch (e: Exception) {
-            Timber.e("Failed to convert json to list.", e)
-            arrayListOf()
+            Timber.e(e, "Failed to convert json to list.")
+            emptyList()
         }
     }
 
     @TypeConverter
     fun fromChoicesList(list: List<String>): String {
-        return Gson().toJson(list, object : TypeToken<ArrayList<String>>() {}.type)
+        return json.encodeToString(list)
     }
 
     @TypeConverter
-    fun toElement(json: String): ChemicalElement {
+    fun toElement(value: String): ChemicalElement {
         return try {
-            Gson().fromJson(json, object : TypeToken<ChemicalElement>() {}.type)
+            json.decodeFromString<ChemicalElement>(value)
         } catch (e: Exception) {
-            Timber.e("Failed to convert json.", e)
+            Timber.e(e, "Failed to convert json to element.")
             ChemicalElement(-1, -1, -1, "", "", "", emptyList())
         }
     }
 
     @TypeConverter
     fun fromElement(element: ChemicalElement): String {
-        return Gson().toJson(element, object : TypeToken<ChemicalElement>() {}.type)
+        return json.encodeToString(element)
     }
 
     @TypeConverter
-    fun toElementsList(json: String): List<ChemicalElement> {
+    fun toElementsList(value: String): List<ChemicalElement> {
         return try {
-            Gson().fromJson(json, object : TypeToken<ArrayList<ChemicalElement>>() {}.type)
+            json.decodeFromString<List<ChemicalElement>>(value)
         } catch (e: Exception) {
-            Timber.e("Failed to convert json to list.", e)
-            arrayListOf()
+            Timber.e(e, "Failed to convert json to elements list.")
+            emptyList()
         }
     }
 
     @TypeConverter
     fun fromElementsList(list: List<ChemicalElement>): String {
-        return Gson().toJson(list, object : TypeToken<ArrayList<ChemicalElement>>() {}.type)
+        return json.encodeToString(list)
     }
 }

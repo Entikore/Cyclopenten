@@ -40,7 +40,7 @@ class GameViewModel @Inject constructor(
     private val _gameState = MutableStateFlow(GameScreenState())
     val gameState: StateFlow<GameScreenState> = _gameState.stateIn(
         viewModelScope,
-        SharingStarted.Eagerly,
+        SharingStarted.WhileSubscribed(5000),
         _gameState.value
     )
 
@@ -57,9 +57,8 @@ class GameViewModel @Inject constructor(
                 allElements.addAll(elementsResult.data.shuffled())
                 val element = allElements[0]
                 _gameState.update { state ->
-                    state.setupNewElement(element)
-                    state.setDifficulty(hardMode = argument)
-                    state
+                    state.copyWithNewElement(element)
+                        .copyWithDifficulty(hardMode = argument)
                 }
             }
             loadSaveGame()
@@ -90,8 +89,7 @@ class GameViewModel @Inject constructor(
 
     private fun updateGameState(element: ChemicalElement) {
         _gameState.update {
-            it.setupNewElement(element)
-            it
+            it.copyWithNewElement(element)
         }
         _showLoading.value = false
     }

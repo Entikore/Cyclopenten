@@ -95,8 +95,7 @@ class GameViewModelTest {
             category = firstElement.category,
             symbol = firstElement.symbol,
             answerOptions = firstElement.choices
-        )
-        expectedGameState.setDifficulty(false)
+        ).copyWithDifficulty(false)
         advanceUntilIdle()
         assertThat(viewModel.gameState.value).isEqualTo(expectedGameState)
     }
@@ -115,8 +114,7 @@ class GameViewModelTest {
             category = firstElement.category,
             symbol = firstElement.symbol,
             answerOptions = firstElement.choices
-        )
-        gameStateBeforeReset.setDifficulty(false)
+        ).copyWithDifficulty(false)
         advanceUntilIdle()
         // check current game state is as expected
         assertThat(viewModel.gameState.value).isEqualTo(gameStateBeforeReset)
@@ -147,7 +145,17 @@ class GameViewModelTest {
 
     @Test
     fun `evaluate correct answer difficulty hard`() = runTest {
-        viewModel.gameState.value.setDifficulty(hardMode = true)
+        `when`(savedStateHandle.get<Boolean>(de.entikore.cyclopenten.util.Constants.DIFFICULTY)).thenReturn(true)
+        viewModel = GameViewModel(
+            getChemicalElementsUseCaseTest,
+            getSaveGameUseCase,
+            saveSaveGameUseCase,
+            deleteSaveGameUseCase,
+            soundEffectPreferenceUseCase,
+            savedStateHandle
+        )
+        advanceUntilIdle()
+
         val currentGameState = viewModel.gameState.value
 
         val rightAnswer = currentGameState.element

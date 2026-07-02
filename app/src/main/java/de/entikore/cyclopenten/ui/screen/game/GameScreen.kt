@@ -16,9 +16,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.HeartBroken
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -169,14 +167,14 @@ fun GameStatus(uiColor: Color, lives: Int, lostLives: Int, score: Int) {
             )
             for (i in 1..lives) {
                 Icon(
-                    Icons.Rounded.Favorite,
+                    painterResource(R.drawable.favorite),
                     stringResource(R.string.content_description_lives_symbol),
                     tint = uiColor
                 )
             }
             for (i in 1..lostLives) {
                 Icon(
-                    Icons.Rounded.HeartBroken,
+                    painterResource(R.drawable.heart_broken),
                     stringResource(R.string.content_description_lost_lives_symbol),
                     tint = uiColor
                 )

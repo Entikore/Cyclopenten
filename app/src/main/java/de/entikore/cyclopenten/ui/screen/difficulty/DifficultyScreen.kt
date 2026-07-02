@@ -15,14 +15,13 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -97,7 +96,7 @@ fun DifficultyScreen(onClick: (Boolean) -> Unit) {
                 .testTag(Semantics.BTN_DIFFICULTY_HELP)
         ) {
             Icon(
-                Icons.Filled.QuestionMark,
+                painterResource(R.drawable.question_mark),
                 stringResource(R.string.txt_icon_content_description),
                 tint = colorTheme.value.dark,
                 modifier = Modifier

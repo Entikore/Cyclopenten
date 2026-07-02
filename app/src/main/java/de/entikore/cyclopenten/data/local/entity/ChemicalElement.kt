@@ -3,9 +3,9 @@ package de.entikore.cyclopenten.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 @Entity(tableName = "chemical_elements")
 data class ChemicalElement(
     @PrimaryKey

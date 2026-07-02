@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
@@ -7,10 +8,11 @@ plugins {
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.jetbrains.kotlin.plugin.compose)
     alias(libs.plugins.jlleitschuh.gradle.ktlint)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "de.entikore.cyclopenten"
@@ -38,8 +40,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
     buildFeatures {
         compose = true
@@ -68,10 +75,7 @@ ktlint {
 dependencies {
     // App dependencies
     implementation(libs.timber)
-    implementation(libs.moshi)
-    implementation(libs.moshi.kotlin)
-    ksp(libs.moshi.kotlin.codegen)
-    implementation(libs.gson)
+    implementation(libs.kotlinx.serialization.json)
 
     // Architecture Components
     implementation(libs.core.ktx)
@@ -94,7 +98,6 @@ dependencies {
     implementation(libs.runtime.livedata)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material)
-    implementation(libs.material.icons.extended)
     implementation(libs.navigation.compose)
 
     // Dependencies for local unit tests
