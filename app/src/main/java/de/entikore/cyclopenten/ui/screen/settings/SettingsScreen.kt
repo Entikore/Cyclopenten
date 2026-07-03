@@ -66,16 +66,17 @@ fun SettingScreen(
     updateMusicSetting: (musicOn: Boolean) -> Unit,
     updateSoundEffectSetting: (soundEffectOn: Boolean) -> Unit,
     clearScoreboard: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val openDialog = remember { mutableStateOf(false) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
         modifier =
-            Modifier
-                .fillMaxSize()
-                .background(color = screenState.colorTheme.primary)
-                .semantics { contentDescription = CD_SETTINGS_SCREEN },
+        modifier
+            .fillMaxSize()
+            .background(color = screenState.colorTheme.primary)
+            .semantics { contentDescription = CD_SETTINGS_SCREEN },
     ) {
         Title(
             title = stringResource(R.string.txt_settings),
@@ -98,13 +99,13 @@ fun SettingScreen(
                     updateMusicSetting(it)
                 },
                 colors =
-                    SwitchDefaults.colors(
-                        checkedThumbColor = screenState.colorTheme.accent,
-                        uncheckedThumbColor = screenState.colorTheme.dark,
-                    ),
+                SwitchDefaults.colors(
+                    checkedThumbColor = screenState.colorTheme.accent,
+                    uncheckedThumbColor = screenState.colorTheme.dark,
+                ),
                 modifier =
-                    Modifier
-                        .testTag(SWITCH_SETTINGS_MUSIC),
+                Modifier
+                    .testTag(SWITCH_SETTINGS_MUSIC),
             )
         }
 
@@ -124,10 +125,10 @@ fun SettingScreen(
                     updateSoundEffectSetting(it)
                 },
                 colors =
-                    SwitchDefaults.colors(
-                        checkedThumbColor = screenState.colorTheme.accent,
-                        uncheckedThumbColor = screenState.colorTheme.dark,
-                    ),
+                SwitchDefaults.colors(
+                    checkedThumbColor = screenState.colorTheme.accent,
+                    uncheckedThumbColor = screenState.colorTheme.dark,
+                ),
                 modifier = Modifier.testTag(SWITCH_SETTINGS_SOUND),
             )
         }
@@ -172,9 +173,9 @@ fun SettingScreen(
                 },
                 backgroundColor = screenState.colorTheme.primary,
                 modifier =
-                    Modifier
-                        .border(2.dp, screenState.colorTheme.accent)
-                        .testTag(ALERT_SETTINGS),
+                Modifier
+                    .border(2.dp, screenState.colorTheme.accent)
+                    .testTag(ALERT_SETTINGS),
             )
         }
         ColoredButton(

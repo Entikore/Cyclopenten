@@ -15,6 +15,7 @@ import de.entikore.cyclopenten.data.DefaultChemicalElementRepository
 import de.entikore.cyclopenten.data.local.ChemicalElementDao
 import de.entikore.cyclopenten.data.local.ChemicalElementDatabase
 import de.entikore.cyclopenten.data.local.entity.ChemicalElement
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,12 +26,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
+    @Suppress("InjectDispatcher")
+    @Provides
+    fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
+
     @Provides
     @Singleton
-    fun provideJson(): Json =
-        Json {
-            ignoreUnknownKeys = true
-        }
+    fun provideJson(): Json = Json {
+        ignoreUnknownKeys = true
+    }
 
     @Singleton
     @Provides
@@ -38,30 +42,30 @@ object DatabaseModule {
         @ApplicationContext context: Context,
         json: Json,
         daoProvider: Provider<ChemicalElementDao>,
-    ): ChemicalElementDatabase =
-        Room
-            .databaseBuilder(
-                context.applicationContext,
-                ChemicalElementDatabase::class.java,
-                "elements-db",
-            ).addCallback(
-                object : RoomDatabase.Callback() {
-                    override fun onOpen(db: SupportSQLiteDatabase) {
-                        super.onOpen(db)
-                        CoroutineScope(Dispatchers.IO).launch {
-                            val jsonString =
-                                context.resources
-                                    .openRawResource(R.raw.elements)
-                                    .bufferedReader()
-                                    .use { it.readText() }
-                            kotlin.runCatching {
-                                val elements = json.decodeFromString<List<ChemicalElement>>(jsonString)
-                                daoProvider.get().insertAll(elements)
-                            }
+        ioDispatcher: CoroutineDispatcher,
+    ): ChemicalElementDatabase = Room
+        .databaseBuilder(
+            context.applicationContext,
+            ChemicalElementDatabase::class.java,
+            "elements-db",
+        ).addCallback(
+            object : RoomDatabase.Callback() {
+                override fun onOpen(db: SupportSQLiteDatabase) {
+                    super.onOpen(db)
+                    CoroutineScope(ioDispatcher).launch {
+                        val jsonString =
+                            context.resources
+                                .openRawResource(R.raw.elements)
+                                .bufferedReader()
+                                .use { it.readText() }
+                        kotlin.runCatching {
+                            val elements = json.decodeFromString<List<ChemicalElement>>(jsonString)
+                            daoProvider.get().insertAll(elements)
                         }
                     }
-                },
-            ).build()
+                }
+            },
+        ).build()
 
     @Provides
     fun provideChemicalElementDao(database: ChemicalElementDatabase): ChemicalElementDao = database.chemicalElementDao()

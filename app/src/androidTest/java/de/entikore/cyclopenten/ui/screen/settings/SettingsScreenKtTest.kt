@@ -27,13 +27,13 @@ class SettingsScreenKtTest {
         composeTestRule.setContent {
             SettingScreen(
                 screenState =
-                    SettingsScreenState(
-                        UserPreferences(
-                            musicOn = false,
-                            soundEffectOn = false,
-                        ),
-                        colorTheme = randomTheme(),
+                SettingsScreenState(
+                    UserPreferences(
+                        musicOn = false,
+                        soundEffectOn = false,
                     ),
+                    colorTheme = randomTheme(),
+                ),
                 updateMusicSetting = {},
                 updateSoundEffectSetting = {},
                 clearScoreboard = {},
@@ -120,10 +120,10 @@ class SettingsScreenKtTest {
         composeTestRule.setContent {
             SettingScreen(
                 screenState =
-                    SettingsScreenState(
-                        UserPreferences(musicOn = false, soundEffectOn = false),
-                        colorTheme = randomTheme(),
-                    ),
+                SettingsScreenState(
+                    UserPreferences(musicOn = false, soundEffectOn = false),
+                    colorTheme = randomTheme(),
+                ),
                 updateMusicSetting = {},
                 updateSoundEffectSetting = {},
                 clearScoreboard = {},
@@ -144,10 +144,10 @@ class SettingsScreenKtTest {
         composeTestRule.setContent {
             SettingScreen(
                 screenState =
-                    SettingsScreenState(
-                        UserPreferences(musicOn = false, soundEffectOn = false),
-                        colorTheme = randomTheme(),
-                    ),
+                SettingsScreenState(
+                    UserPreferences(musicOn = false, soundEffectOn = false),
+                    colorTheme = randomTheme(),
+                ),
                 updateMusicSetting = {},
                 updateSoundEffectSetting = {},
                 clearScoreboard = {},
@@ -177,10 +177,10 @@ class SettingsScreenKtTest {
         composeTestRule.setContent {
             SettingScreen(
                 screenState =
-                    SettingsScreenState(
-                        UserPreferences(musicOn = false, soundEffectOn = false),
-                        colorTheme = randomTheme(),
-                    ),
+                SettingsScreenState(
+                    UserPreferences(musicOn = false, soundEffectOn = false),
+                    colorTheme = randomTheme(),
+                ),
                 updateMusicSetting = {},
                 updateSoundEffectSetting = {},
                 clearScoreboard = {},

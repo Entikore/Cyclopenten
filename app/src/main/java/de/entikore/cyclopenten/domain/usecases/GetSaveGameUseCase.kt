@@ -8,9 +8,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetSaveGameUseCase
-    @Inject
-    constructor(
-        private val repository: ChemicalElementRepository,
-    ) : BaseUseCaseWithOutParams<Flow<Result<SaveGame?>>> {
-        override suspend fun invoke(): Flow<Result<SaveGame?>> = repository.getSaveGame()
-    }
+@Inject
+constructor(private val repository: ChemicalElementRepository) :
+    BaseUseCaseWithOutParams<Flow<Result<SaveGame?>>> {
+    override fun invoke(): Flow<Result<SaveGame?>> = repository.getSaveGame()
+}

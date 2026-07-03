@@ -19,9 +19,7 @@ private const val USER_PREFERENCES = "user_preferences"
 object DataStoreModule {
     @Singleton
     @Provides
-    fun providePreferencesDataStore(
-        @ApplicationContext appContext: Context,
-    ): DataStore<Preferences> =
+    fun providePreferencesDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> =
         PreferenceDataStoreFactory.create(
             produceFile = { appContext.preferencesDataStoreFile(USER_PREFERENCES) },
         )

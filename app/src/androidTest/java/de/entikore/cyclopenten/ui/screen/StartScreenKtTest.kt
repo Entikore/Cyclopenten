@@ -16,19 +16,17 @@ class StartScreenKtTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private fun hasText(
-        @StringRes resId: Int,
-    ) = hasText(composeTestRule.activity.getString(resId))
+    private fun hasText(@StringRes resId: Int) = hasText(composeTestRule.activity.getString(resId))
 
     @Test
     fun startScreenWithoutSaveGame() {
         composeTestRule.setContent {
             StartScreen(
-                onNewGameClicked = { },
-                onContinueClicked = { },
-                onScoreClicked = { },
-                onSettingsClicked = { },
-                continueEnabled = false,
+                onNewGameClick = { },
+                onContinueClick = { },
+                onScoreClick = { },
+                onSettingsClick = { },
+                isContinueEnabled = false,
                 saveGameDifficulty = false,
             )
         }
@@ -42,11 +40,11 @@ class StartScreenKtTest {
     fun startScreenWithSaveGame() {
         composeTestRule.setContent {
             StartScreen(
-                onNewGameClicked = { },
-                onContinueClicked = { },
-                onScoreClicked = { },
-                onSettingsClicked = { },
-                continueEnabled = true,
+                onNewGameClick = { },
+                onContinueClick = { },
+                onScoreClick = { },
+                onSettingsClick = { },
+                isContinueEnabled = true,
                 saveGameDifficulty = false,
             )
         }

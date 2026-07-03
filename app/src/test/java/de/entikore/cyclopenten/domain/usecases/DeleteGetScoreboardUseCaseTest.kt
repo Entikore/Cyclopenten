@@ -24,17 +24,16 @@ class DeleteGetScoreboardUseCaseTest {
     }
 
     @Test
-    fun `delete scoreboard`() =
-        runTest {
-            repository.addScoreboardEntries(
-                GoodUnitTestData.testScore1,
-                GoodUnitTestData.testScore2,
-                GoodUnitTestData.testScore3,
-            )
-            assertThat((repository.getScoreboard().first() as Result.Success).data).isNotEmpty()
+    fun `delete scoreboard`() = runTest {
+        repository.addScoreboardEntries(
+            GoodUnitTestData.testScore1,
+            GoodUnitTestData.testScore2,
+            GoodUnitTestData.testScore3,
+        )
+        assertThat((repository.getScoreboard().first() as Result.Success).data).isNotEmpty()
 
-            deleteScoreboardUseCase()
+        deleteScoreboardUseCase()
 
-            assertThat((repository.getScoreboard().first() as Result.Success).data).isEmpty()
-        }
+        assertThat((repository.getScoreboard().first() as Result.Success).data).isEmpty()
+    }
 }

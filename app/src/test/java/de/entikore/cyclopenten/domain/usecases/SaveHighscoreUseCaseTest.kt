@@ -25,33 +25,32 @@ class SaveHighscoreUseCaseTest {
     }
 
     @Test
-    fun `save new highscore`() =
-        runTest {
-            val numberOfEntries = 20
-            val entries = GoodUnitTestData.getScoreboardEntries(numberOfEntries)
-            entries.forEach { repository.addScoreboardEntries(it) }
-            var scoreboard = (repository.getScoreboard().first() as Result.Success).data
-            assertThat(scoreboard.size).isEqualTo(numberOfEntries)
+    fun `save new highscore`() = runTest {
+        val numberOfEntries = 20
+        val entries = GoodUnitTestData.getScoreboardEntries(numberOfEntries)
+        entries.forEach { repository.addScoreboardEntries(it) }
+        var scoreboard = (repository.getScoreboard().first() as Result.Success).data
+        assertThat(scoreboard.size).isEqualTo(numberOfEntries)
 
-            val expectedEntry = NameScoreAndDifficulty("TestUser", 45, false)
-            assertThat(
-                scoreboard.firstOrNull {
-                    it.name == expectedEntry.name &&
-                        it.score == expectedEntry.score &&
-                        it.hardMode == expectedEntry.hardMode
-                },
-            ).isNull()
-            saveHighscoreUseCase(expectedEntry)
+        val expectedEntry = NameScoreAndDifficulty("TestUser", 45, false)
+        assertThat(
+            scoreboard.firstOrNull {
+                it.name == expectedEntry.name &&
+                    it.score == expectedEntry.score &&
+                    it.hardMode == expectedEntry.hardMode
+            },
+        ).isNull()
+        saveHighscoreUseCase(expectedEntry)
 
-            scoreboard = (repository.getScoreboard().first() as Result.Success).data
-            assertThat(scoreboard).isNotEmpty()
-            assertThat(scoreboard.size).isEqualTo(10)
-            assertThat(
-                scoreboard.firstOrNull {
-                    it.name == expectedEntry.name &&
-                        it.score == expectedEntry.score &&
-                        it.hardMode == expectedEntry.hardMode
-                },
-            ).isNotNull()
-        }
+        scoreboard = (repository.getScoreboard().first() as Result.Success).data
+        assertThat(scoreboard).isNotEmpty()
+        assertThat(scoreboard.size).isEqualTo(10)
+        assertThat(
+            scoreboard.firstOrNull {
+                it.name == expectedEntry.name &&
+                    it.score == expectedEntry.score &&
+                    it.hardMode == expectedEntry.hardMode
+            },
+        ).isNotNull()
+    }
 }

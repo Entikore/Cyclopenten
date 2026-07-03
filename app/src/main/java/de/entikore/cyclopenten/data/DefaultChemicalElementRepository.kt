@@ -1,5 +1,6 @@
 package de.entikore.cyclopenten.data
 
+import android.database.sqlite.SQLiteException
 import de.entikore.cyclopenten.data.local.ChemicalElementDao
 import de.entikore.cyclopenten.data.local.entity.ChemicalElement
 import de.entikore.cyclopenten.data.local.entity.Highscore
@@ -14,53 +15,53 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class DefaultChemicalElementRepository
-    @Inject
-    constructor(
-        private val dao: ChemicalElementDao,
-        private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    ) : ChemicalElementRepository {
-        override suspend fun getElements(): Result<List<ChemicalElement>> =
-            withContext(ioDispatcher) {
-                return@withContext try {
-                    Result.Success(dao.getAllElements())
-                } catch (e: Exception) {
-                    Timber.e("Error fetching elements from database.", e)
-                    Result.Error(e)
-                }
-            }
-
-        override suspend fun insertHighscore(nameScoreAndDifficulty: NameScoreAndDifficulty) {
-            withContext(ioDispatcher) {
-                dao.insertHighscore(nameScoreAndDifficulty)
-            }
+@Inject
+constructor(
+    private val dao: ChemicalElementDao,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+) : ChemicalElementRepository {
+    override suspend fun getElements(): Result<List<ChemicalElement>> = withContext(ioDispatcher) {
+        return@withContext try {
+            Result.Success(dao.getAllElements())
+        } catch (e: SQLiteException) {
+            Timber.e(e, "Error fetching elements from database.")
+            Result.Error(e)
         }
-
-        override suspend fun deleteScoreboard() {
-            withContext(ioDispatcher) {
-                dao.deleteScoreboard()
-            }
-        }
-
-        override suspend fun deleteOldHighscore() =
-            withContext(ioDispatcher) {
-                dao.deleteOldHighscore()
-            }
-
-        override fun getScoreboard(): Flow<Result<List<Highscore>>> =
-            dao.getAllHighscores(10).map {
-                Result.Success(it)
-            }
-
-        override fun getSaveGame(): Flow<Result<SaveGame?>> =
-            dao.hasSaveGame(SaveGame.SAVE_GAME_ID).map {
-                Result.Success(it)
-            }
-
-        override suspend fun saveGame(saveGame: SaveGame) {
-            withContext(ioDispatcher) {
-                dao.saveGame(saveGame)
-            }
-        }
-
-        override suspend fun deleteSaveGame() = withContext(ioDispatcher) { dao.deleteSaveGame() }
     }
+
+    override suspend fun insertHighscore(nameScoreAndDifficulty: NameScoreAndDifficulty) {
+        withContext(ioDispatcher) {
+            dao.insertHighscore(nameScoreAndDifficulty)
+        }
+    }
+
+    override suspend fun deleteScoreboard() {
+        withContext(ioDispatcher) {
+            dao.deleteScoreboard()
+        }
+    }
+
+    override suspend fun deleteOldHighscore() = withContext(ioDispatcher) {
+        dao.deleteOldHighscore()
+    }
+
+    override fun getScoreboard(): Flow<Result<List<Highscore>>> = dao.getAllHighscores(HIGHSCORE_LIMIT).map {
+        Result.Success(it)
+    }
+
+    override fun getSaveGame(): Flow<Result<SaveGame?>> = dao.hasSaveGame(SaveGame.SAVE_GAME_ID).map {
+        Result.Success(it)
+    }
+
+    override suspend fun saveGame(saveGame: SaveGame) {
+        withContext(ioDispatcher) {
+            dao.saveGame(saveGame)
+        }
+    }
+
+    override suspend fun deleteSaveGame() = withContext(ioDispatcher) { dao.deleteSaveGame() }
+
+    companion object {
+        const val HIGHSCORE_LIMIT = 10
+    }
+}

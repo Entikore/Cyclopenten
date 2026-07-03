@@ -46,9 +46,7 @@ class NavigationTest {
     @Inject
     lateinit var database: ChemicalElementDatabase
 
-    private fun hasTextStringResource(
-        @StringRes resId: Int,
-    ) = hasText(composeTestRule.activity.getString(resId))
+    private fun hasTextStringResource(@StringRes resId: Int) = hasText(composeTestRule.activity.getString(resId))
 
     @Before
     fun setup() {
@@ -100,39 +98,37 @@ class NavigationTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun navigateFromStartWithContinueEnabled() =
-        runTest {
-            // add save game to enable continue button
-            database.chemicalElementDao().saveGame(FakeTestData.saveGame)
+    fun navigateFromStartWithContinueEnabled() = runTest {
+        // add save game to enable continue button
+        database.chemicalElementDao().saveGame(FakeTestData.saveGame)
 
-            composeTestRule.apply {
-                onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
-                onNode(hasTextStringResource(R.string.btn_continue))
-                    .assertIsDisplayed()
-                    .assertIsEnabled()
-                    .performClick()
+        composeTestRule.apply {
+            onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
+            onNode(hasTextStringResource(R.string.btn_continue))
+                .assertIsDisplayed()
+                .assertIsEnabled()
+                .performClick()
 
-                onNodeWithContentDescription(CD_GAME_SCREEN).assertIsDisplayed()
+            onNodeWithContentDescription(CD_GAME_SCREEN).assertIsDisplayed()
 
-                activityRule.scenario.onActivity { activity ->
-                    activity.onBackPressedDispatcher.onBackPressed()
-                }
-                onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
+            activityRule.scenario.onActivity { activity ->
+                activity.onBackPressedDispatcher.onBackPressed()
             }
+            onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
         }
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun navigateFromStartWithContinueDisabled() =
-        runTest {
-            // delete save game to disable continue button
-            database.chemicalElementDao().deleteSaveGame()
+    fun navigateFromStartWithContinueDisabled() = runTest {
+        // delete save game to disable continue button
+        database.chemicalElementDao().deleteSaveGame()
 
-            composeTestRule.apply {
-                onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
-                onNode(hasTextStringResource(R.string.btn_continue)).assertIsDisplayed().assertIsNotEnabled()
-            }
+        composeTestRule.apply {
+            onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
+            onNode(hasTextStringResource(R.string.btn_continue)).assertIsDisplayed().assertIsNotEnabled()
         }
+    }
 
     @Test
     fun navigateFromStartToScoreboard() {

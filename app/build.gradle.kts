@@ -1,12 +1,11 @@
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.dagger.hilt.android)
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.jetbrains.kotlin.plugin.compose)
-    alias(libs.plugins.jlleitschuh.gradle.ktlint)
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -47,18 +46,19 @@ android {
     }
 }
 
-ktlint {
-    android.set(true)
-    ignoreFailures.set(false)
-    reporters {
-        reporter(ReporterType.PLAIN)
-        reporter(ReporterType.CHECKSTYLE)
-        reporter(ReporterType.SARIF)
-    }
+detekt {
+    config.setFrom("$rootDir/config/detekt.yml")
+    buildUponDefaultConfig = true
+    allRules = false
+    parallel = true
+    autoCorrect = true
 }
 
+
 dependencies {
-    ktlintRuleset(libs.ktlint.compose)
+    detektPlugins(libs.detekt.formatting)
+    detektPlugins(libs.detekt.compose)
+
     // App dependencies
     implementation(libs.timber)
     implementation(libs.kotlinx.serialization.json)

@@ -66,7 +66,7 @@ class FakeRepository : ChemicalElementRepository {
 
     override suspend fun insertHighscore(nameScoreAndDifficulty: NameScoreAndDifficulty) {
         if (shouldReturnError) {
-            throw Exception(EXPECTED_EXCEPTION)
+            throw TestException(EXPECTED_EXCEPTION)
         }
         val newScore =
             Highscore(
@@ -97,14 +97,14 @@ class FakeRepository : ChemicalElementRepository {
 
     override suspend fun saveGame(saveGame: SaveGame) {
         if (shouldReturnError) {
-            throw Exception(EXPECTED_EXCEPTION)
+            throw TestException(EXPECTED_EXCEPTION)
         }
         _saveGame.value = saveGame
     }
 
     override suspend fun deleteSaveGame() {
         if (shouldReturnError) {
-            throw Exception(EXPECTED_EXCEPTION)
+            throw TestException(EXPECTED_EXCEPTION)
         }
         _saveGame.value = null
     }

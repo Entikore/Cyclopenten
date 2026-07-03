@@ -14,8 +14,4 @@ data class Highscore(
     val hardMode: Boolean,
 )
 
-data class NameScoreAndDifficulty(
-    val name: String,
-    val score: Int,
-    val hardMode: Boolean,
-)
+data class NameScoreAndDifficulty(val name: String, val score: Int, val hardMode: Boolean)

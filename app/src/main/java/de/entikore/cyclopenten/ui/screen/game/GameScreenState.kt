@@ -17,22 +17,20 @@ data class GameScreenState(
     val gameOver: Boolean = false,
     val hardDifficulty: Boolean = false,
 ) {
-    fun copyWithDifficulty(hardMode: Boolean): GameScreenState =
-        copy(
-            hardDifficulty = hardMode,
-            lives = if (hardMode) 4 else 3,
-        )
+    fun copyWithDifficulty(hardMode: Boolean): GameScreenState = copy(
+        hardDifficulty = hardMode,
+        lives = if (hardMode) 4 else 3,
+    )
 
-    fun copyWithNewElement(newElement: ChemicalElement): GameScreenState =
-        copy(
-            atomicNumber = newElement.atomicNumber,
-            element = newElement.name,
-            category = newElement.category,
-            colorTheme = ColorTheme(newElement.category),
-            symbol = newElement.symbol,
-            answerOptions = newElement.choices,
-            hidden = true,
-        )
+    fun copyWithNewElement(newElement: ChemicalElement): GameScreenState = copy(
+        atomicNumber = newElement.atomicNumber,
+        element = newElement.name,
+        category = newElement.category,
+        colorTheme = ColorTheme(newElement.category),
+        symbol = newElement.symbol,
+        answerOptions = newElement.choices,
+        hidden = true,
+    )
 
     fun hiddenElementName() = if (hidden) "??????" else element
 

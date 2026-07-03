@@ -21,10 +21,7 @@ private val LightColorPalette =
     )
 
 @Composable
-fun CyclopentenTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit,
-) {
+fun CyclopentenTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors =
         if (darkTheme) {
             DarkColorPalette

@@ -14,50 +14,45 @@ import java.io.IOException
 import javax.inject.Inject
 
 class UserPreferencesRepository
-    @Inject
-    constructor(
-        private val dataStore: DataStore<Preferences>,
-    ) {
-        private object PreferencesKeys {
-            val MUSIC_ON = booleanPreferencesKey("music_on")
-            val SOUND_EFFECT_ON = booleanPreferencesKey("sound_effect_on")
-        }
+@Inject
+constructor(private val dataStore: DataStore<Preferences>) {
+    private object PreferencesKeys {
+        val MUSIC_ON = booleanPreferencesKey("music_on")
+        val SOUND_EFFECT_ON = booleanPreferencesKey("sound_effect_on")
+    }
 
-        val userPreferencesFlow: Flow<UserPreferences> =
-            dataStore.data
-                .catch { exception ->
-                    if (exception is IOException) {
-                        Timber.e("Error reading preferences.", exception)
-                        emit(emptyPreferences())
-                    } else {
-                        throw exception
-                    }
-                }.map { preferences ->
-                    mapUserPreferences(preferences)
+    val userPreferencesFlow: Flow<UserPreferences> =
+        dataStore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    Timber.e(exception, "Error reading preferences.")
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
                 }
-
-        suspend fun fetchInitialPreferences() = mapUserPreferences(dataStore.data.first().toPreferences())
-
-        suspend fun updateMusicSetting(musicOn: Boolean) {
-            dataStore.edit { preferences ->
-                preferences[PreferencesKeys.MUSIC_ON] = musicOn
+            }.map { preferences ->
+                mapUserPreferences(preferences)
             }
-        }
 
-        suspend fun updateSoundEffectSetting(soundEffectOn: Boolean) {
-            dataStore.edit { preferences ->
-                preferences[PreferencesKeys.SOUND_EFFECT_ON] = soundEffectOn
-            }
-        }
+    suspend fun fetchInitialPreferences() = mapUserPreferences(dataStore.data.first().toPreferences())
 
-        private fun mapUserPreferences(preferences: Preferences): UserPreferences {
-            val musicOn = preferences[PreferencesKeys.MUSIC_ON] ?: true
-            val soundEffectOn = preferences[PreferencesKeys.SOUND_EFFECT_ON] ?: true
-            return UserPreferences(musicOn, soundEffectOn)
+    suspend fun updateMusicSetting(musicOn: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.MUSIC_ON] = musicOn
         }
     }
 
-data class UserPreferences(
-    val musicOn: Boolean,
-    val soundEffectOn: Boolean,
-)
+    suspend fun updateSoundEffectSetting(soundEffectOn: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.SOUND_EFFECT_ON] = soundEffectOn
+        }
+    }
+
+    private fun mapUserPreferences(preferences: Preferences): UserPreferences {
+        val musicOn = preferences[PreferencesKeys.MUSIC_ON] ?: true
+        val soundEffectOn = preferences[PreferencesKeys.SOUND_EFFECT_ON] ?: true
+        return UserPreferences(musicOn, soundEffectOn)
+    }
+}
+
+data class UserPreferences(val musicOn: Boolean, val soundEffectOn: Boolean)

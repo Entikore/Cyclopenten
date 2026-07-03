@@ -8,9 +8,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetScoreboardUseCase
-    @Inject
-    constructor(
-        private val repository: ChemicalElementRepository,
-    ) : BaseUseCaseWithOutParams<Flow<Result<List<Highscore>>>> {
-        override suspend fun invoke(): Flow<Result<List<Highscore>>> = repository.getScoreboard()
-    }
+@Inject
+constructor(private val repository: ChemicalElementRepository) :
+    BaseUseCaseWithOutParams<Flow<Result<List<Highscore>>>> {
+    override fun invoke(): Flow<Result<List<Highscore>>> = repository.getScoreboard()
+}

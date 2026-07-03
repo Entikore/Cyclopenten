@@ -16,12 +16,12 @@ object FakeTestData {
             symbol = "H",
             name = "Hydrogen",
             choices =
-                listOf(
-                    "Hydrogen",
-                    "Hafnium",
-                    "Helium",
-                    "Holmium",
-                ),
+            listOf(
+                "Hydrogen",
+                "Hafnium",
+                "Helium",
+                "Holmium",
+            ),
         )
 
     val testChemicalElement2 =
@@ -33,12 +33,12 @@ object FakeTestData {
             symbol = "He",
             name = "Helium",
             choices =
-                listOf(
-                    "Helium",
-                    "Helix",
-                    "Hefnium",
-                    "Hesitanium",
-                ),
+            listOf(
+                "Helium",
+                "Helix",
+                "Hefnium",
+                "Hesitanium",
+            ),
         )
 
     val testChemicalElement3 =
@@ -50,12 +50,12 @@ object FakeTestData {
             symbol = "Li",
             name = "Lithium",
             choices =
-                listOf(
-                    "Lithium",
-                    "Lawrencium",
-                    "Lithiotanite",
-                    "Libertius",
-                ),
+            listOf(
+                "Lithium",
+                "Lawrencium",
+                "Lithiotanite",
+                "Libertius",
+            ),
         )
 
     val testListOfChemicalElements =

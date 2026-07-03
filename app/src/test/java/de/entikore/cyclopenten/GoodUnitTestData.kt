@@ -19,12 +19,12 @@ object GoodUnitTestData {
             symbol = "H",
             name = "Hydrogen",
             choices =
-                listOf(
-                    "Hydrogen",
-                    "Hafnium",
-                    "Helium",
-                    "Holmium",
-                ),
+            listOf(
+                "Hydrogen",
+                "Hafnium",
+                "Helium",
+                "Holmium",
+            ),
         )
 
     val testChemicalElement2 =
@@ -36,12 +36,12 @@ object GoodUnitTestData {
             symbol = "He",
             name = "Helium",
             choices =
-                listOf(
-                    "Helium",
-                    "Helix",
-                    "Hefnium",
-                    "Hesitanium",
-                ),
+            listOf(
+                "Helium",
+                "Helix",
+                "Hefnium",
+                "Hesitanium",
+            ),
         )
 
     val testChemicalElement3 =
@@ -53,12 +53,12 @@ object GoodUnitTestData {
             symbol = "Li",
             name = "Lithium",
             choices =
-                listOf(
-                    "Lithium",
-                    "Lawrencium",
-                    "Lithiotanite",
-                    "Libertius",
-                ),
+            listOf(
+                "Lithium",
+                "Lawrencium",
+                "Lithiotanite",
+                "Libertius",
+            ),
         )
 
     val testListOfChemicalElements = listOf(testChemicalElement1, testChemicalElement2)

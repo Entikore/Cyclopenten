@@ -1,6 +1,8 @@
 package de.entikore.cyclopenten.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +17,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -44,10 +47,10 @@ fun ColoredButton(
         shape = RoundedCornerShape(25),
         border = borderStroke,
         colors =
-            ButtonDefaults.buttonColors(
-                backgroundColor = color,
-                disabledBackgroundColor = disabledColor,
-            ),
+        ButtonDefaults.buttonColors(
+            backgroundColor = color,
+            disabledBackgroundColor = disabledColor,
+        ),
         modifier = modifier,
     ) {
         Text(
@@ -75,39 +78,44 @@ fun Title(
 }
 
 @Composable
-fun ColoredTextInput(
-    colorTheme: ColorTheme,
-    onClick: (String) -> Unit,
-) {
+fun ColoredTextInput(colorTheme: ColorTheme, onClick: (String) -> Unit, modifier: Modifier = Modifier) {
     val textState = remember { mutableStateOf(TextFieldValue()) }
     val focusManager = LocalFocusManager.current
-    TextField(
-        value = textState.value,
-        label = { Text(stringResource(R.string.txt_enter_name), color = colorTheme.accent) },
-        onValueChange = {
-            textState.value = it
-        },
-        singleLine = true,
-        colors =
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier =
+        modifier
+            .fillMaxWidth(),
+    ) {
+        TextField(
+            value = textState.value,
+            label = { Text(stringResource(R.string.txt_enter_name), color = colorTheme.accent) },
+            onValueChange = {
+                textState.value = it
+            },
+            singleLine = true,
+            colors =
             TextFieldDefaults.textFieldColors(
                 textColor = colorTheme.dark,
                 backgroundColor = colorTheme.accent,
                 cursorColor = colorTheme.dark,
                 focusedIndicatorColor = colorTheme.dark,
             ),
-        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-        modifier = Modifier.fillMaxWidth(),
-    )
-    ColoredButton(
-        buttonText = stringResource(R.string.btn_ok),
-        textColor = colorTheme.dark,
-        onClick = {
-            onClick(textState.value.text)
-            textState.value = TextFieldValue("")
-        },
-        color = colorTheme.accent,
-        borderStroke = BorderStroke(2.dp, colorTheme.dark),
-        modifier = Modifier.fillMaxWidth(),
-    )
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+            modifier = Modifier.fillMaxWidth(),
+        )
+        ColoredButton(
+            buttonText = stringResource(R.string.btn_ok),
+            textColor = colorTheme.dark,
+            onClick = {
+                onClick(textState.value.text)
+                textState.value = TextFieldValue("")
+            },
+            color = colorTheme.accent,
+            borderStroke = BorderStroke(2.dp, colorTheme.dark),
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
 }

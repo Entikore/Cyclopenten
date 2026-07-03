@@ -63,7 +63,7 @@ fun GameScreen(
         onGameOver(finalScore, winner, difficulty)
     }
 
-    val correctAnswerClick: (String) -> Unit = { it ->
+    val correctAnswerClick: (String) -> Unit = {
         onButtonClick(it)
         if (soundEffectOn) {
             correctAnswer.start()
@@ -78,25 +78,32 @@ fun GameScreen(
     }
 
     val showLoading by viewModel.showLoading.collectAsState()
-    AnimatedGameScreen(gameState, showLoading, hardDifficulty, correctAnswerClick, wrongAnswerClick)
+    AnimatedGameScreen(
+        gameState,
+        showLoading,
+        correctAnswerClick,
+        wrongAnswerClick,
+        hardDifficulty = hardDifficulty,
+    )
 }
 
 @Composable
 fun AnimatedGameScreen(
     gameState: GameScreenState,
     showLoading: Boolean,
-    hardDifficulty: Boolean = false,
     correctAnswerClick: (String) -> Unit,
     wrongAnswerClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    hardDifficulty: Boolean = false,
 ) {
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier =
-            Modifier
-                .fillMaxSize()
-                .background(gameState.colorTheme.primary)
-                .semantics { contentDescription = CD_GAME_SCREEN },
+        modifier
+            .fillMaxSize()
+            .background(gameState.colorTheme.primary)
+            .semantics { contentDescription = CD_GAME_SCREEN },
     ) {
         Title(
             title = stringResource(R.string.txt_game_title),
@@ -121,9 +128,9 @@ fun AnimatedGameScreen(
 
         LinearProgressIndicator(
             modifier =
-                Modifier
-                    .padding(8.dp)
-                    .alpha(if (showLoading) 1f else 0f),
+            Modifier
+                .padding(8.dp)
+                .alpha(if (showLoading) 1f else 0f),
             color = gameState.colorTheme.dark,
             backgroundColor = gameState.colorTheme.accent,
         )
@@ -150,18 +157,13 @@ fun AnimatedGameScreen(
 }
 
 @Composable
-fun GameStatus(
-    uiColor: Color,
-    lives: Int,
-    lostLives: Int,
-    score: Int,
-) {
+fun GameStatus(uiColor: Color, lives: Int, lostLives: Int, score: Int, modifier: Modifier = Modifier) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp, bottom = 24.dp),
+        modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp, bottom = 24.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -173,14 +175,14 @@ fun GameStatus(
                 fontSize = MaterialTheme.typography.h5.fontSize,
                 modifier = Modifier.padding(start = 32.dp, end = 4.dp),
             )
-            for (i in 1..lives) {
+            repeat(lives) {
                 Icon(
                     painterResource(R.drawable.favorite),
                     stringResource(R.string.content_description_lives_symbol),
                     tint = uiColor,
                 )
             }
-            for (i in 1..lostLives) {
+            repeat(lostLives) {
                 Icon(
                     painterResource(R.drawable.heart_broken),
                     stringResource(R.string.content_description_lost_lives_symbol),
@@ -205,29 +207,30 @@ fun ElementCard(
     atomicNumber: String,
     symbol: String,
     answer: String,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 64.dp)
-                .aspectRatio(1f)
-                .background(backgroundColor, RoundedCornerShape(8.dp))
-                .border(
-                    width = 8.dp,
-                    color = borderColor,
-                    shape = RoundedCornerShape(8.dp),
-                ),
+        modifier
+            .fillMaxWidth()
+            .padding(horizontal = 64.dp)
+            .aspectRatio(1f)
+            .background(backgroundColor, RoundedCornerShape(8.dp))
+            .border(
+                width = 8.dp,
+                color = borderColor,
+                shape = RoundedCornerShape(8.dp),
+            ),
     ) {
         Text(
             text = atomicNumber,
             color = textColor,
             fontSize = MaterialTheme.typography.h4.fontSize,
             modifier =
-                Modifier
-                    .align(Alignment.Start)
-                    .padding(start = 16.dp, top = 16.dp),
+            Modifier
+                .align(Alignment.Start)
+                .padding(start = 16.dp, top = 16.dp),
         )
         Text(
             text = symbol,
@@ -240,9 +243,9 @@ fun ElementCard(
             fontSize = MaterialTheme.typography.h5.fontSize,
             color = textColor,
             modifier =
-                Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(vertical = 16.dp),
+            Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(vertical = 16.dp),
         )
     }
 }
@@ -257,18 +260,14 @@ fun AnswerInput(
     textColor: Color,
     correctAnswerClick: (guess: String) -> Unit,
     wrongAnswerClick: (guess: String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val answerOptions =
         remember(choices) {
             choices.shuffled()
         }
 
-    Column(verticalArrangement = Arrangement.Center, modifier = Modifier.padding(16.dp)) {
-        val modifier =
-            Modifier
-                .fillMaxWidth(fraction = 0.5f)
-                .padding(horizontal = 4.dp)
-                .weight(1f)
+    Column(verticalArrangement = Arrangement.Center, modifier = modifier.padding(16.dp)) {
         ButtonRow(
             correctAnswer,
             answerOptions.subList(0, 2),
@@ -278,7 +277,6 @@ fun AnswerInput(
             textColor,
             correctAnswerClick,
             wrongAnswerClick,
-            modifier,
         )
         ButtonRow(
             correctAnswer,
@@ -289,7 +287,6 @@ fun AnswerInput(
             textColor,
             correctAnswerClick,
             wrongAnswerClick,
-            modifier,
         )
     }
 }
@@ -300,21 +297,16 @@ fun AnswerInputHard(
     colorTheme: ColorTheme,
     correctAnswerClick: (guess: String) -> Unit,
     wrongAnswerClick: (guess: String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(24.dp),
-    ) {
-        val onClick: (String) -> Unit = { answer ->
-            if (answer.lowercase() == correctAnswer.lowercase()) {
-                correctAnswerClick(answer)
-            } else {
-                wrongAnswerClick(answer)
-            }
+    val onClick: (String) -> Unit = { answer ->
+        if (answer.lowercase() == correctAnswer.lowercase()) {
+            correctAnswerClick(answer)
+        } else {
+            wrongAnswerClick(answer)
         }
-        ColoredTextInput(colorTheme = colorTheme, onClick = onClick)
     }
+    ColoredTextInput(colorTheme = colorTheme, onClick = onClick, modifier = modifier.padding(24.dp))
 }
 
 @Composable
@@ -331,35 +323,40 @@ fun ButtonRow(
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
+        val buttonModifier =
+            Modifier
+                .fillMaxWidth(fraction = 0.5f)
+                .padding(horizontal = 4.dp)
+                .weight(1f)
         ColoredButton(
             buttonText = choices[0],
             enabled = enabled,
             textColor = textColor,
             onClick =
-                if (choices[0] == correctAnswer) {
-                    { onButtonClick(choices[0]) }
-                } else {
-                    { wrongAnswerClick(choices[0]) }
-                },
+            if (choices[0] == correctAnswer) {
+                { onButtonClick(choices[0]) }
+            } else {
+                { wrongAnswerClick(choices[0]) }
+            },
             color = backgroundColor,
             borderStroke = BorderStroke(2.dp, borderColor),
-            modifier = modifier,
+            modifier = buttonModifier,
         )
         ColoredButton(
             buttonText = choices[1],
             enabled = enabled,
             textColor = textColor,
             onClick =
-                if (choices[1] == correctAnswer) {
-                    { onButtonClick(choices[1]) }
-                } else {
-                    { wrongAnswerClick(choices[1]) }
-                },
+            if (choices[1] == correctAnswer) {
+                { onButtonClick(choices[1]) }
+            } else {
+                { wrongAnswerClick(choices[1]) }
+            },
             color = backgroundColor,
             borderStroke = BorderStroke(2.dp, borderColor),
-            modifier = modifier,
+            modifier = buttonModifier,
         )
     }
 }

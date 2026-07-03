@@ -22,7 +22,7 @@ class DifficultyScreenKtTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            DifficultyScreen {}
+            DifficultyScreen(onClick = {})
         }
     }
 

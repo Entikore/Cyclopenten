@@ -30,45 +30,42 @@ class GetChemicalElementsUseCaseTest {
     }
 
     @Test
-    fun `empty chemical elements list`() =
-        runTest {
-            val tasks = getChemicalElementsUseCase()
-            assertTrue(tasks is Result.Success)
-            val resultData = (tasks as Result.Success).data
-            assertTrue(resultData.isEmpty())
-        }
+    fun `empty chemical elements list`() = runTest {
+        val tasks = getChemicalElementsUseCase()
+        assertTrue(tasks is Result.Success)
+        val resultData = (tasks as Result.Success).data
+        assertTrue(resultData.isEmpty())
+    }
 
     @Test
-    fun `chemical elements list success`() =
-        runTest {
-            chemicalRepository.addElements(
-                GoodUnitTestData.testChemicalElement1,
-                GoodUnitTestData.testChemicalElement2,
-                GoodUnitTestData.testChemicalElement3,
-            )
+    fun `chemical elements list success`() = runTest {
+        chemicalRepository.addElements(
+            GoodUnitTestData.testChemicalElement1,
+            GoodUnitTestData.testChemicalElement2,
+            GoodUnitTestData.testChemicalElement3,
+        )
 
-            val tasks = getChemicalElementsUseCase()
-            assertTrue(tasks is Result.Success)
-            val resultData = (tasks as Result.Success).data
-            assertEquals(3, resultData.size)
-            assertTrue(
-                resultData.containsAll(
-                    listOf(
-                        GoodUnitTestData.testChemicalElement1,
-                        GoodUnitTestData.testChemicalElement2,
-                        GoodUnitTestData.testChemicalElement3,
-                    ),
+        val tasks = getChemicalElementsUseCase()
+        assertTrue(tasks is Result.Success)
+        val resultData = (tasks as Result.Success).data
+        assertEquals(3, resultData.size)
+        assertTrue(
+            resultData.containsAll(
+                listOf(
+                    GoodUnitTestData.testChemicalElement1,
+                    GoodUnitTestData.testChemicalElement2,
+                    GoodUnitTestData.testChemicalElement3,
                 ),
-            )
-        }
+            ),
+        )
+    }
 
     @Test
-    fun `chemical elements list error`() =
-        runTest {
-            chemicalRepository.setReturnError(true)
-            val tasks = getChemicalElementsUseCase()
-            assertTrue(tasks is Result.Error)
-            val exception = (tasks as Result.Error).exception
-            assertEquals(FakeRepository.EXPECTED_EXCEPTION, exception.message)
-        }
+    fun `chemical elements list error`() = runTest {
+        chemicalRepository.setReturnError(true)
+        val tasks = getChemicalElementsUseCase()
+        assertTrue(tasks is Result.Error)
+        val exception = (tasks as Result.Error).exception
+        assertEquals(FakeRepository.EXPECTED_EXCEPTION, exception.message)
+    }
 }

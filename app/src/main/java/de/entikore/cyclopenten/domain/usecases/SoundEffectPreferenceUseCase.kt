@@ -7,9 +7,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class SoundEffectPreferenceUseCase
-    @Inject
-    constructor(
-        private val repository: UserPreferencesRepository,
-    ) : BaseUseCaseWithOutParams<Flow<UserPreferences>> {
-        override suspend fun invoke(): Flow<UserPreferences> = repository.userPreferencesFlow
-    }
+@Inject
+constructor(private val repository: UserPreferencesRepository) :
+    BaseUseCaseWithOutParams<Flow<UserPreferences>> {
+    override fun invoke(): Flow<UserPreferences> = repository.userPreferencesFlow
+}

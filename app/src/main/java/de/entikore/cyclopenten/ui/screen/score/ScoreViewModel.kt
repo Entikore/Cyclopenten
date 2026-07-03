@@ -16,46 +16,46 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScoreViewModel
-    @Inject
-    constructor(
-        private val getScoreboardUseCase: GetScoreboardUseCase,
-        private val newHighScoreUseCaseSave: SaveHighscoreUseCase,
-    ) : ViewModel() {
-        private val _scoreBoard = MutableStateFlow<List<Highscore>>(emptyList())
-        val scoreBoard: StateFlow<List<Highscore>> = _scoreBoard
+@Inject
+constructor(
+    private val getScoreboardUseCase: GetScoreboardUseCase,
+    private val newHighScoreUseCaseSave: SaveHighscoreUseCase,
+) : ViewModel() {
+    private val _scoreBoard = MutableStateFlow<List<Highscore>>(emptyList())
+    val scoreBoard: StateFlow<List<Highscore>> = _scoreBoard
 
-        private val _showNameField = MutableStateFlow(true)
-        val showNameField: StateFlow<Boolean> = _showNameField
+    private val _showNameField = MutableStateFlow(true)
+    val showNameField: StateFlow<Boolean> = _showNameField
 
-        val colorTheme = MutableStateFlow(randomTheme())
+    val colorTheme = MutableStateFlow(randomTheme())
 
-        init {
+    init {
+        viewModelScope.launch {
+            getScoreboardUseCase.invoke().collect {
+                if (it is Result.Success) {
+                    _scoreBoard.value = it.data
+                }
+            }
+        }
+    }
+
+    fun saveScore(name: String, score: Int, hardMode: Boolean) {
+        if (_scoreBoard.value.size < HIGHSCORE_ENTRY_COUNT ||
+            _scoreBoard.value.any { it.score < score }
+        ) {
             viewModelScope.launch {
+                newHighScoreUseCaseSave(NameScoreAndDifficulty(name, score, hardMode))
                 getScoreboardUseCase.invoke().collect {
                     if (it is Result.Success) {
                         _scoreBoard.value = it.data
                     }
                 }
             }
-        }
-
-        fun saveScore(
-            name: String,
-            score: Int,
-            hardMode: Boolean,
-        ) {
-            if (_scoreBoard.value.size < 10 ||
-                _scoreBoard.value.any { it.score < score }
-            ) {
-                viewModelScope.launch {
-                    newHighScoreUseCaseSave(NameScoreAndDifficulty(name, score, hardMode))
-                    getScoreboardUseCase.invoke().collect {
-                        if (it is Result.Success) {
-                            _scoreBoard.value = it.data
-                        }
-                    }
-                }
-                _showNameField.value = false
-            }
+            _showNameField.value = false
         }
     }
+
+    companion object {
+        private const val HIGHSCORE_ENTRY_COUNT = 10
+    }
+}

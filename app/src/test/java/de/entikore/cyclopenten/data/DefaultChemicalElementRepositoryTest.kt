@@ -55,154 +55,144 @@ class DefaultChemicalElementRepositoryTest {
     }
 
     @Test
-    fun `getElements empty repository`() =
-        runTest {
-            assertThat(chemicalRepository.getElements() is Result.Success).isTrue()
-            assertThat((chemicalRepository.getElements() as Result.Success).data).isEmpty()
-        }
+    fun `getElements empty repository`() = runTest {
+        assertThat(chemicalRepository.getElements() is Result.Success).isTrue()
+        assertThat((chemicalRepository.getElements() as Result.Success).data).isEmpty()
+    }
 
     @Test
-    fun `getElements non empty repository`() =
-        runTest {
-            database.chemicalElementDao().insert(GoodUnitTestData.testChemicalElement1)
+    fun `getElements non empty repository`() = runTest {
+        database.chemicalElementDao().insert(GoodUnitTestData.testChemicalElement1)
 
-            val resultSuccess = chemicalRepository.getElements() as Result.Success
+        val resultSuccess = chemicalRepository.getElements() as Result.Success
 
-            assertThat(resultSuccess.data.size).isEqualTo(1)
-            assertThat(resultSuccess.data[0]).isEqualTo(GoodUnitTestData.testChemicalElement1)
-        }
-
-    @Test
-    fun `getElements multiple elements in repository`() =
-        runTest {
-            database.chemicalElementDao().insertAll(GoodUnitTestData.testListOfChemicalElements)
-
-            val resultSuccess = chemicalRepository.getElements() as Result.Success
-
-            assertThat(resultSuccess.data.size)
-                .isEqualTo(GoodUnitTestData.testListOfChemicalElements.size)
-            assertThat(resultSuccess.data).isEqualTo(GoodUnitTestData.testListOfChemicalElements)
-        }
+        assertThat(resultSuccess.data.size).isEqualTo(1)
+        assertThat(resultSuccess.data[0]).isEqualTo(GoodUnitTestData.testChemicalElement1)
+    }
 
     @Test
-    fun `insertHighscore in repository`() =
-        runTest {
-            val scoreBoard: Result<List<Highscore>> = chemicalRepository.getScoreboard().first()
-            assertThat(scoreBoard is Result.Success).isTrue()
-            assertThat((scoreBoard as Result.Success).data).isEmpty()
+    fun `getElements multiple elements in repository`() = runTest {
+        database.chemicalElementDao().insertAll(GoodUnitTestData.testListOfChemicalElements)
 
-            chemicalRepository.insertHighscore(GoodUnitTestData.testNameScoreAndDifficulty)
+        val resultSuccess = chemicalRepository.getElements() as Result.Success
 
-            val scoreBoardAfterInsert: Result<List<Highscore>> =
-                chemicalRepository.getScoreboard().first()
-            assertThat(scoreBoardAfterInsert is Result.Success).isTrue()
-            val data = (scoreBoardAfterInsert as Result.Success).data
-            assertThat(data).isNotEmpty()
-            assertThat(data[0].name).isEqualTo(GoodUnitTestData.testNameScoreAndDifficulty.name)
-            assertThat(data[0].score).isEqualTo(GoodUnitTestData.testNameScoreAndDifficulty.score)
-            assertThat(data[0].hardMode).isEqualTo(GoodUnitTestData.testNameScoreAndDifficulty.hardMode)
-        }
+        assertThat(resultSuccess.data.size)
+            .isEqualTo(GoodUnitTestData.testListOfChemicalElements.size)
+        assertThat(resultSuccess.data).isEqualTo(GoodUnitTestData.testListOfChemicalElements)
+    }
 
     @Test
-    fun `deleteScoreboard from repository`() =
-        runTest {
-            chemicalRepository.insertHighscore(GoodUnitTestData.testNameScoreAndDifficulty)
+    fun `insertHighscore in repository`() = runTest {
+        val scoreBoard: Result<List<Highscore>> = chemicalRepository.getScoreboard().first()
+        assertThat(scoreBoard is Result.Success).isTrue()
+        assertThat((scoreBoard as Result.Success).data).isEmpty()
 
-            val scoreBoard: Result<List<Highscore>> = chemicalRepository.getScoreboard().first()
-            assertThat(scoreBoard is Result.Success).isTrue()
-            assertThat((scoreBoard as Result.Success).data).isNotEmpty()
+        chemicalRepository.insertHighscore(GoodUnitTestData.testNameScoreAndDifficulty)
 
-            chemicalRepository.deleteScoreboard()
-
-            val scoreBoardAfterDelete: Result<List<Highscore>> =
-                chemicalRepository.getScoreboard().first()
-            assertThat(scoreBoardAfterDelete is Result.Success).isTrue()
-            assertThat((scoreBoardAfterDelete as Result.Success).data).isEmpty()
-        }
-
-    @Test
-    fun `deleteOldHighscore to just have 10 entries`() =
-        runTest {
-            for (i in 1..11) {
-                database
-                    .chemicalElementDao()
-                    .insertHighscore(NameScoreAndDifficulty("Tester$i", i, false))
-            }
-            val scoreBoard: List<Highscore> =
-                database.chemicalElementDao().getAllHighscores(100).first()
-            assertThat(scoreBoard.size).isGreaterThan(10)
-
-            chemicalRepository.deleteOldHighscore()
-            advanceUntilIdle()
-            val scoreBoardAfterDelete: List<Highscore> =
-                database.chemicalElementDao().getAllHighscores(100).first()
-            assertThat(scoreBoardAfterDelete.size).isEqualTo(10)
-        }
+        val scoreBoardAfterInsert: Result<List<Highscore>> =
+            chemicalRepository.getScoreboard().first()
+        assertThat(scoreBoardAfterInsert is Result.Success).isTrue()
+        val data = (scoreBoardAfterInsert as Result.Success).data
+        assertThat(data).isNotEmpty()
+        assertThat(data[0].name).isEqualTo(GoodUnitTestData.testNameScoreAndDifficulty.name)
+        assertThat(data[0].score).isEqualTo(GoodUnitTestData.testNameScoreAndDifficulty.score)
+        assertThat(data[0].hardMode).isEqualTo(GoodUnitTestData.testNameScoreAndDifficulty.hardMode)
+    }
 
     @Test
-    fun `getScoreboard from repository`() =
-        runTest {
-            var result = chemicalRepository.getScoreboard().first()
-            assertThat(result is Result.Success).isTrue()
-            assertThat((result as Result.Success).data).isEmpty()
+    fun `deleteScoreboard from repository`() = runTest {
+        chemicalRepository.insertHighscore(GoodUnitTestData.testNameScoreAndDifficulty)
 
-            repeat(10) { i ->
-                database
-                    .chemicalElementDao()
-                    .insertHighscore(NameScoreAndDifficulty("Tester$i", i, false))
-            }
-            val scoreBoard: List<Highscore> =
-                database.chemicalElementDao().getAllHighscores(100).first()
-            assertThat(scoreBoard.size).isEqualTo(10)
+        val scoreBoard: Result<List<Highscore>> = chemicalRepository.getScoreboard().first()
+        assertThat(scoreBoard is Result.Success).isTrue()
+        assertThat((scoreBoard as Result.Success).data).isNotEmpty()
 
-            result = chemicalRepository.getScoreboard().first()
-            assertThat(result is Result.Success).isTrue()
-            assertThat((result as Result.Success).data).isNotEmpty()
-            assertThat(result.data.size).isEqualTo(10)
-        }
+        chemicalRepository.deleteScoreboard()
+
+        val scoreBoardAfterDelete: Result<List<Highscore>> =
+            chemicalRepository.getScoreboard().first()
+        assertThat(scoreBoardAfterDelete is Result.Success).isTrue()
+        assertThat((scoreBoardAfterDelete as Result.Success).data).isEmpty()
+    }
 
     @Test
-    fun `getSaveGame from repository`() =
-        runTest {
-            var result = chemicalRepository.getSaveGame().first()
-            assertThat(result is Result.Success).isTrue()
-            assertThat((result as Result.Success).data).isNull()
-
-            database.chemicalElementDao().saveGame(GoodUnitTestData.testSaveGame)
-
-            result = chemicalRepository.getSaveGame().first()
-            assertThat(result is Result.Success).isTrue()
-            assertThat((result as Result.Success).data).isNotNull()
-            assertThat(result.data).isEqualTo(GoodUnitTestData.testSaveGame)
+    fun `deleteOldHighscore to just have 10 entries`() = runTest {
+        for (i in 1..11) {
+            database
+                .chemicalElementDao()
+                .insertHighscore(NameScoreAndDifficulty("Tester$i", i, false))
         }
+        val scoreBoard: List<Highscore> =
+            database.chemicalElementDao().getAllHighscores(100).first()
+        assertThat(scoreBoard.size).isGreaterThan(10)
+
+        chemicalRepository.deleteOldHighscore()
+        advanceUntilIdle()
+        val scoreBoardAfterDelete: List<Highscore> =
+            database.chemicalElementDao().getAllHighscores(100).first()
+        assertThat(scoreBoardAfterDelete.size).isEqualTo(10)
+    }
 
     @Test
-    fun `saveGame to repository`() =
-        runTest {
-            var result = chemicalRepository.getSaveGame().first()
-            assertThat(result is Result.Success).isTrue()
-            assertThat((result as Result.Success).data).isNull()
+    fun `getScoreboard from repository`() = runTest {
+        var result = chemicalRepository.getScoreboard().first()
+        assertThat(result is Result.Success).isTrue()
+        assertThat((result as Result.Success).data).isEmpty()
 
-            chemicalRepository.saveGame(GoodUnitTestData.testSaveGame)
-
-            result = chemicalRepository.getSaveGame().first()
-            assertThat(result is Result.Success).isTrue()
-            assertThat((result as Result.Success).data).isNotNull()
-            assertThat(result.data).isEqualTo(GoodUnitTestData.testSaveGame)
+        repeat(10) { i ->
+            database
+                .chemicalElementDao()
+                .insertHighscore(NameScoreAndDifficulty("Tester$i", i, false))
         }
+        val scoreBoard: List<Highscore> =
+            database.chemicalElementDao().getAllHighscores(100).first()
+        assertThat(scoreBoard.size).isEqualTo(10)
+
+        result = chemicalRepository.getScoreboard().first()
+        assertThat(result is Result.Success).isTrue()
+        assertThat((result as Result.Success).data).isNotEmpty()
+        assertThat(result.data.size).isEqualTo(10)
+    }
 
     @Test
-    fun `deleteSaveGame from repository`() =
-        runTest {
-            database.chemicalElementDao().saveGame(GoodUnitTestData.testSaveGame)
-            var result = chemicalRepository.getSaveGame().first()
-            assertThat(result is Result.Success).isTrue()
-            assertThat((result as Result.Success).data).isNotNull()
+    fun `getSaveGame from repository`() = runTest {
+        var result = chemicalRepository.getSaveGame().first()
+        assertThat(result is Result.Success).isTrue()
+        assertThat((result as Result.Success).data).isNull()
 
-            chemicalRepository.deleteSaveGame()
+        database.chemicalElementDao().saveGame(GoodUnitTestData.testSaveGame)
 
-            result = chemicalRepository.getSaveGame().first()
-            assertThat(result is Result.Success).isTrue()
-            assertThat((result as Result.Success).data).isNull()
-        }
+        result = chemicalRepository.getSaveGame().first()
+        assertThat(result is Result.Success).isTrue()
+        assertThat((result as Result.Success).data).isNotNull()
+        assertThat(result.data).isEqualTo(GoodUnitTestData.testSaveGame)
+    }
+
+    @Test
+    fun `saveGame to repository`() = runTest {
+        var result = chemicalRepository.getSaveGame().first()
+        assertThat(result is Result.Success).isTrue()
+        assertThat((result as Result.Success).data).isNull()
+
+        chemicalRepository.saveGame(GoodUnitTestData.testSaveGame)
+
+        result = chemicalRepository.getSaveGame().first()
+        assertThat(result is Result.Success).isTrue()
+        assertThat((result as Result.Success).data).isNotNull()
+        assertThat(result.data).isEqualTo(GoodUnitTestData.testSaveGame)
+    }
+
+    @Test
+    fun `deleteSaveGame from repository`() = runTest {
+        database.chemicalElementDao().saveGame(GoodUnitTestData.testSaveGame)
+        var result = chemicalRepository.getSaveGame().first()
+        assertThat(result is Result.Success).isTrue()
+        assertThat((result as Result.Success).data).isNotNull()
+
+        chemicalRepository.deleteSaveGame()
+
+        result = chemicalRepository.getSaveGame().first()
+        assertThat(result is Result.Success).isTrue()
+        assertThat((result as Result.Success).data).isNull()
+    }
 }

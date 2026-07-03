@@ -14,36 +14,36 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel
-    @Inject
-    constructor(
-        private val deleteScoreboardUseCase: DeleteScoreboardUseCase,
-        private val userPreferencesRepository: UserPreferencesRepository,
-    ) : ViewModel() {
-        val prefFlow = userPreferencesRepository.userPreferencesFlow
-        val userPrefs = prefFlow.asLiveData()
+@Inject
+constructor(
+    private val deleteScoreboardUseCase: DeleteScoreboardUseCase,
+    private val userPreferencesRepository: UserPreferencesRepository,
+) : ViewModel() {
+    val prefFlow = userPreferencesRepository.userPreferencesFlow
+    val userPrefs = prefFlow.asLiveData()
 
-        val colorTheme = MutableStateFlow(randomTheme())
+    val colorTheme = MutableStateFlow(randomTheme())
 
-        val initialSetupEvent =
-            liveData {
-                emit(userPreferencesRepository.fetchInitialPreferences())
-            }
-
-        fun updateMusicSetting(musicOn: Boolean) {
-            viewModelScope.launch {
-                userPreferencesRepository.updateMusicSetting(musicOn)
-            }
+    val initialSetupEvent =
+        liveData {
+            emit(userPreferencesRepository.fetchInitialPreferences())
         }
 
-        fun updateSoundEffectSetting(soundEffectOn: Boolean) {
-            viewModelScope.launch {
-                userPreferencesRepository.updateSoundEffectSetting(soundEffectOn)
-            }
-        }
-
-        fun clearScoreboard() {
-            viewModelScope.launch {
-                deleteScoreboardUseCase()
-            }
+    fun updateMusicSetting(musicOn: Boolean) {
+        viewModelScope.launch {
+            userPreferencesRepository.updateMusicSetting(musicOn)
         }
     }
+
+    fun updateSoundEffectSetting(soundEffectOn: Boolean) {
+        viewModelScope.launch {
+            userPreferencesRepository.updateSoundEffectSetting(soundEffectOn)
+        }
+    }
+
+    fun clearScoreboard() {
+        viewModelScope.launch {
+            deleteScoreboardUseCase()
+        }
+    }
+}

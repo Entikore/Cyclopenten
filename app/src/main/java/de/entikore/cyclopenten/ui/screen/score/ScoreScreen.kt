@@ -33,29 +33,24 @@ import de.entikore.cyclopenten.ui.theme.ColorTheme
 import de.entikore.cyclopenten.util.Semantics.CD_SCORE_SCREEN
 
 @Composable
-fun ScoreScreen(
-    viewModel: ScoreViewModel,
-    score: Int,
-    won: Boolean,
-    hardMode: Boolean,
-) {
+fun ScoreScreen(viewModel: ScoreViewModel, score: Int, won: Boolean, hardMode: Boolean) {
     val scoreboard by viewModel.scoreBoard.collectAsState()
     val showNameField by viewModel.showNameField.collectAsState()
     val colorTheme by viewModel.colorTheme.collectAsState()
     val gameEndMessage =
         if (won) stringResource(R.string.txt_game_won) else stringResource(R.string.txt_game_lost)
-    val scoreMessage = String.format(stringResource(R.string.txt_final_score), score)
+    val scoreMessage = stringResource(R.string.txt_final_score, score)
     ScoreScreen(
         screenState =
-            ScoreScreenState(
-                scoreboard,
-                showNameField,
-                gameEndMessage,
-                scoreMessage,
-                score,
-                hardMode,
-                colorTheme,
-            ),
+        ScoreScreenState(
+            scoreboard,
+            showNameField,
+            gameEndMessage,
+            scoreMessage,
+            score,
+            hardMode,
+            colorTheme,
+        ),
         saveScore = viewModel::saveScore,
     )
 }
@@ -64,14 +59,15 @@ fun ScoreScreen(
 fun ScoreScreen(
     screenState: ScoreScreenState,
     saveScore: (name: String, score: Int, hardMode: Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier =
-            Modifier
-                .fillMaxSize()
-                .background(color = screenState.colorTheme.primary),
+        modifier
+            .fillMaxSize()
+            .background(color = screenState.colorTheme.primary),
     ) {
         ScoreBoard(
             scoreboard = screenState.scoreboard,
@@ -100,21 +96,13 @@ fun ScoreNameField(
     score: Int,
     hardMode: Boolean,
     colorTheme: ColorTheme,
+    modifier: Modifier = Modifier,
 ) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-    ) {
-        val onClick: (name: String) -> Unit =
-            { name ->
-                saveScore(name, score, hardMode)
-            }
-        ColoredTextInput(colorTheme = colorTheme, onClick = onClick)
-    }
+    val onClick: (name: String) -> Unit =
+        { name ->
+            saveScore(name, score, hardMode)
+        }
+    ColoredTextInput(colorTheme = colorTheme, onClick = onClick, modifier = modifier.padding(8.dp))
 }
 
 @Composable
@@ -127,18 +115,18 @@ fun ScoreScreen(viewModel: ScoreViewModel) {
 @Composable
 fun ScoreBoard(
     scoreboard: List<Highscore>,
+    colorTheme: ColorTheme,
     modifier: Modifier = Modifier,
     gameEndMessage: List<String> = emptyList(),
-    colorTheme: ColorTheme,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier =
-            modifier
-                .fillMaxSize()
-                .background(colorTheme.primary)
-                .semantics { contentDescription = CD_SCORE_SCREEN },
+        modifier
+            .fillMaxSize()
+            .background(colorTheme.primary)
+            .semantics { contentDescription = CD_SCORE_SCREEN },
     ) {
         item {
             Title(title = stringResource(R.string.txt_scoreboard), textColor = colorTheme.accent)
@@ -182,18 +170,13 @@ fun ScoreBoard(
 }
 
 @Composable
-fun ScoreboardEntry(
-    place: Int,
-    entry: Highscore,
-    color: Color,
-    modifier: Modifier = Modifier,
-) {
+fun ScoreboardEntry(place: Int, entry: Highscore, color: Color, modifier: Modifier = Modifier) {
     Row(
         horizontalArrangement = Arrangement.Center,
         modifier =
-            modifier
-                .fillMaxWidth()
-                .padding(horizontal = 40.dp, vertical = 16.dp),
+        modifier
+            .fillMaxWidth()
+            .padding(horizontal = 40.dp, vertical = 16.dp),
     ) {
         val difficulty: String = if (entry.hardMode) "Hard" else ""
         Text(text = "$place.", color = color)

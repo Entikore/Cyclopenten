@@ -30,24 +30,24 @@ import de.entikore.cyclopenten.util.Semantics.CD_START_SCREEN
 @Composable
 fun StartScreen(
     viewModel: StartScreenViewModel,
-    onNewGameClicked: () -> Unit,
-    onContinueClicked: (Boolean) -> Unit,
-    onScoreClicked: () -> Unit,
-    onSettingsClicked: () -> Unit,
+    onNewGameClick: () -> Unit,
+    onContinueClick: (Boolean) -> Unit,
+    onScoreClick: () -> Unit,
+    onSettingsClick: () -> Unit,
 ) {
     val continueEnabled = viewModel.enabled.collectAsState(initial = false)
     val saveGame = viewModel.saveGame.collectAsState()
     val saveGameDifficulty = saveGame.value?.difficulty ?: false
     val newGameClickListener: () -> Unit = {
         viewModel::deleteSaveGame.invoke()
-        onNewGameClicked.invoke()
+        onNewGameClick.invoke()
     }
 
     StartScreen(
         newGameClickListener,
-        onContinueClicked,
-        onScoreClicked,
-        onSettingsClicked,
+        onContinueClick,
+        onScoreClick,
+        onSettingsClick,
         continueEnabled.value,
         saveGameDifficulty,
     )
@@ -55,22 +55,23 @@ fun StartScreen(
 
 @Composable
 fun StartScreen(
-    onNewGameClicked: () -> Unit,
-    onContinueClicked: (Boolean) -> Unit,
-    onScoreClicked: () -> Unit,
-    onSettingsClicked: () -> Unit,
-    continueEnabled: Boolean,
+    onNewGameClick: () -> Unit,
+    onContinueClick: (Boolean) -> Unit,
+    onScoreClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+    isContinueEnabled: Boolean,
     saveGameDifficulty: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     val colorTheme = remember { mutableStateOf(randomTheme()) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
         modifier =
-            Modifier
-                .fillMaxSize()
-                .background(colorTheme.value.primary)
-                .semantics { contentDescription = CD_START_SCREEN },
+        modifier
+            .fillMaxSize()
+            .background(colorTheme.value.primary)
+            .semantics { contentDescription = CD_START_SCREEN },
     ) {
         Title(
             title = stringResource(id = R.string.app_name),
@@ -84,9 +85,9 @@ fun StartScreen(
             contentDescription = stringResource(R.string.app_logo),
             colorFilter = ColorFilter.tint(colorTheme.value.dark),
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 48.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 48.dp),
         )
 
         Column(
@@ -94,43 +95,43 @@ fun StartScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.padding(bottom = 8.dp),
         ) {
-            val modifier =
+            val buttonModifier =
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 32.dp)
             ColoredButton(
                 buttonText = stringResource(id = R.string.btn_new_game),
-                onClick = onNewGameClicked,
+                onClick = onNewGameClick,
                 textColor = colorTheme.value.dark,
                 color = colorTheme.value.accent,
                 borderStroke = BorderStroke(width = 2.dp, color = colorTheme.value.dark),
-                modifier = modifier,
+                modifier = buttonModifier,
             )
             ColoredButton(
                 buttonText = stringResource(id = R.string.btn_continue),
-                enabled = continueEnabled,
-                onClick = { onContinueClicked(saveGameDifficulty) },
+                enabled = isContinueEnabled,
+                onClick = { onContinueClick(saveGameDifficulty) },
                 textColor = colorTheme.value.dark,
                 color = colorTheme.value.accent,
                 disabledColor = colorTheme.value.primary,
                 borderStroke = BorderStroke(width = 2.dp, color = colorTheme.value.dark),
-                modifier = modifier,
+                modifier = buttonModifier,
             )
             ColoredButton(
                 buttonText = stringResource(id = R.string.btn_highscore),
-                onClick = onScoreClicked,
+                onClick = onScoreClick,
                 textColor = colorTheme.value.dark,
                 color = colorTheme.value.accent,
                 borderStroke = BorderStroke(width = 2.dp, color = colorTheme.value.dark),
-                modifier = modifier,
+                modifier = buttonModifier,
             )
             ColoredButton(
                 buttonText = stringResource(id = R.string.btn_settings),
-                onClick = onSettingsClicked,
+                onClick = onSettingsClick,
                 textColor = colorTheme.value.dark,
                 color = colorTheme.value.accent,
                 borderStroke = BorderStroke(width = 2.dp, color = colorTheme.value.dark),
-                modifier = modifier,
+                modifier = buttonModifier,
             )
         }
     }
