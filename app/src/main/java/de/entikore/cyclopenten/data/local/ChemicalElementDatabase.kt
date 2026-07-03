@@ -11,9 +11,10 @@ import de.entikore.cyclopenten.data.local.entity.SaveGame
     entities = [
         ChemicalElement::class,
         Highscore::class,
-        SaveGame::class
+        SaveGame::class,
     ],
-    version = 1, exportSchema = false
+    version = 1,
+    exportSchema = false,
 )
 @TypeConverters(Converters::class)
 abstract class ChemicalElementDatabase : RoomDatabase() {

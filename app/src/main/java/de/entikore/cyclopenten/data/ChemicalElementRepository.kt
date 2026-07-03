@@ -8,11 +8,18 @@ import kotlinx.coroutines.flow.Flow
 
 interface ChemicalElementRepository {
     suspend fun getElements(): Result<List<ChemicalElement>>
+
     suspend fun insertHighscore(nameScoreAndDifficulty: NameScoreAndDifficulty)
+
     suspend fun deleteScoreboard()
+
     suspend fun deleteOldHighscore()
+
     fun getScoreboard(): Flow<Result<List<Highscore>>>
+
     fun getSaveGame(): Flow<Result<SaveGame?>>
+
     suspend fun saveGame(saveGame: SaveGame)
+
     suspend fun deleteSaveGame()
 }

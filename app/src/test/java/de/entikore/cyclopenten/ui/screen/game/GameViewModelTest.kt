@@ -33,7 +33,6 @@ import org.mockito.junit.MockitoJUnitRunner
 @SmallTest
 @RunWith(MockitoJUnitRunner::class)
 class GameViewModelTest {
-
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
@@ -52,7 +51,7 @@ class GameViewModelTest {
         repository = FakeRepository()
 
         repository.addElements(
-            GoodUnitTestData.testChemicalElement1
+            GoodUnitTestData.testChemicalElement1,
         )
 
         getChemicalElementsUseCaseTest = GetChemicalElementsUseCase(repository)
@@ -67,135 +66,150 @@ class GameViewModelTest {
             `when`(soundEffectPreferenceUseCase.invoke()).thenReturn(
                 flow {
                     UserPreferences(musicOn = false, soundEffectOn = false)
-                }
+                },
             )
         }
 
-        viewModel = GameViewModel(
-            getChemicalElementsUseCaseTest,
-            getSaveGameUseCase,
-            saveSaveGameUseCase,
-            deleteSaveGameUseCase,
-            soundEffectPreferenceUseCase,
-            savedStateHandle
-        )
+        viewModel =
+            GameViewModel(
+                getChemicalElementsUseCaseTest,
+                getSaveGameUseCase,
+                saveSaveGameUseCase,
+                deleteSaveGameUseCase,
+                soundEffectPreferenceUseCase,
+                savedStateHandle,
+            )
     }
 
     @Test
-    fun `check game state is build correct`() = runTest {
-        //  get first chemical element from use case
-        val firstElement =
-            (getChemicalElementsUseCaseTest() as Result.Success).data[0]
+    fun `check game state is build correct`() =
+        runTest {
+            //  get first chemical element from use case
+            val firstElement =
+                (getChemicalElementsUseCaseTest() as Result.Success).data[0]
 
-        // build expected game state based on the first chemical element
-        val expectedGameState = GameScreenState(
-            element = firstElement.name,
-            colorTheme = ColorTheme(firstElement.category),
-            atomicNumber = firstElement.atomicNumber,
-            category = firstElement.category,
-            symbol = firstElement.symbol,
-            answerOptions = firstElement.choices
-        ).copyWithDifficulty(false)
-        advanceUntilIdle()
-        assertThat(viewModel.gameState.value).isEqualTo(expectedGameState)
-    }
-
-    @Test
-    fun resetGameState() = runTest {
-        //  get first chemical element from use case
-        val firstElement =
-            (getChemicalElementsUseCaseTest() as de.entikore.cyclopenten.data.Result.Success)
-                .data[0]
-        // build expected game state based on the first chemical element
-        val gameStateBeforeReset = GameScreenState(
-            element = firstElement.name,
-            colorTheme = ColorTheme(firstElement.category),
-            atomicNumber = firstElement.atomicNumber,
-            category = firstElement.category,
-            symbol = firstElement.symbol,
-            answerOptions = firstElement.choices
-        ).copyWithDifficulty(false)
-        advanceUntilIdle()
-        // check current game state is as expected
-        assertThat(viewModel.gameState.value).isEqualTo(gameStateBeforeReset)
-
-        viewModel.resetGameState()
-
-        val defaultGameScreenState = GameScreenState()
-        advanceUntilIdle()
-        assertThat(viewModel.gameState.value).isEqualTo(defaultGameScreenState)
-    }
+            // build expected game state based on the first chemical element
+            val expectedGameState =
+                GameScreenState(
+                    element = firstElement.name,
+                    colorTheme = ColorTheme(firstElement.category),
+                    atomicNumber = firstElement.atomicNumber,
+                    category = firstElement.category,
+                    symbol = firstElement.symbol,
+                    answerOptions = firstElement.choices,
+                ).copyWithDifficulty(false)
+            advanceUntilIdle()
+            assertThat(viewModel.gameState.value).isEqualTo(expectedGameState)
+        }
 
     @Test
-    fun `evaluate correct answer difficulty easy`() = runTest {
-        val currentGameState = viewModel.gameState.value
+    fun resetGameState() =
+        runTest {
+            //  get first chemical element from use case
+            val firstElement =
+                (getChemicalElementsUseCaseTest() as de.entikore.cyclopenten.data.Result.Success)
+                    .data[0]
+            // build expected game state based on the first chemical element
+            val gameStateBeforeReset =
+                GameScreenState(
+                    element = firstElement.name,
+                    colorTheme = ColorTheme(firstElement.category),
+                    atomicNumber = firstElement.atomicNumber,
+                    category = firstElement.category,
+                    symbol = firstElement.symbol,
+                    answerOptions = firstElement.choices,
+                ).copyWithDifficulty(false)
+            advanceUntilIdle()
+            // check current game state is as expected
+            assertThat(viewModel.gameState.value).isEqualTo(gameStateBeforeReset)
 
-        val rightAnswer = currentGameState.element
-        val currentScore = currentGameState.score
-        val difficulty = currentGameState.hardDifficulty
-        // difficulty is easy, score should be incremented by 10
-        assertThat(difficulty).isFalse()
-        assertThat(currentScore).isEqualTo(0)
+            viewModel.resetGameState()
 
-        viewModel.evaluateAnswer(rightAnswer)
-
-        advanceUntilIdle()
-        assertThat(viewModel.gameState.value.score).isEqualTo(SCORE_INCREASE_EASY_DIFF)
-    }
-
-    @Test
-    fun `evaluate correct answer difficulty hard`() = runTest {
-        `when`(savedStateHandle.get<Boolean>(de.entikore.cyclopenten.util.Constants.DIFFICULTY)).thenReturn(true)
-        viewModel = GameViewModel(
-            getChemicalElementsUseCaseTest,
-            getSaveGameUseCase,
-            saveSaveGameUseCase,
-            deleteSaveGameUseCase,
-            soundEffectPreferenceUseCase,
-            savedStateHandle
-        )
-        advanceUntilIdle()
-
-        val currentGameState = viewModel.gameState.value
-
-        val rightAnswer = currentGameState.element
-        val currentScore = currentGameState.score
-        val difficulty = currentGameState.hardDifficulty
-        // difficulty is hard, score should be incremented by 10
-        advanceUntilIdle()
-        assertThat(difficulty).isTrue()
-        assertThat(currentScore).isEqualTo(0)
-
-        viewModel.evaluateAnswer(rightAnswer)
-
-        advanceUntilIdle()
-
-        assertThat(viewModel.gameState.value.score).isEqualTo(SCORE_INCREASE_HARD_DIFF)
-    }
+            val defaultGameScreenState = GameScreenState()
+            advanceUntilIdle()
+            assertThat(viewModel.gameState.value).isEqualTo(defaultGameScreenState)
+        }
 
     @Test
-    fun `evaluate wrong answer difficulty easy`() = runTest {
-        val currentGameState = viewModel.gameState.value
+    fun `evaluate correct answer difficulty easy`() =
+        runTest {
+            val currentGameState = viewModel.gameState.value
 
-        val rightAnswer = currentGameState.element
-        val currentScore = currentGameState.score
-        val currentLives = currentGameState.lives
-        val currentLostLives = currentGameState.lostLives
-        val difficulty = currentGameState.hardDifficulty
-        advanceUntilIdle()
-        // difficulty is easy, score should be incremented by 10
-        assertThat(difficulty).isFalse()
-        assertThat(currentScore).isEqualTo(0)
-        assertThat(currentLives).isEqualTo(3)
-        assertThat(currentLostLives).isEqualTo(0)
+            val rightAnswer = currentGameState.element
+            val currentScore = currentGameState.score
+            val difficulty = currentGameState.hardDifficulty
+            // difficulty is easy, score should be incremented by 10
+            assertThat(difficulty).isFalse()
+            assertThat(currentScore).isEqualTo(0)
 
-        viewModel.evaluateAnswer("wrong Answer")
+            viewModel.evaluateAnswer(rightAnswer)
 
-        advanceUntilIdle()
+            advanceUntilIdle()
+            assertThat(viewModel.gameState.value.score).isEqualTo(SCORE_INCREASE_EASY_DIFF)
+        }
 
-        assertThat(viewModel.gameState.value.element).isEqualTo(rightAnswer)
-        assertThat(viewModel.gameState.value.score).isEqualTo(0)
-        assertThat(viewModel.gameState.value.lives).isEqualTo(2)
-        assertThat(viewModel.gameState.value.lostLives).isEqualTo(1)
-    }
+    @Test
+    fun `evaluate correct answer difficulty hard`() =
+        runTest {
+            `when`(
+                savedStateHandle.get<Boolean>(
+                    de.entikore.cyclopenten.util.Constants.DIFFICULTY,
+                ),
+            ).thenReturn(
+                true,
+            )
+            viewModel =
+                GameViewModel(
+                    getChemicalElementsUseCaseTest,
+                    getSaveGameUseCase,
+                    saveSaveGameUseCase,
+                    deleteSaveGameUseCase,
+                    soundEffectPreferenceUseCase,
+                    savedStateHandle,
+                )
+            advanceUntilIdle()
+
+            val currentGameState = viewModel.gameState.value
+
+            val rightAnswer = currentGameState.element
+            val currentScore = currentGameState.score
+            val difficulty = currentGameState.hardDifficulty
+            // difficulty is hard, score should be incremented by 10
+            advanceUntilIdle()
+            assertThat(difficulty).isTrue()
+            assertThat(currentScore).isEqualTo(0)
+
+            viewModel.evaluateAnswer(rightAnswer)
+
+            advanceUntilIdle()
+
+            assertThat(viewModel.gameState.value.score).isEqualTo(SCORE_INCREASE_HARD_DIFF)
+        }
+
+    @Test
+    fun `evaluate wrong answer difficulty easy`() =
+        runTest {
+            val currentGameState = viewModel.gameState.value
+
+            val rightAnswer = currentGameState.element
+            val currentScore = currentGameState.score
+            val currentLives = currentGameState.lives
+            val currentLostLives = currentGameState.lostLives
+            val difficulty = currentGameState.hardDifficulty
+            advanceUntilIdle()
+            // difficulty is easy, score should be incremented by 10
+            assertThat(difficulty).isFalse()
+            assertThat(currentScore).isEqualTo(0)
+            assertThat(currentLives).isEqualTo(3)
+            assertThat(currentLostLives).isEqualTo(0)
+
+            viewModel.evaluateAnswer("wrong Answer")
+
+            advanceUntilIdle()
+
+            assertThat(viewModel.gameState.value.element).isEqualTo(rightAnswer)
+            assertThat(viewModel.gameState.value.score).isEqualTo(0)
+            assertThat(viewModel.gameState.value.lives).isEqualTo(2)
+            assertThat(viewModel.gameState.value.lostLives).isEqualTo(1)
+        }
 }

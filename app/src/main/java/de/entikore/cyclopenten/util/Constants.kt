@@ -18,18 +18,19 @@ object Constants {
     const val CAT_ACTINIDES = "Actinides"
     const val CAT_UNKNOWN = "Unknown"
 
-    val CATEGORIES = listOf(
-        CAT_NON_METALS,
-        CAT_NOBLE_GASES,
-        CAT_ALKALI_METALS,
-        CAT_ALKALINE_METALS,
-        CAT_SEMIMETALS,
-        CAT_HALOGENS,
-        CAT_POST_TRANSITION_METALS,
-        CAT_TRANSITION_METALS,
-        CAT_LANTHANIDE,
-        CAT_LANTHANIDE,
-        CAT_ACTINIDES,
-        CAT_UNKNOWN
-    )
+    val CATEGORIES =
+        listOf(
+            CAT_NON_METALS,
+            CAT_NOBLE_GASES,
+            CAT_ALKALI_METALS,
+            CAT_ALKALINE_METALS,
+            CAT_SEMIMETALS,
+            CAT_HALOGENS,
+            CAT_POST_TRANSITION_METALS,
+            CAT_TRANSITION_METALS,
+            CAT_LANTHANIDE,
+            CAT_LANTHANIDE,
+            CAT_ACTINIDES,
+            CAT_UNKNOWN,
+        )
 }

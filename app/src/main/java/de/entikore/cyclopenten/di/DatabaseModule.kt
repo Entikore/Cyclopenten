@@ -25,50 +25,48 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-
     @Provides
     @Singleton
-    fun provideJson(): Json = Json {
-        ignoreUnknownKeys = true
-    }
+    fun provideJson(): Json =
+        Json {
+            ignoreUnknownKeys = true
+        }
 
     @Singleton
     @Provides
     fun provideDatabase(
         @ApplicationContext context: Context,
         json: Json,
-        daoProvider: Provider<ChemicalElementDao>
-    ): ChemicalElementDatabase {
-        return Room.databaseBuilder(
-            context.applicationContext, ChemicalElementDatabase::class.java, "elements-db"
-        ).addCallback(
-            object : RoomDatabase.Callback() {
-                override fun onOpen(db: SupportSQLiteDatabase) {
-                    super.onOpen(db)
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val jsonString =
-                            context.resources.openRawResource(R.raw.elements).bufferedReader()
-                                .use { it.readText() }
-                        kotlin.runCatching {
-                            val elements = json.decodeFromString<List<ChemicalElement>>(jsonString)
-                            daoProvider.get().insertAll(elements)
+        daoProvider: Provider<ChemicalElementDao>,
+    ): ChemicalElementDatabase =
+        Room
+            .databaseBuilder(
+                context.applicationContext,
+                ChemicalElementDatabase::class.java,
+                "elements-db",
+            ).addCallback(
+                object : RoomDatabase.Callback() {
+                    override fun onOpen(db: SupportSQLiteDatabase) {
+                        super.onOpen(db)
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val jsonString =
+                                context.resources
+                                    .openRawResource(R.raw.elements)
+                                    .bufferedReader()
+                                    .use { it.readText() }
+                            kotlin.runCatching {
+                                val elements = json.decodeFromString<List<ChemicalElement>>(jsonString)
+                                daoProvider.get().insertAll(elements)
+                            }
                         }
                     }
-                }
-            }
-
-        ).build()
-    }
+                },
+            ).build()
 
     @Provides
-    fun provideChemicalElementDao(database: ChemicalElementDatabase): ChemicalElementDao {
-        return database.chemicalElementDao()
-    }
+    fun provideChemicalElementDao(database: ChemicalElementDatabase): ChemicalElementDao = database.chemicalElementDao()
 
     @Provides
-    fun provideChemicalElementRepository(
-        elementDao: ChemicalElementDao
-    ): ChemicalElementRepository {
-        return DefaultChemicalElementRepository(dao = elementDao)
-    }
+    fun provideChemicalElementRepository(elementDao: ChemicalElementDao): ChemicalElementRepository =
+        DefaultChemicalElementRepository(dao = elementDao)
 }

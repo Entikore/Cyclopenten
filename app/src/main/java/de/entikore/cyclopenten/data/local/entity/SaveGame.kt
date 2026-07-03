@@ -14,7 +14,7 @@ data class SaveGame(
     val score: Int,
     val remainingQuestions: List<ChemicalElement>,
     val currentElement: ChemicalElement,
-    val difficulty: Boolean
+    val difficulty: Boolean,
 ) {
     companion object {
         const val SAVE_GAME_ID = 1

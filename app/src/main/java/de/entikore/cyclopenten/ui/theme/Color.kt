@@ -76,7 +76,9 @@ val C11Complementary = Color(0xFF7B9F35)
 
 fun randomTheme() = ColorTheme(CATEGORIES.random())
 
-data class ColorTheme(val category: String) {
+data class ColorTheme(
+    val category: String,
+) {
     val primary: Color
     val dark: Color
     val accent: Color
@@ -91,8 +93,8 @@ data class ColorTheme(val category: String) {
         complementary = theme.second
     }
 
-    private fun getColorTheme(category: String): Pair<Triple<Color, Color, Color>, Color> {
-        return when (category) {
+    private fun getColorTheme(category: String): Pair<Triple<Color, Color, Color>, Color> =
+        when (category) {
             CAT_NON_METALS -> Pair(Triple(C0Primary, C0Dark, C0Accent), C0Complementary)
             CAT_NOBLE_GASES -> Pair(Triple(C1Primary, C1Dark, C1Accent), C1Complementary)
             CAT_ALKALI_METALS -> Pair(Triple(C2Primary, C2Dark, C2Accent), C2Complementary)
@@ -106,5 +108,4 @@ data class ColorTheme(val category: String) {
             CAT_UNKNOWN -> Pair(Triple(C10Primary, C10Dark, C10Accent), C10Complementary)
             else -> Pair(Triple(C11Primary, C11Dark, C11Accent), C11Complementary)
         }
-    }
 }

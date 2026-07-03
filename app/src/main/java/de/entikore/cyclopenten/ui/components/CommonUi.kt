@@ -35,7 +35,7 @@ fun ColoredButton(
     enabled: Boolean = true,
     textColor: Color = MaterialTheme.colors.primaryVariant,
     disabledColor: Color = color,
-    borderStroke: BorderStroke = ButtonDefaults.outlinedBorder
+    borderStroke: BorderStroke = ButtonDefaults.outlinedBorder,
 ) {
     OutlinedButton(
         onClick = onClick,
@@ -43,17 +43,18 @@ fun ColoredButton(
         elevation = ButtonDefaults.elevation(),
         shape = RoundedCornerShape(25),
         border = borderStroke,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = color,
-            disabledBackgroundColor = disabledColor
-        ),
-        modifier = modifier
+        colors =
+            ButtonDefaults.buttonColors(
+                backgroundColor = color,
+                disabledBackgroundColor = disabledColor,
+            ),
+        modifier = modifier,
     ) {
         Text(
             text = buttonText,
             color = textColor,
             style = MaterialTheme.typography.button,
-            fontSize = MaterialTheme.typography.body1.fontSize
+            fontSize = MaterialTheme.typography.body1.fontSize,
         )
     }
 }
@@ -63,18 +64,21 @@ fun Title(
     title: String,
     textColor: Color,
     modifier: Modifier = Modifier,
-    fontSize: TextUnit = MaterialTheme.typography.h4.fontSize
+    fontSize: TextUnit = MaterialTheme.typography.h4.fontSize,
 ) {
     Text(
         text = title,
         color = textColor,
         fontSize = fontSize,
-        modifier = modifier.padding(8.dp)
+        modifier = modifier.padding(8.dp),
     )
 }
 
 @Composable
-fun ColoredTextInput(colorTheme: ColorTheme, onClick: (String) -> Unit) {
+fun ColoredTextInput(
+    colorTheme: ColorTheme,
+    onClick: (String) -> Unit,
+) {
     val textState = remember { mutableStateOf(TextFieldValue()) }
     val focusManager = LocalFocusManager.current
     TextField(
@@ -84,15 +88,16 @@ fun ColoredTextInput(colorTheme: ColorTheme, onClick: (String) -> Unit) {
             textState.value = it
         },
         singleLine = true,
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = colorTheme.dark,
-            backgroundColor = colorTheme.accent,
-            cursorColor = colorTheme.dark,
-            focusedIndicatorColor = colorTheme.dark
-        ),
+        colors =
+            TextFieldDefaults.textFieldColors(
+                textColor = colorTheme.dark,
+                backgroundColor = colorTheme.accent,
+                cursorColor = colorTheme.dark,
+                focusedIndicatorColor = colorTheme.dark,
+            ),
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     )
     ColoredButton(
         buttonText = stringResource(R.string.btn_ok),
@@ -103,6 +108,6 @@ fun ColoredTextInput(colorTheme: ColorTheme, onClick: (String) -> Unit) {
         },
         color = colorTheme.accent,
         borderStroke = BorderStroke(2.dp, colorTheme.dark),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     )
 }

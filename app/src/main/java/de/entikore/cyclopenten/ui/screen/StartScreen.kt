@@ -49,7 +49,7 @@ fun StartScreen(
         onScoreClicked,
         onSettingsClicked,
         continueEnabled.value,
-        saveGameDifficulty
+        saveGameDifficulty,
     )
 }
 
@@ -60,48 +60,51 @@ fun StartScreen(
     onScoreClicked: () -> Unit,
     onSettingsClicked: () -> Unit,
     continueEnabled: Boolean,
-    saveGameDifficulty: Boolean
+    saveGameDifficulty: Boolean,
 ) {
     val colorTheme = remember { mutableStateOf(randomTheme()) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colorTheme.value.primary)
-            .semantics { contentDescription = CD_START_SCREEN }
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(colorTheme.value.primary)
+                .semantics { contentDescription = CD_START_SCREEN },
     ) {
         Title(
             title = stringResource(id = R.string.app_name),
             textColor = colorTheme.value.accent,
             fontSize = MaterialTheme.typography.h2.fontSize,
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(top = 8.dp),
         )
 
         Image(
             painter = painterResource(R.drawable.cyclopenten),
             contentDescription = stringResource(R.string.app_logo),
             colorFilter = ColorFilter.tint(colorTheme.value.dark),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 48.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 48.dp),
         )
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
         ) {
-            val modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp)
+            val modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp)
             ColoredButton(
                 buttonText = stringResource(id = R.string.btn_new_game),
                 onClick = onNewGameClicked,
                 textColor = colorTheme.value.dark,
                 color = colorTheme.value.accent,
                 borderStroke = BorderStroke(width = 2.dp, color = colorTheme.value.dark),
-                modifier = modifier
+                modifier = modifier,
             )
             ColoredButton(
                 buttonText = stringResource(id = R.string.btn_continue),
@@ -111,7 +114,7 @@ fun StartScreen(
                 color = colorTheme.value.accent,
                 disabledColor = colorTheme.value.primary,
                 borderStroke = BorderStroke(width = 2.dp, color = colorTheme.value.dark),
-                modifier = modifier
+                modifier = modifier,
             )
             ColoredButton(
                 buttonText = stringResource(id = R.string.btn_highscore),
@@ -119,7 +122,7 @@ fun StartScreen(
                 textColor = colorTheme.value.dark,
                 color = colorTheme.value.accent,
                 borderStroke = BorderStroke(width = 2.dp, color = colorTheme.value.dark),
-                modifier = modifier
+                modifier = modifier,
             )
             ColoredButton(
                 buttonText = stringResource(id = R.string.btn_settings),
@@ -127,7 +130,7 @@ fun StartScreen(
                 textColor = colorTheme.value.dark,
                 color = colorTheme.value.accent,
                 borderStroke = BorderStroke(width = 2.dp, color = colorTheme.value.dark),
-                modifier = modifier
+                modifier = modifier,
             )
         }
     }

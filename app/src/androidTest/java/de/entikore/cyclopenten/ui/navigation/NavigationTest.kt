@@ -7,7 +7,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
@@ -24,7 +24,7 @@ import de.entikore.cyclopenten.util.Semantics.CD_GAME_SCREEN
 import de.entikore.cyclopenten.util.Semantics.CD_SCORE_SCREEN
 import de.entikore.cyclopenten.util.Semantics.CD_SETTINGS_SCREEN
 import de.entikore.cyclopenten.util.Semantics.CD_START_SCREEN
-import javax.inject.Inject
+import jakarta.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -35,7 +35,6 @@ import org.junit.runner.RunWith
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class NavigationTest {
-
     @get:Rule(order = 1)
     var hiltRule = HiltAndroidRule(this)
 
@@ -47,7 +46,9 @@ class NavigationTest {
     @Inject
     lateinit var database: ChemicalElementDatabase
 
-    private fun hasText(@StringRes resId: Int) = hasText(composeTestRule.activity.getString(resId))
+    private fun hasTextStringResource(
+        @StringRes resId: Int,
+    ) = hasText(composeTestRule.activity.getString(resId))
 
     @Before
     fun setup() {
@@ -55,7 +56,7 @@ class NavigationTest {
         composeTestRule.activity.setContent {
             navController = TestNavHostController(LocalContext.current)
             navController.navigatorProvider.addNavigator(
-                ComposeNavigator()
+                ComposeNavigator(),
             )
             NavGraph(navController = navController)
         }
@@ -65,10 +66,10 @@ class NavigationTest {
     fun navigateFromStartToNewGameEasy() {
         composeTestRule.apply {
             onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
-            onNode(hasText(R.string.btn_new_game)).assertIsDisplayed().performClick()
+            onNode(hasTextStringResource(R.string.btn_new_game)).assertIsDisplayed().performClick()
 
             onNodeWithContentDescription(CD_DIFFICULTY_SCREEN).assertIsDisplayed()
-            onNode(hasText(R.string.btn_difficulty_easy)).assertIsDisplayed().performClick()
+            onNode(hasTextStringResource(R.string.btn_difficulty_easy)).assertIsDisplayed().performClick()
 
             onNodeWithContentDescription(CD_GAME_SCREEN).assertIsDisplayed()
 
@@ -83,10 +84,10 @@ class NavigationTest {
     fun navigateFromStartToNewGameHard() {
         composeTestRule.apply {
             onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
-            onNode(hasText(R.string.btn_new_game)).assertIsDisplayed().performClick()
+            onNode(hasTextStringResource(R.string.btn_new_game)).assertIsDisplayed().performClick()
 
             onNodeWithContentDescription(CD_DIFFICULTY_SCREEN).assertIsDisplayed()
-            onNode(hasText(R.string.btn_difficulty_hard)).assertIsDisplayed().performClick()
+            onNode(hasTextStringResource(R.string.btn_difficulty_hard)).assertIsDisplayed().performClick()
 
             onNodeWithContentDescription(CD_GAME_SCREEN).assertIsDisplayed()
 
@@ -99,41 +100,45 @@ class NavigationTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun navigateFromStartWithContinueEnabled() = runTest {
-        // add save game to enable continue button
-        database.chemicalElementDao().saveGame(FakeTestData.saveGame)
+    fun navigateFromStartWithContinueEnabled() =
+        runTest {
+            // add save game to enable continue button
+            database.chemicalElementDao().saveGame(FakeTestData.saveGame)
 
-        composeTestRule.apply {
-            onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
-            onNode(hasText(R.string.btn_continue)).assertIsDisplayed().assertIsEnabled()
-                .performClick()
+            composeTestRule.apply {
+                onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
+                onNode(hasTextStringResource(R.string.btn_continue))
+                    .assertIsDisplayed()
+                    .assertIsEnabled()
+                    .performClick()
 
-            onNodeWithContentDescription(CD_GAME_SCREEN).assertIsDisplayed()
+                onNodeWithContentDescription(CD_GAME_SCREEN).assertIsDisplayed()
 
-            activityRule.scenario.onActivity { activity ->
-                activity.onBackPressedDispatcher.onBackPressed()
+                activityRule.scenario.onActivity { activity ->
+                    activity.onBackPressedDispatcher.onBackPressed()
+                }
+                onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
             }
-            onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
         }
-    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun navigateFromStartWithContinueDisabled() = runTest {
-        // delete save game to disable continue button
-        database.chemicalElementDao().deleteSaveGame()
+    fun navigateFromStartWithContinueDisabled() =
+        runTest {
+            // delete save game to disable continue button
+            database.chemicalElementDao().deleteSaveGame()
 
-        composeTestRule.apply {
-            onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
-            onNode(hasText(R.string.btn_continue)).assertIsDisplayed().assertIsNotEnabled()
+            composeTestRule.apply {
+                onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
+                onNode(hasTextStringResource(R.string.btn_continue)).assertIsDisplayed().assertIsNotEnabled()
+            }
         }
-    }
 
     @Test
     fun navigateFromStartToScoreboard() {
         composeTestRule.apply {
             onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
-            onNode(hasText(R.string.btn_highscore)).assertIsDisplayed().performClick()
+            onNode(hasTextStringResource(R.string.btn_highscore)).assertIsDisplayed().performClick()
 
             onNodeWithContentDescription(CD_SCORE_SCREEN).assertIsDisplayed()
 
@@ -148,7 +153,7 @@ class NavigationTest {
     fun navigateFromStartToSettings() {
         composeTestRule.apply {
             onNodeWithContentDescription(CD_START_SCREEN).assertIsDisplayed()
-            onNode(hasText(R.string.btn_settings)).assertIsDisplayed().performClick()
+            onNode(hasTextStringResource(R.string.btn_settings)).assertIsDisplayed().performClick()
 
             onNodeWithContentDescription(CD_SETTINGS_SCREEN).assertIsDisplayed()
 

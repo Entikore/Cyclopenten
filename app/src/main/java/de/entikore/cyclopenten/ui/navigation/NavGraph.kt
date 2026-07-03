@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -21,12 +21,14 @@ import de.entikore.cyclopenten.ui.screen.score.ScoreScreen
 import de.entikore.cyclopenten.ui.screen.settings.SettingsScreen
 import de.entikore.cyclopenten.util.Constants
 
-enum class CyclopentenScreen(@StringRes val title: Int) {
+enum class CyclopentenScreen(
+    @StringRes val title: Int,
+) {
     Start(title = R.string.screen_start),
     Difficulty(title = R.string.screen_difficulty),
     Game(title = R.string.screen_game),
     Score(title = R.string.screen_score),
-    Settings(title = R.string.screen_settings)
+    Settings(title = R.string.screen_settings),
 }
 
 @Composable
@@ -38,7 +40,7 @@ fun NavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = CyclopentenScreen.Start.name,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         composable(CyclopentenScreen.Start.name) {
             StartScreen(
@@ -47,18 +49,18 @@ fun NavGraph(navController: NavHostController) {
                 onContinueClicked = { difficulty ->
                     navigateToGameScreen(
                         navController = navController,
-                        hardDifficulty = difficulty
+                        hardDifficulty = difficulty,
                     )
                 },
                 onScoreClicked = { navController.navigate(CyclopentenScreen.Score.name) },
-                onSettingsClicked = { navController.navigate(CyclopentenScreen.Settings.name) }
+                onSettingsClicked = { navController.navigate(CyclopentenScreen.Settings.name) },
             )
         }
         composable(CyclopentenScreen.Difficulty.name) {
             DifficultyScreen { difficulty ->
                 navigateToGameScreen(
                     navController = navController,
-                    hardDifficulty = difficulty
+                    hardDifficulty = difficulty,
                 )
             }
         }
@@ -68,28 +70,29 @@ fun NavGraph(navController: NavHostController) {
                     score = score,
                     won = won,
                     hardDifficulty = difficulty,
-                    navController = navController
+                    navController = navController,
                 )
             }
         }
         composable(
             route = "${CyclopentenScreen.Game.name}/{$navArgDifficulty}",
-            arguments = listOf(
-                navArgument(navArgDifficulty) {
-                    type = NavType.BoolType
-                }
-            )
+            arguments =
+                listOf(
+                    navArgument(navArgDifficulty) {
+                        type = NavType.BoolType
+                    },
+                ),
         ) {
             val hardDifficulty = it.arguments?.getBoolean(navArgDifficulty) ?: false
             GameScreen(
                 viewModel = hiltViewModel(),
-                hardDifficulty = hardDifficulty
+                hardDifficulty = hardDifficulty,
             ) { score, won, difficulty ->
                 navigateToScoreboard(
                     score = score,
                     won = won,
                     hardDifficulty = difficulty,
-                    navController = navController
+                    navController = navController,
                 )
             }
         }
@@ -97,19 +100,21 @@ fun NavGraph(navController: NavHostController) {
             ScoreScreen(hiltViewModel())
         }
         composable(
-            route = "${CyclopentenScreen.Score.name}/" +
-                "{$navArgScore}/{$navArgWinner}/{$navArgDifficulty}",
-            arguments = listOf(
-                navArgument(navArgScore) {
-                    type = NavType.IntType
-                },
-                navArgument(navArgWinner) {
-                    type = NavType.BoolType
-                },
-                navArgument(navArgDifficulty) {
-                    type = NavType.BoolType
-                }
-            )
+            route =
+                "${CyclopentenScreen.Score.name}/" +
+                    "{$navArgScore}/{$navArgWinner}/{$navArgDifficulty}",
+            arguments =
+                listOf(
+                    navArgument(navArgScore) {
+                        type = NavType.IntType
+                    },
+                    navArgument(navArgWinner) {
+                        type = NavType.BoolType
+                    },
+                    navArgument(navArgDifficulty) {
+                        type = NavType.BoolType
+                    },
+                ),
         ) {
             val score = it.arguments?.getInt(navArgScore) ?: 0
             val winner = it.arguments?.getBoolean(navArgWinner) ?: false
@@ -124,7 +129,7 @@ fun NavGraph(navController: NavHostController) {
 
 private fun navigateToGameScreen(
     navController: NavController,
-    hardDifficulty: Boolean
+    hardDifficulty: Boolean,
 ) {
     navController.navigate("${CyclopentenScreen.Game.name}/$hardDifficulty") {
         popUpTo(navController.graph.findStartDestination().id)
@@ -135,7 +140,7 @@ private fun navigateToScoreboard(
     navController: NavController,
     score: Int,
     won: Boolean,
-    hardDifficulty: Boolean
+    hardDifficulty: Boolean,
 ) {
     navController.navigate("${CyclopentenScreen.Score.name}/$score/$won/$hardDifficulty") {
         popUpTo(navController.graph.findStartDestination().id) {

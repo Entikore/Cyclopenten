@@ -5,5 +5,5 @@ import de.entikore.cyclopenten.ui.theme.ColorTheme
 
 data class SettingsScreenState(
     val userPreferences: UserPreferences,
-    val colorTheme: ColorTheme
+    val colorTheme: ColorTheme,
 )

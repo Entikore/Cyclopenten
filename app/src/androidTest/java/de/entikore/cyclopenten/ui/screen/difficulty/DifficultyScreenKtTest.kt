@@ -16,7 +16,6 @@ import org.junit.Rule
 import org.junit.Test
 
 class DifficultyScreenKtTest {
-
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
@@ -29,12 +28,24 @@ class DifficultyScreenKtTest {
 
     @Test
     fun difficultyScreenDisplay() {
-        composeTestRule.onNode(hasTestTag(BTN_DIFFICULTY_EASY)).assertExists()
-            .assertIsDisplayed().assertIsEnabled().assertHasClickAction()
-        composeTestRule.onNode(hasTestTag(BTN_DIFFICULTY_HARD)).assertExists()
-            .assertIsDisplayed().assertIsEnabled().assertHasClickAction()
-        composeTestRule.onNode(hasTestTag(BTN_DIFFICULTY_HELP)).assertExists()
-            .assertIsDisplayed().assertIsEnabled().assertHasClickAction()
+        composeTestRule
+            .onNode(hasTestTag(BTN_DIFFICULTY_EASY))
+            .assertExists()
+            .assertIsDisplayed()
+            .assertIsEnabled()
+            .assertHasClickAction()
+        composeTestRule
+            .onNode(hasTestTag(BTN_DIFFICULTY_HARD))
+            .assertExists()
+            .assertIsDisplayed()
+            .assertIsEnabled()
+            .assertHasClickAction()
+        composeTestRule
+            .onNode(hasTestTag(BTN_DIFFICULTY_HELP))
+            .assertExists()
+            .assertIsDisplayed()
+            .assertIsEnabled()
+            .assertHasClickAction()
         composeTestRule.onNode(hasTestTag(ALERT_DIFFICULTY)).assertDoesNotExist()
     }
 
@@ -42,7 +53,9 @@ class DifficultyScreenKtTest {
     fun difficultyScreenHelpButton() {
         composeTestRule.onNode(hasTestTag(ALERT_DIFFICULTY)).assertDoesNotExist()
         composeTestRule.onNode(hasTestTag(BTN_DIFFICULTY_HELP)).performClick()
-        composeTestRule.onNode(hasTestTag(ALERT_DIFFICULTY)).assertExists()
+        composeTestRule
+            .onNode(hasTestTag(ALERT_DIFFICULTY))
+            .assertExists()
             .assertIsDisplayed()
     }
 }

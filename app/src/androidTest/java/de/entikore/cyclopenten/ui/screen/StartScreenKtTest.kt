@@ -13,12 +13,12 @@ import org.junit.Rule
 import org.junit.Test
 
 class StartScreenKtTest {
-
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private fun hasText(@StringRes resId: Int) =
-        hasText(composeTestRule.activity.getString(resId))
+    private fun hasText(
+        @StringRes resId: Int,
+    ) = hasText(composeTestRule.activity.getString(resId))
 
     @Test
     fun startScreenWithoutSaveGame() {
@@ -29,7 +29,7 @@ class StartScreenKtTest {
                 onScoreClicked = { },
                 onSettingsClicked = { },
                 continueEnabled = false,
-                saveGameDifficulty = false
+                saveGameDifficulty = false,
             )
         }
         assertButtonNodeIsDisplayedEnabledAndHasAction(R.string.btn_new_game)
@@ -47,7 +47,7 @@ class StartScreenKtTest {
                 onScoreClicked = { },
                 onSettingsClicked = { },
                 continueEnabled = true,
-                saveGameDifficulty = false
+                saveGameDifficulty = false,
             )
         }
         assertButtonNodeIsDisplayedEnabledAndHasAction(R.string.btn_new_game)
@@ -57,14 +57,16 @@ class StartScreenKtTest {
     }
 
     private fun assertButtonNodeIsDisplayedEnabledAndHasAction(stringId: Int) {
-        composeTestRule.onNode(hasText(stringId))
+        composeTestRule
+            .onNode(hasText(stringId))
             .assertIsDisplayed()
             .assertIsEnabled()
             .assertHasClickAction()
     }
 
     private fun assertButtonNodeIsDisplayedDisabledAndHasAction(stringId: Int) {
-        composeTestRule.onNode(hasText(stringId))
+        composeTestRule
+            .onNode(hasText(stringId))
             .assertIsDisplayed()
             .assertIsNotEnabled()
             .assertHasClickAction()

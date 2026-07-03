@@ -14,7 +14,6 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 @SmallTest
 class GetSaveGetChemicalElementsUseCaseTest {
-
     private lateinit var getSaveGameUseCase: GetSaveGameUseCase
     private lateinit var repository: FakeRepository
 
@@ -25,12 +24,13 @@ class GetSaveGetChemicalElementsUseCaseTest {
     }
 
     @Test
-    fun `get a save game`() = runTest {
-        var saveGame = (getSaveGameUseCase.invoke().first() as Result.Success).data
-        assertThat(saveGame).isNull()
-        repository.saveGame(GoodUnitTestData.testSaveGame)
-        saveGame = (getSaveGameUseCase.invoke().first() as Result.Success).data
-        assertThat(saveGame).isNotNull()
-        assertThat(saveGame).isEqualTo(GoodUnitTestData.testSaveGame)
-    }
+    fun `get a save game`() =
+        runTest {
+            var saveGame = (getSaveGameUseCase.invoke().first() as Result.Success).data
+            assertThat(saveGame).isNull()
+            repository.saveGame(GoodUnitTestData.testSaveGame)
+            saveGame = (getSaveGameUseCase.invoke().first() as Result.Success).data
+            assertThat(saveGame).isNotNull()
+            assertThat(saveGame).isEqualTo(GoodUnitTestData.testSaveGame)
+        }
 }

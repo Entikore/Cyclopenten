@@ -16,5 +16,5 @@ data class ChemicalElement(
     val category: String,
     val symbol: String,
     val name: String,
-    val choices: List<String>
+    val choices: List<String>,
 )

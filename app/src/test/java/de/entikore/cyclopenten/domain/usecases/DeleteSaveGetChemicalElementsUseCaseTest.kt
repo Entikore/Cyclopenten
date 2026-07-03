@@ -16,7 +16,6 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 @SmallTest
 class DeleteSaveGetChemicalElementsUseCaseTest {
-
     private lateinit var deleteSaveGameUseCase: DeleteSaveGameUseCase
     private lateinit var repository: FakeRepository
 
@@ -31,15 +30,16 @@ class DeleteSaveGetChemicalElementsUseCaseTest {
     }
 
     @Test
-    fun `delete a save game`() = runTest {
-        repository.saveGame(GoodUnitTestData.testSaveGame)
+    fun `delete a save game`() =
+        runTest {
+            repository.saveGame(GoodUnitTestData.testSaveGame)
 
-        val fetchedSaveGame = (repository.getSaveGame().first() as Result.Success).data
+            val fetchedSaveGame = (repository.getSaveGame().first() as Result.Success).data
 
-        assertThat(fetchedSaveGame).isNotNull()
-        deleteSaveGameUseCase()
+            assertThat(fetchedSaveGame).isNotNull()
+            deleteSaveGameUseCase()
 
-        val fetchedSaveGameAfter = (repository.getSaveGame().first() as Result.Success).data
-        assertThat(fetchedSaveGameAfter).isNull()
-    }
+            val fetchedSaveGameAfter = (repository.getSaveGame().first() as Result.Success).data
+            assertThat(fetchedSaveGameAfter).isNull()
+        }
 }

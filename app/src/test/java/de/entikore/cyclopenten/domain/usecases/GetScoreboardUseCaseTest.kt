@@ -16,7 +16,6 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 @SmallTest
 class GetScoreboardUseCaseTest {
-
     private lateinit var getScoreboardUseCase: GetScoreboardUseCase
 
     private lateinit var repository: FakeRepository
@@ -31,12 +30,16 @@ class GetScoreboardUseCaseTest {
     }
 
     @Test
-    fun `get scoreboard`() = runTest {
-        var scoreboard = (getScoreboardUseCase().first() as Result.Success).data
-        assertThat(scoreboard).isEmpty()
-        repository.addScoreboardEntries(GoodUnitTestData.testScore1, GoodUnitTestData.testScore2)
-        scoreboard = (getScoreboardUseCase().first() as Result.Success).data
-        assertThat(scoreboard).isNotEmpty()
-        assertThat(scoreboard.size).isEqualTo(2)
-    }
+    fun `get scoreboard`() =
+        runTest {
+            var scoreboard = (getScoreboardUseCase().first() as Result.Success).data
+            assertThat(scoreboard).isEmpty()
+            repository.addScoreboardEntries(
+                GoodUnitTestData.testScore1,
+                GoodUnitTestData.testScore2,
+            )
+            scoreboard = (getScoreboardUseCase().first() as Result.Success).data
+            assertThat(scoreboard).isNotEmpty()
+            assertThat(scoreboard.size).isEqualTo(2)
+        }
 }

@@ -5,11 +5,13 @@ import de.entikore.cyclopenten.data.local.entity.NameScoreAndDifficulty
 import de.entikore.cyclopenten.domain.usecases.base.BaseUseCaseWithParams
 import javax.inject.Inject
 
-class SaveHighscoreUseCase @Inject constructor(private val repository: ChemicalElementRepository) :
-    BaseUseCaseWithParams<NameScoreAndDifficulty, Unit> {
-
-    override suspend fun invoke(params: NameScoreAndDifficulty) {
-        repository.insertHighscore(params)
-        repository.deleteOldHighscore()
+class SaveHighscoreUseCase
+    @Inject
+    constructor(
+        private val repository: ChemicalElementRepository,
+    ) : BaseUseCaseWithParams<NameScoreAndDifficulty, Unit> {
+        override suspend fun invoke(params: NameScoreAndDifficulty) {
+            repository.insertHighscore(params)
+            repository.deleteOldHighscore()
+        }
     }
-}

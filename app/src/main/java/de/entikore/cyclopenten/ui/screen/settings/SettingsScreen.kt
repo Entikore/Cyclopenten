@@ -49,14 +49,14 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val userPres by viewModel.userPrefs.observeAsState(
         UserPreferences(
             musicOn = true,
-            soundEffectOn = true
-        )
+            soundEffectOn = true,
+        ),
     )
     SettingScreen(
         SettingsScreenState(userPres, colorTheme),
         updateMusicSetting,
         updateSoundEffectSetting,
-        clearScoreboard
+        clearScoreboard,
     )
 }
 
@@ -65,30 +65,31 @@ fun SettingScreen(
     screenState: SettingsScreenState,
     updateMusicSetting: (musicOn: Boolean) -> Unit,
     updateSoundEffectSetting: (soundEffectOn: Boolean) -> Unit,
-    clearScoreboard: () -> Unit
+    clearScoreboard: () -> Unit,
 ) {
     val openDialog = remember { mutableStateOf(false) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = screenState.colorTheme.primary)
-            .semantics { contentDescription = CD_SETTINGS_SCREEN }
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(color = screenState.colorTheme.primary)
+                .semantics { contentDescription = CD_SETTINGS_SCREEN },
     ) {
         Title(
             title = stringResource(R.string.txt_settings),
-            textColor = screenState.colorTheme.accent
+            textColor = screenState.colorTheme.accent,
         )
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
                 text = stringResource(R.string.txt_settings_music),
-                color = screenState.colorTheme.dark
+                color = screenState.colorTheme.dark,
             )
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             Switch(
@@ -96,23 +97,25 @@ fun SettingScreen(
                 onCheckedChange = {
                     updateMusicSetting(it)
                 },
-                colors = SwitchDefaults.colors(
-                    checkedThumbColor = screenState.colorTheme.accent,
-                    uncheckedThumbColor = screenState.colorTheme.dark
-                ),
-                modifier = Modifier
-                    .testTag(SWITCH_SETTINGS_MUSIC)
+                colors =
+                    SwitchDefaults.colors(
+                        checkedThumbColor = screenState.colorTheme.accent,
+                        uncheckedThumbColor = screenState.colorTheme.dark,
+                    ),
+                modifier =
+                    Modifier
+                        .testTag(SWITCH_SETTINGS_MUSIC),
             )
         }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
                 text = stringResource(R.string.txt_settings_sound_effects),
-                color = screenState.colorTheme.dark
+                color = screenState.colorTheme.dark,
             )
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             Switch(
@@ -120,11 +123,12 @@ fun SettingScreen(
                 onCheckedChange = {
                     updateSoundEffectSetting(it)
                 },
-                colors = SwitchDefaults.colors(
-                    checkedThumbColor = screenState.colorTheme.accent,
-                    uncheckedThumbColor = screenState.colorTheme.dark
-                ),
-                modifier = Modifier.testTag(SWITCH_SETTINGS_SOUND)
+                colors =
+                    SwitchDefaults.colors(
+                        checkedThumbColor = screenState.colorTheme.accent,
+                        uncheckedThumbColor = screenState.colorTheme.dark,
+                    ),
+                modifier = Modifier.testTag(SWITCH_SETTINGS_SOUND),
             )
         }
         if (openDialog.value) {
@@ -134,13 +138,13 @@ fun SettingScreen(
                     Text(
                         text = stringResource(R.string.txt_delete_scoreboard),
                         color = screenState.colorTheme.accent,
-                        style = MaterialTheme.typography.h5
+                        style = MaterialTheme.typography.h5,
                     )
                 },
                 text = {
                     Text(
                         text = stringResource(R.string.txt_delete_scoreboard_clarification),
-                        color = screenState.colorTheme.dark
+                        color = screenState.colorTheme.dark,
                     )
                 },
                 confirmButton = {
@@ -153,7 +157,7 @@ fun SettingScreen(
                         color = screenState.colorTheme.accent,
                         borderStroke = BorderStroke(2.dp, screenState.colorTheme.dark),
                         textColor = screenState.colorTheme.dark,
-                        modifier = Modifier.testTag(BTN_ALERT_CONFIRM)
+                        modifier = Modifier.testTag(BTN_ALERT_CONFIRM),
                     )
                 },
                 dismissButton = {
@@ -163,13 +167,14 @@ fun SettingScreen(
                         color = screenState.colorTheme.accent,
                         borderStroke = BorderStroke(2.dp, screenState.colorTheme.dark),
                         textColor = screenState.colorTheme.dark,
-                        modifier = Modifier.testTag(BTN_ALERT_DISMISS)
+                        modifier = Modifier.testTag(BTN_ALERT_DISMISS),
                     )
                 },
                 backgroundColor = screenState.colorTheme.primary,
-                modifier = Modifier
-                    .border(2.dp, screenState.colorTheme.accent)
-                    .testTag(ALERT_SETTINGS)
+                modifier =
+                    Modifier
+                        .border(2.dp, screenState.colorTheme.accent)
+                        .testTag(ALERT_SETTINGS),
             )
         }
         ColoredButton(
@@ -178,7 +183,7 @@ fun SettingScreen(
             color = screenState.colorTheme.accent,
             borderStroke = BorderStroke(2.dp, screenState.colorTheme.dark),
             textColor = screenState.colorTheme.dark,
-            modifier = Modifier.testTag(BTN_SETTINGS_DELETE)
+            modifier = Modifier.testTag(BTN_SETTINGS_DELETE),
         )
     }
 }
