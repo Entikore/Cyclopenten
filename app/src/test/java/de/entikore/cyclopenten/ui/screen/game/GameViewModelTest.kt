@@ -11,7 +11,7 @@ import de.entikore.cyclopenten.data.UserPreferences
 import de.entikore.cyclopenten.domain.usecases.DeleteSaveGameUseCase
 import de.entikore.cyclopenten.domain.usecases.GetChemicalElementsUseCase
 import de.entikore.cyclopenten.domain.usecases.GetSaveGameUseCase
-import de.entikore.cyclopenten.domain.usecases.SaveSaveGameUseCase
+import de.entikore.cyclopenten.domain.usecases.SaveSaveGameBaseUseCase
 import de.entikore.cyclopenten.domain.usecases.SoundEffectPreferenceUseCase
 import de.entikore.cyclopenten.ui.theme.ColorTheme
 import de.entikore.cyclopenten.util.Constants.SCORE_INCREASE_EASY_DIFF
@@ -33,14 +33,13 @@ import org.mockito.junit.MockitoJUnitRunner
 @SmallTest
 @RunWith(MockitoJUnitRunner::class)
 class GameViewModelTest {
-
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var repository: FakeRepository
     private lateinit var getChemicalElementsUseCaseTest: GetChemicalElementsUseCase
     private lateinit var getSaveGameUseCase: GetSaveGameUseCase
-    private lateinit var saveSaveGameUseCase: SaveSaveGameUseCase
+    private lateinit var saveSaveGameUseCase: SaveSaveGameBaseUseCase
     private lateinit var deleteSaveGameUseCase: DeleteSaveGameUseCase
     private lateinit var soundEffectPreferenceUseCase: SoundEffectPreferenceUseCase
     private lateinit var savedStateHandle: SavedStateHandle
@@ -52,12 +51,12 @@ class GameViewModelTest {
         repository = FakeRepository()
 
         repository.addElements(
-            GoodUnitTestData.testChemicalElement1
+            GoodUnitTestData.testChemicalElement1,
         )
 
         getChemicalElementsUseCaseTest = GetChemicalElementsUseCase(repository)
         getSaveGameUseCase = GetSaveGameUseCase(repository)
-        saveSaveGameUseCase = SaveSaveGameUseCase(repository)
+        saveSaveGameUseCase = SaveSaveGameBaseUseCase(repository)
         deleteSaveGameUseCase = DeleteSaveGameUseCase(repository)
         soundEffectPreferenceUseCase = mock(SoundEffectPreferenceUseCase::class.java)
         savedStateHandle = mock(SavedStateHandle::class.java)
@@ -67,18 +66,19 @@ class GameViewModelTest {
             `when`(soundEffectPreferenceUseCase.invoke()).thenReturn(
                 flow {
                     UserPreferences(musicOn = false, soundEffectOn = false)
-                }
+                },
             )
         }
 
-        viewModel = GameViewModel(
-            getChemicalElementsUseCaseTest,
-            getSaveGameUseCase,
-            saveSaveGameUseCase,
-            deleteSaveGameUseCase,
-            soundEffectPreferenceUseCase,
-            savedStateHandle
-        )
+        viewModel =
+            GameViewModel(
+                getChemicalElementsUseCaseTest,
+                getSaveGameUseCase,
+                saveSaveGameUseCase,
+                deleteSaveGameUseCase,
+                soundEffectPreferenceUseCase,
+                savedStateHandle,
+            )
     }
 
     @Test
@@ -88,15 +88,15 @@ class GameViewModelTest {
             (getChemicalElementsUseCaseTest() as Result.Success).data[0]
 
         // build expected game state based on the first chemical element
-        val expectedGameState = GameScreenState(
-            element = firstElement.name,
-            colorTheme = ColorTheme(firstElement.category),
-            atomicNumber = firstElement.atomicNumber,
-            category = firstElement.category,
-            symbol = firstElement.symbol,
-            answerOptions = firstElement.choices
-        )
-        expectedGameState.setDifficulty(false)
+        val expectedGameState =
+            GameScreenState(
+                element = firstElement.name,
+                colorTheme = ColorTheme(firstElement.category),
+                atomicNumber = firstElement.atomicNumber,
+                category = firstElement.category,
+                symbol = firstElement.symbol,
+                answerOptions = firstElement.choices,
+            ).copyWithDifficulty(false)
         advanceUntilIdle()
         assertThat(viewModel.gameState.value).isEqualTo(expectedGameState)
     }
@@ -105,18 +105,18 @@ class GameViewModelTest {
     fun resetGameState() = runTest {
         //  get first chemical element from use case
         val firstElement =
-            (getChemicalElementsUseCaseTest() as de.entikore.cyclopenten.data.Result.Success)
+            (getChemicalElementsUseCaseTest() as Result.Success)
                 .data[0]
         // build expected game state based on the first chemical element
-        val gameStateBeforeReset = GameScreenState(
-            element = firstElement.name,
-            colorTheme = ColorTheme(firstElement.category),
-            atomicNumber = firstElement.atomicNumber,
-            category = firstElement.category,
-            symbol = firstElement.symbol,
-            answerOptions = firstElement.choices
-        )
-        gameStateBeforeReset.setDifficulty(false)
+        val gameStateBeforeReset =
+            GameScreenState(
+                element = firstElement.name,
+                colorTheme = ColorTheme(firstElement.category),
+                atomicNumber = firstElement.atomicNumber,
+                category = firstElement.category,
+                symbol = firstElement.symbol,
+                answerOptions = firstElement.choices,
+            ).copyWithDifficulty(false)
         advanceUntilIdle()
         // check current game state is as expected
         assertThat(viewModel.gameState.value).isEqualTo(gameStateBeforeReset)
@@ -147,7 +147,24 @@ class GameViewModelTest {
 
     @Test
     fun `evaluate correct answer difficulty hard`() = runTest {
-        viewModel.gameState.value.setDifficulty(hardMode = true)
+        `when`(
+            savedStateHandle.get<Boolean>(
+                de.entikore.cyclopenten.util.Constants.DIFFICULTY,
+            ),
+        ).thenReturn(
+            true,
+        )
+        viewModel =
+            GameViewModel(
+                getChemicalElementsUseCaseTest,
+                getSaveGameUseCase,
+                saveSaveGameUseCase,
+                deleteSaveGameUseCase,
+                soundEffectPreferenceUseCase,
+                savedStateHandle,
+            )
+        advanceUntilIdle()
+
         val currentGameState = viewModel.gameState.value
 
         val rightAnswer = currentGameState.element

@@ -5,35 +5,36 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
-import java.io.IOException
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
+import java.io.IOException
+import javax.inject.Inject
 
-class UserPreferencesRepository @Inject constructor(private val dataStore: DataStore<Preferences>) {
-
+class UserPreferencesRepository
+@Inject
+constructor(private val dataStore: DataStore<Preferences>) {
     private object PreferencesKeys {
         val MUSIC_ON = booleanPreferencesKey("music_on")
         val SOUND_EFFECT_ON = booleanPreferencesKey("sound_effect_on")
     }
 
-    val userPreferencesFlow: Flow<UserPreferences> = dataStore.data
-        .catch { exception ->
-            if (exception is IOException) {
-                Timber.e("Error reading preferences.", exception)
-                emit(emptyPreferences())
-            } else {
-                throw exception
+    val userPreferencesFlow: Flow<UserPreferences> =
+        dataStore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    Timber.e(exception, "Error reading preferences.")
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }.map { preferences ->
+                mapUserPreferences(preferences)
             }
-        }.map { preferences ->
-            mapUserPreferences(preferences)
-        }
 
-    suspend fun fetchInitialPreferences() =
-        mapUserPreferences(dataStore.data.first().toPreferences())
+    suspend fun fetchInitialPreferences() = mapUserPreferences(dataStore.data.first().toPreferences())
 
     suspend fun updateMusicSetting(musicOn: Boolean) {
         dataStore.edit { preferences ->
@@ -54,7 +55,4 @@ class UserPreferencesRepository @Inject constructor(private val dataStore: DataS
     }
 }
 
-data class UserPreferences(
-    val musicOn: Boolean,
-    val soundEffectOn: Boolean
-)
+data class UserPreferences(val musicOn: Boolean, val soundEffectOn: Boolean)

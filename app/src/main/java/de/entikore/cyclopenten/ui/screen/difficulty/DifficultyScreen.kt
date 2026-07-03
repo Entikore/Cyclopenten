@@ -15,14 +15,13 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -34,29 +33,30 @@ import de.entikore.cyclopenten.ui.theme.randomTheme
 import de.entikore.cyclopenten.util.Semantics
 
 @Composable
-fun DifficultyScreen(onClick: (Boolean) -> Unit) {
+fun DifficultyScreen(onClick: (Boolean) -> Unit, modifier: Modifier = Modifier) {
     val colorTheme = remember { mutableStateOf(randomTheme()) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier
+        modifier =
+        modifier
             .fillMaxSize()
             .background(color = colorTheme.value.primary)
-            .semantics { contentDescription = Semantics.CD_DIFFICULTY_SCREEN }
+            .semantics { contentDescription = Semantics.CD_DIFFICULTY_SCREEN },
     ) {
         val openDialog = remember { mutableStateOf(false) }
 
         Title(
             title = stringResource(R.string.txt_difficulty_title),
             textColor = colorTheme.value.accent,
-            modifier = Modifier.padding(horizontal = 32.dp)
+            modifier = Modifier.padding(horizontal = 32.dp),
         )
 
         Spacer(modifier = Modifier.padding(32.dp))
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Bottom
+            verticalArrangement = Arrangement.Bottom,
         ) {
             ColoredButton(
                 buttonText = stringResource(R.string.btn_difficulty_easy),
@@ -66,10 +66,11 @@ fun DifficultyScreen(onClick: (Boolean) -> Unit) {
                 },
                 color = colorTheme.value.accent,
                 borderStroke = BorderStroke(2.dp, colorTheme.value.dark),
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 32.dp)
-                    .testTag(Semantics.BTN_DIFFICULTY_EASY)
+                    .testTag(Semantics.BTN_DIFFICULTY_EASY),
             )
             ColoredButton(
                 buttonText = stringResource(R.string.btn_difficulty_hard),
@@ -79,10 +80,11 @@ fun DifficultyScreen(onClick: (Boolean) -> Unit) {
                 },
                 color = colorTheme.value.accent,
                 borderStroke = BorderStroke(2.dp, colorTheme.value.dark),
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 32.dp)
-                    .testTag(Semantics.BTN_DIFFICULTY_HARD)
+                    .testTag(Semantics.BTN_DIFFICULTY_HARD),
             )
         }
 
@@ -90,19 +92,21 @@ fun DifficultyScreen(onClick: (Boolean) -> Unit) {
 
         IconButton(
             onClick = { openDialog.value = !openDialog.value },
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(horizontal = 144.dp)
                 .border(2.dp, colorTheme.value.dark)
                 .background(color = colorTheme.value.accent)
-                .testTag(Semantics.BTN_DIFFICULTY_HELP)
+                .testTag(Semantics.BTN_DIFFICULTY_HELP),
         ) {
             Icon(
-                Icons.Filled.QuestionMark,
+                painterResource(R.drawable.question_mark),
                 stringResource(R.string.txt_icon_content_description),
                 tint = colorTheme.value.dark,
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1f)
+                    .aspectRatio(1f),
             )
         }
         if (openDialog.value) {
@@ -112,13 +116,13 @@ fun DifficultyScreen(onClick: (Boolean) -> Unit) {
                     Text(
                         text = stringResource(R.string.txt_title_different_difficulties),
                         color = colorTheme.value.accent,
-                        style = MaterialTheme.typography.h5
+                        style = MaterialTheme.typography.h5,
                     )
                 },
                 text = {
                     Text(
                         text = stringResource(R.string.txt_difficulty_explanation),
-                        color = colorTheme.value.dark
+                        color = colorTheme.value.dark,
                     )
                 },
                 confirmButton = {
@@ -129,12 +133,14 @@ fun DifficultyScreen(onClick: (Boolean) -> Unit) {
                         },
                         color = colorTheme.value.accent,
                         borderStroke = BorderStroke(2.dp, colorTheme.value.dark),
-                        textColor = colorTheme.value.dark
+                        textColor = colorTheme.value.dark,
                     )
                 },
                 backgroundColor = colorTheme.value.primary,
-                modifier = Modifier.border(2.dp, colorTheme.value.accent)
-                    .testTag(Semantics.ALERT_DIFFICULTY)
+                modifier =
+                Modifier
+                    .border(2.dp, colorTheme.value.accent)
+                    .testTag(Semantics.ALERT_DIFFICULTY),
             )
         }
     }

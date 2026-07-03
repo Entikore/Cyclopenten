@@ -29,9 +29,8 @@ interface ChemicalElementDao {
 
     @Query(
         "DELETE FROM highscore WHERE id IN (SELECT id FROM highscore ORDER BY score DESC" +
-            " LIMIT 1 OFFSET 10)"
+            " LIMIT 1 OFFSET 10)",
     )
-
     fun deleteOldHighscore()
 
     @Query("DELETE FROM highscore")

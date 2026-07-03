@@ -10,12 +10,11 @@ import de.entikore.cyclopenten.data.local.entity.SaveGame
 import de.entikore.cyclopenten.domain.usecases.DeleteSaveGameUseCase
 import de.entikore.cyclopenten.domain.usecases.GetChemicalElementsUseCase
 import de.entikore.cyclopenten.domain.usecases.GetSaveGameUseCase
-import de.entikore.cyclopenten.domain.usecases.SaveSaveGameUseCase
+import de.entikore.cyclopenten.domain.usecases.SaveSaveGameBaseUseCase
 import de.entikore.cyclopenten.domain.usecases.SoundEffectPreferenceUseCase
 import de.entikore.cyclopenten.util.Constants
 import de.entikore.cyclopenten.util.Constants.SCORE_INCREASE_EASY_DIFF
 import de.entikore.cyclopenten.util.Constants.SCORE_INCREASE_HARD_DIFF
-import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,26 +22,31 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel
-class GameViewModel @Inject constructor(
+class GameViewModel
+@Inject
+constructor(
     private val getChemicalElementsUseCase: GetChemicalElementsUseCase,
     private val getSaveGameUseCase: GetSaveGameUseCase,
-    private val saveSaveGameUseCase: SaveSaveGameUseCase,
+    private val saveSaveGameUseCase: SaveSaveGameBaseUseCase,
     private val deleteSaveGameUseCase: DeleteSaveGameUseCase,
     private val soundEffectPreferenceUseCase: SoundEffectPreferenceUseCase,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private var allElements = mutableListOf<ChemicalElement>()
+    private val allElements = mutableListOf<ChemicalElement>()
 
     private val argument = savedStateHandle.get<Boolean>(Constants.DIFFICULTY) ?: false
 
     private val _gameState = MutableStateFlow(GameScreenState())
-    val gameState: StateFlow<GameScreenState> = _gameState.stateIn(
-        viewModelScope,
-        SharingStarted.Eagerly,
-        _gameState.value
-    )
+    val gameState: StateFlow<GameScreenState> =
+        _gameState.stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            _gameState.value,
+        )
 
     private val _showLoading = MutableStateFlow(false)
     val showLoading: StateFlow<Boolean> = _showLoading
@@ -57,9 +61,9 @@ class GameViewModel @Inject constructor(
                 allElements.addAll(elementsResult.data.shuffled())
                 val element = allElements[0]
                 _gameState.update { state ->
-                    state.setupNewElement(element)
-                    state.setDifficulty(hardMode = argument)
                     state
+                        .copyWithNewElement(element)
+                        .copyWithDifficulty(hardMode = argument)
                 }
             }
             loadSaveGame()
@@ -79,7 +83,7 @@ class GameViewModel @Inject constructor(
                             lives = saveGame.data.lives,
                             lostLives = saveGame.data.lostLives,
                             score = saveGame.data.score,
-                            hardDifficulty = saveGame.data.difficulty
+                            hardDifficulty = saveGame.data.difficulty,
                         )
                     }
                     updateGameState(saveGame.data.currentElement)
@@ -90,8 +94,7 @@ class GameViewModel @Inject constructor(
 
     private fun updateGameState(element: ChemicalElement) {
         _gameState.update {
-            it.setupNewElement(element)
-            it
+            it.copyWithNewElement(element)
         }
         _showLoading.value = false
     }
@@ -108,10 +111,13 @@ class GameViewModel @Inject constructor(
                 _gameState.update { it.copy(hidden = false) }
                 _showLoading.value = true
                 allElements.removeIf { it.name == guess }
-                delay(1800)
+                delay(1800.milliseconds)
                 correctAnswer(
-                    if (_gameState.value.hardDifficulty) SCORE_INCREASE_HARD_DIFF
-                    else SCORE_INCREASE_EASY_DIFF
+                    if (_gameState.value.hardDifficulty) {
+                        SCORE_INCREASE_HARD_DIFF
+                    } else {
+                        SCORE_INCREASE_EASY_DIFF
+                    },
                 )
             }
             if (!_gameState.value.gameOver) {
@@ -137,20 +143,21 @@ class GameViewModel @Inject constructor(
             it.copy(
                 lives = remainingLives,
                 lostLives = it.lostLives + 1,
-                gameOver = remainingLives < 1
+                gameOver = remainingLives < 1,
             )
         }
     }
 
     private fun saveGame() {
-        val saveGame = SaveGame(
-            lives = _gameState.value.lives,
-            lostLives = _gameState.value.lostLives,
-            score = _gameState.value.score,
-            remainingQuestions = allElements,
-            currentElement = allElements[0],
-            difficulty = _gameState.value.hardDifficulty
-        )
+        val saveGame =
+            SaveGame(
+                lives = _gameState.value.lives,
+                lostLives = _gameState.value.lostLives,
+                score = _gameState.value.score,
+                remainingQuestions = allElements,
+                currentElement = allElements[0],
+                difficulty = _gameState.value.hardDifficulty,
+            )
         viewModelScope.launch {
             saveSaveGameUseCase.invoke(saveGame)
         }

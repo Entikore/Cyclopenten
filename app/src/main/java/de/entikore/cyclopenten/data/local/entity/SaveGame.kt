@@ -2,9 +2,9 @@ package de.entikore.cyclopenten.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 @Entity(tableName = "save_game")
 data class SaveGame(
     @PrimaryKey
@@ -14,7 +14,7 @@ data class SaveGame(
     val score: Int,
     val remainingQuestions: List<ChemicalElement>,
     val currentElement: ChemicalElement,
-    val difficulty: Boolean
+    val difficulty: Boolean,
 ) {
     companion object {
         const val SAVE_GAME_ID = 1

@@ -38,7 +38,7 @@ class SaveHighscoreUseCaseTest {
                 it.name == expectedEntry.name &&
                     it.score == expectedEntry.score &&
                     it.hardMode == expectedEntry.hardMode
-            }
+            },
         ).isNull()
         saveHighscoreUseCase(expectedEntry)
 
@@ -50,7 +50,7 @@ class SaveHighscoreUseCaseTest {
                 it.name == expectedEntry.name &&
                     it.score == expectedEntry.score &&
                     it.hardMode == expectedEntry.hardMode
-            }
+            },
         ).isNotNull()
     }
 }

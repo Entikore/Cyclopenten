@@ -16,8 +16,7 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 @SmallTest
 class SaveGetChemicalElementsUseCaseTest {
-
-    private lateinit var saveSaveGameUseCase: SaveSaveGameUseCase
+    private lateinit var saveSaveGameUseCase: SaveSaveGameBaseUseCase
 
     private lateinit var repository: FakeRepository
 
@@ -27,7 +26,7 @@ class SaveGetChemicalElementsUseCaseTest {
     @Before
     fun setup() {
         repository = FakeRepository()
-        saveSaveGameUseCase = SaveSaveGameUseCase(repository)
+        saveSaveGameUseCase = SaveSaveGameBaseUseCase(repository)
     }
 
     @Test

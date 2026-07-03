@@ -16,7 +16,6 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 @SmallTest
 class GetChemicalElementsUseCaseTest {
-
     private lateinit var getChemicalElementsUseCase: GetChemicalElementsUseCase
 
     private lateinit var chemicalRepository: FakeRepository
@@ -43,7 +42,7 @@ class GetChemicalElementsUseCaseTest {
         chemicalRepository.addElements(
             GoodUnitTestData.testChemicalElement1,
             GoodUnitTestData.testChemicalElement2,
-            GoodUnitTestData.testChemicalElement3
+            GoodUnitTestData.testChemicalElement3,
         )
 
         val tasks = getChemicalElementsUseCase()
@@ -55,9 +54,9 @@ class GetChemicalElementsUseCaseTest {
                 listOf(
                     GoodUnitTestData.testChemicalElement1,
                     GoodUnitTestData.testChemicalElement2,
-                    GoodUnitTestData.testChemicalElement3
-                )
-            )
+                    GoodUnitTestData.testChemicalElement3,
+                ),
+            ),
         )
     }
 

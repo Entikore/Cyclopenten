@@ -28,7 +28,7 @@ class DeleteGetScoreboardUseCaseTest {
         repository.addScoreboardEntries(
             GoodUnitTestData.testScore1,
             GoodUnitTestData.testScore2,
-            GoodUnitTestData.testScore3
+            GoodUnitTestData.testScore3,
         )
         assertThat((repository.getScoreboard().first() as Result.Success).data).isNotEmpty()
 

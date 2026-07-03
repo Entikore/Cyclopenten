@@ -91,20 +91,18 @@ data class ColorTheme(val category: String) {
         complementary = theme.second
     }
 
-    private fun getColorTheme(category: String): Pair<Triple<Color, Color, Color>, Color> {
-        return when (category) {
-            CAT_NON_METALS -> Pair(Triple(C0Primary, C0Dark, C0Accent), C0Complementary)
-            CAT_NOBLE_GASES -> Pair(Triple(C1Primary, C1Dark, C1Accent), C1Complementary)
-            CAT_ALKALI_METALS -> Pair(Triple(C2Primary, C2Dark, C2Accent), C2Complementary)
-            CAT_ALKALINE_METALS -> Pair(Triple(C3Primary, C3Dark, C3Accent), C3Complementary)
-            CAT_SEMIMETALS -> Pair(Triple(C4Primary, C4Dark, C4Accent), C4Complementary)
-            CAT_HALOGENS -> Pair(Triple(C5Primary, C5Dark, C5Accent), C5Complementary)
-            CAT_POST_TRANSITION_METALS -> Pair(Triple(C6Primary, C6Dark, C6Accent), C6Complementary)
-            CAT_TRANSITION_METALS -> Pair(Triple(C7Primary, C7Dark, C7Accent), C7Complementary)
-            CAT_LANTHANIDE -> Pair(Triple(C8Primary, C8Dark, C8Accent), C8Complementary)
-            CAT_ACTINIDES -> Pair(Triple(C9Primary, C9Dark, C9Accent), C9Complementary)
-            CAT_UNKNOWN -> Pair(Triple(C10Primary, C10Dark, C10Accent), C10Complementary)
-            else -> Pair(Triple(C11Primary, C11Dark, C11Accent), C11Complementary)
-        }
+    private fun getColorTheme(category: String): Pair<Triple<Color, Color, Color>, Color> = when (category) {
+        CAT_NON_METALS -> Pair(Triple(C0Primary, C0Dark, C0Accent), C0Complementary)
+        CAT_NOBLE_GASES -> Pair(Triple(C1Primary, C1Dark, C1Accent), C1Complementary)
+        CAT_ALKALI_METALS -> Pair(Triple(C2Primary, C2Dark, C2Accent), C2Complementary)
+        CAT_ALKALINE_METALS -> Pair(Triple(C3Primary, C3Dark, C3Accent), C3Complementary)
+        CAT_SEMIMETALS -> Pair(Triple(C4Primary, C4Dark, C4Accent), C4Complementary)
+        CAT_HALOGENS -> Pair(Triple(C5Primary, C5Dark, C5Accent), C5Complementary)
+        CAT_POST_TRANSITION_METALS -> Pair(Triple(C6Primary, C6Dark, C6Accent), C6Complementary)
+        CAT_TRANSITION_METALS -> Pair(Triple(C7Primary, C7Dark, C7Accent), C7Complementary)
+        CAT_LANTHANIDE -> Pair(Triple(C8Primary, C8Dark, C8Accent), C8Complementary)
+        CAT_ACTINIDES -> Pair(Triple(C9Primary, C9Dark, C9Accent), C9Complementary)
+        CAT_UNKNOWN -> Pair(Triple(C10Primary, C10Dark, C10Accent), C10Complementary)
+        else -> Pair(Triple(C11Primary, C11Dark, C11Accent), C11Complementary)
     }
 }

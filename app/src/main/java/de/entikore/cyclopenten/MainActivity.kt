@@ -17,7 +17,6 @@ import de.entikore.cyclopenten.ui.theme.CyclopentenTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var viewModel: SettingsViewModel
     private var playMusic: Boolean = false
@@ -37,7 +36,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = MaterialTheme.colors.background,
                 ) {
                     NavGraph(navController = navController)
                 }
@@ -54,7 +53,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (mediaPlayer.isPlaying) { mediaPlayer.pause() }
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.pause()
+        }
     }
 
     private fun observePreferenceChanges() {

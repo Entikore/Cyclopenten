@@ -16,7 +16,6 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 @SmallTest
 class DeleteSaveGetChemicalElementsUseCaseTest {
-
     private lateinit var deleteSaveGameUseCase: DeleteSaveGameUseCase
     private lateinit var repository: FakeRepository
 

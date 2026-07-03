@@ -25,7 +25,6 @@ import org.robolectric.RobolectricTestRunner
 @SmallTest
 @RunWith(RobolectricTestRunner::class)
 class DefaultChemicalElementRepositoryTest {
-
     // Class under test
     private lateinit var chemicalRepository: DefaultChemicalElementRepository
     private lateinit var database: ChemicalElementDatabase
@@ -39,17 +38,20 @@ class DefaultChemicalElementRepositoryTest {
     @Before
     fun createRepository() {
         // build dependencies for class under test
-        database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            ChemicalElementDatabase::class.java
-        )
-            .allowMainThreadQueries()
-            .build()
+        database =
+            Room
+                .inMemoryDatabaseBuilder(
+                    ApplicationProvider.getApplicationContext(),
+                    ChemicalElementDatabase::class.java,
+                ).allowMainThreadQueries()
+                .build()
 
         // Get a reference to the class under test
-        chemicalRepository = DefaultChemicalElementRepository(
-            database.chemicalElementDao(), Dispatchers.Main
-        )
+        chemicalRepository =
+            DefaultChemicalElementRepository(
+                database.chemicalElementDao(),
+                Dispatchers.Main,
+            )
     }
 
     @Test
@@ -116,7 +118,8 @@ class DefaultChemicalElementRepositoryTest {
     @Test
     fun `deleteOldHighscore to just have 10 entries`() = runTest {
         for (i in 1..11) {
-            database.chemicalElementDao()
+            database
+                .chemicalElementDao()
                 .insertHighscore(NameScoreAndDifficulty("Tester$i", i, false))
         }
         val scoreBoard: List<Highscore> =
@@ -136,8 +139,9 @@ class DefaultChemicalElementRepositoryTest {
         assertThat(result is Result.Success).isTrue()
         assertThat((result as Result.Success).data).isEmpty()
 
-        for (i in 1..10) {
-            database.chemicalElementDao()
+        repeat(10) { i ->
+            database
+                .chemicalElementDao()
                 .insertHighscore(NameScoreAndDifficulty("Tester$i", i, false))
         }
         val scoreBoard: List<Highscore> =

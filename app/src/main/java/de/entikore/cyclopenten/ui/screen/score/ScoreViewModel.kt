@@ -9,15 +9,17 @@ import de.entikore.cyclopenten.data.local.entity.NameScoreAndDifficulty
 import de.entikore.cyclopenten.domain.usecases.GetScoreboardUseCase
 import de.entikore.cyclopenten.domain.usecases.SaveHighscoreUseCase
 import de.entikore.cyclopenten.ui.theme.randomTheme
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class ScoreViewModel @Inject constructor(
+class ScoreViewModel
+@Inject
+constructor(
     private val getScoreboardUseCase: GetScoreboardUseCase,
-    private val newHighScoreUseCaseSave: SaveHighscoreUseCase
+    private val newHighScoreUseCaseSave: SaveHighscoreUseCase,
 ) : ViewModel() {
     private val _scoreBoard = MutableStateFlow<List<Highscore>>(emptyList())
     val scoreBoard: StateFlow<List<Highscore>> = _scoreBoard
@@ -38,7 +40,7 @@ class ScoreViewModel @Inject constructor(
     }
 
     fun saveScore(name: String, score: Int, hardMode: Boolean) {
-        if (_scoreBoard.value.size < 10 ||
+        if (_scoreBoard.value.size < HIGHSCORE_ENTRY_COUNT ||
             _scoreBoard.value.any { it.score < score }
         ) {
             viewModelScope.launch {
@@ -51,5 +53,9 @@ class ScoreViewModel @Inject constructor(
             }
             _showNameField.value = false
         }
+    }
+
+    companion object {
+        private const val HIGHSCORE_ENTRY_COUNT = 10
     }
 }

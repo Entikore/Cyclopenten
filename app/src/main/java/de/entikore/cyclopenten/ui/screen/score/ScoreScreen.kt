@@ -39,38 +39,41 @@ fun ScoreScreen(viewModel: ScoreViewModel, score: Int, won: Boolean, hardMode: B
     val colorTheme by viewModel.colorTheme.collectAsState()
     val gameEndMessage =
         if (won) stringResource(R.string.txt_game_won) else stringResource(R.string.txt_game_lost)
-    val scoreMessage = String.format(stringResource(R.string.txt_final_score), score)
+    val scoreMessage = stringResource(R.string.txt_final_score, score)
     ScoreScreen(
-        screenState = ScoreScreenState(
+        screenState =
+        ScoreScreenState(
             scoreboard,
             showNameField,
             gameEndMessage,
             scoreMessage,
             score,
             hardMode,
-            colorTheme
+            colorTheme,
         ),
-        saveScore = viewModel::saveScore
+        saveScore = viewModel::saveScore,
     )
 }
 
 @Composable
 fun ScoreScreen(
     screenState: ScoreScreenState,
-    saveScore: (name: String, score: Int, hardMode: Boolean) -> Unit
+    saveScore: (name: String, score: Int, hardMode: Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier
+        modifier =
+        modifier
             .fillMaxSize()
-            .background(color = screenState.colorTheme.primary)
+            .background(color = screenState.colorTheme.primary),
     ) {
         ScoreBoard(
             scoreboard = screenState.scoreboard,
             gameEndMessage = listOf(screenState.gameEndMessage, screenState.scoreMessage),
             colorTheme = screenState.colorTheme,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         )
         if (screenState.scoreboard.size < 10 ||
             screenState.scoreboard.any { it.score < screenState.score }
@@ -80,7 +83,7 @@ fun ScoreScreen(
                     saveScore,
                     screenState.score,
                     screenState.hardMode,
-                    screenState.colorTheme
+                    screenState.colorTheme,
                 )
             }
         }
@@ -92,21 +95,14 @@ fun ScoreNameField(
     saveScore: (String, Int, Boolean) -> Unit,
     score: Int,
     hardMode: Boolean,
-    colorTheme: ColorTheme
+    colorTheme: ColorTheme,
+    modifier: Modifier = Modifier,
 ) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
-        val onClick: (name: String) -> Unit =
-            { name ->
-                saveScore(name, score, hardMode)
-            }
-        ColoredTextInput(colorTheme = colorTheme, onClick = onClick)
-    }
+    val onClick: (name: String) -> Unit =
+        { name ->
+            saveScore(name, score, hardMode)
+        }
+    ColoredTextInput(colorTheme = colorTheme, onClick = onClick, modifier = modifier.padding(8.dp))
 }
 
 @Composable
@@ -119,17 +115,18 @@ fun ScoreScreen(viewModel: ScoreViewModel) {
 @Composable
 fun ScoreBoard(
     scoreboard: List<Highscore>,
+    colorTheme: ColorTheme,
     modifier: Modifier = Modifier,
     gameEndMessage: List<String> = emptyList(),
-    colorTheme: ColorTheme
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxSize()
             .background(colorTheme.primary)
-            .semantics { contentDescription = CD_SCORE_SCREEN }
+            .semantics { contentDescription = CD_SCORE_SCREEN },
     ) {
         item {
             Title(title = stringResource(R.string.txt_scoreboard), textColor = colorTheme.accent)
@@ -139,7 +136,7 @@ fun ScoreBoard(
                 Text(
                     text = message,
                     fontSize = MaterialTheme.typography.h5.fontSize,
-                    color = colorTheme.dark
+                    color = colorTheme.dark,
                 )
             }
         }
@@ -148,7 +145,7 @@ fun ScoreBoard(
                 Divider(
                     color = colorTheme.dark,
                     thickness = 2.dp,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
         }
@@ -157,7 +154,7 @@ fun ScoreBoard(
                 index.inc(),
                 item,
                 colorTheme.dark,
-                Modifier.testTag(tag = "ScoreboardEntry ${index.inc()}")
+                Modifier.testTag(tag = "ScoreboardEntry ${index.inc()}"),
             )
         }
         if (scoreboard.isNotEmpty()) {
@@ -165,7 +162,7 @@ fun ScoreBoard(
                 Divider(
                     color = colorTheme.dark,
                     thickness = 2.dp,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
         }
@@ -176,9 +173,10 @@ fun ScoreBoard(
 fun ScoreboardEntry(place: Int, entry: Highscore, color: Color, modifier: Modifier = Modifier) {
     Row(
         horizontalArrangement = Arrangement.Center,
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
-            .padding(horizontal = 40.dp, vertical = 16.dp)
+            .padding(horizontal = 40.dp, vertical = 16.dp),
     ) {
         val difficulty: String = if (entry.hardMode) "Hard" else ""
         Text(text = "$place.", color = color)

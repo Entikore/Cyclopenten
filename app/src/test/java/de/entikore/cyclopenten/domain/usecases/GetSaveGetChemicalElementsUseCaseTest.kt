@@ -14,7 +14,6 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 @SmallTest
 class GetSaveGetChemicalElementsUseCaseTest {
-
     private lateinit var getSaveGameUseCase: GetSaveGameUseCase
     private lateinit var repository: FakeRepository
 

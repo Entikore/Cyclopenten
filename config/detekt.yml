@@ -1,0 +1,190 @@
+comments:
+  AbsentOrWrongFileLicense:
+    active: true
+    licenseTemplateIsRegex: true
+    licenseTemplate: '|
+     /*
+      * Copyright 202[0-6](-202[4-6])? Entikore
+      *
+      * Licensed under the Apache License, Version 2.0 (the "License");
+      * you may not use this file except in compliance with the License.
+      * You may obtain a copy of the License at
+      *
+      *     http://www.apache.org/licenses/LICENSE-2.0
+      *
+      * Unless required by applicable law or agreed to in writing, software
+      * distributed under the License is distributed on an "AS IS" BASIS,
+      * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      * See the License for the specific language governing permissions and
+      * limitations under the License.
+      */'
+  EndOfSentenceFormat:
+    active: true
+  UndocumentedPublicClass:
+    active: false
+    ignoreAnnotated: [ 'Test' ]
+    searchInNestedClass: false
+    searchInInnerClass: false
+    searchInInnerInterface: false
+    searchInInnerObject: false
+  OutdatedDocumentation:
+    active: true
+
+complexity:
+  LongParameterList:
+    allowedFunctionParameters: 15
+    allowedConstructorParameters: 10
+    ignoreDefaultParameters: true
+    ignoreDataClasses: true
+
+  LongMethod:
+    active: false
+
+  TooManyFunctions:
+    allowedFunctionsPerClass: 18
+    allowedFunctionsPerInterface: 18
+    allowedFunctionsPerFile: 18
+    allowedFunctionsPerObject: 18
+    allowedFunctionsPerEnum: 18
+
+  ComplexCondition:
+    allowedConditions: 5
+
+
+ktlint:
+  MaximumLineLength:
+    ignoreBackTickedIdentifier: true
+
+# also ignore naming for composable functions
+naming:
+  FunctionNaming:
+    active: true
+    excludes: [ ]
+    ignoreAnnotated: [ 'Test', 'ParameterizedTest', 'RepeatedTest', 'TestFactory', 'Composable']
+
+style:
+  MagicNumber:
+    excludes:
+      - '**/test/**'
+      - '**/androidTest/**'
+    ignorePropertyDeclaration: true
+    ignoreAnnotated: [ 'Test', 'ParameterizedTest', 'RepeatedTest', 'TestFactory', 'Composable']
+  UnusedPrivateFunction:
+    active: true
+    ignoreAnnotated: [ 'Preview' ]
+  UnusedPrivateProperty:
+    active: true
+  MaxLineLength:
+    ignoreAnnotated: [ 'Test', 'Query', 'RewriteQueriesToDropUnusedColumns']
+
+Compose:
+  ComposableAnnotationNaming:
+    active: true
+  ComposableNaming:
+    active: true
+    # -- You can optionally disable the checks in this rule for regex matches against the composable name (e.g. molecule presenters)
+    # allowedComposableFunctionNames: .*Presenter,.*MoleculePresenter
+  ComposableParamOrder:
+    active: true
+    # -- You can optionally have a list of types to be treated as lambdas (e.g. typedefs or fun interfaces not picked up automatically)
+    # treatAsLambda: MyLambdaType
+  CompositionLocalAllowlist:
+    active: true
+    # -- You can optionally define a list of CompositionLocals that are allowed here
+    # allowedCompositionLocals: LocalSomething,LocalSomethingElse
+  CompositionLocalNaming:
+    active: true
+  ContentEmitterReturningValues:
+    active: true
+    # -- You can optionally add your own composables here
+    # contentEmitters: MyComposable,MyOtherComposable
+  ContentTrailingLambda:
+    active: true
+    # -- You can optionally have a list of types to be treated as lambdas (e.g. typedefs or fun interfaces not picked up automatically)
+    # treatAsLambda: MyLambdaType
+    # -- You can optionally have a list of types to be treated as composable lambdas (e.g. typedefs or fun interfaces not picked up automatically).
+    # -- The difference with treatAsLambda is that those need `@Composable` MyLambdaType in the definition, while these won't.
+    # treatAsComposableLambda: MyComposableLambdaType
+  DefaultsVisibility:
+    active: true
+  LambdaParameterInRestartableEffect:
+    active: true
+    # -- You can optionally have a list of types to be treated as lambdas (e.g. typedefs or fun interfaces not picked up automatically)
+    # treatAsLambda: MyLambdaType
+  Material2:
+    active: false # Opt-in, disabled by default. Turn on if you want to disallow Material 2 usages.
+    # -- You can optionally allow parts of it, if you are in the middle of a migration.
+    # allowedFromM2: icons.Icons,TopAppBar
+  ModifierClickableOrder:
+    active: true
+    # -- You can optionally add your own Modifier types
+    # customModifiers: BananaModifier,PotatoModifier
+  ModifierComposable:
+    active: true
+    # -- You can optionally add your own Modifier types
+    # customModifiers: BananaModifier,PotatoModifier
+  ModifierComposed:
+    active: true
+    # -- You can optionally add your own Modifier types
+    # customModifiers: BananaModifier,PotatoModifier
+  ModifierMissing:
+    active: true
+    # -- You can optionally control the visibility of which composables to check for here
+    # -- Possible values are: `only_public`, `public_and_internal` and `all` (default is `only_public`)
+    # checkModifiersForVisibility: only_public
+    # -- You can optionally add your own Modifier types
+    # customModifiers: BananaModifier,PotatoModifier
+  ModifierNaming:
+    active: true
+    # -- You can optionally add your own Modifier types
+    # customModifiers: BananaModifier,PotatoModifier
+  ModifierNotUsedAtRoot:
+    active: true
+    # -- You can optionally add your own composables here
+    # contentEmitters: MyComposable,MyOtherComposable
+    # -- You can optionally add your own Modifier types
+    # customModifiers: BananaModifier,PotatoModifier
+  ModifierReused:
+    active: true
+    # -- You can optionally add your own Modifier types
+    # customModifiers: BananaModifier,PotatoModifier
+  ModifierWithoutDefault:
+    active: true
+  MultipleEmitters:
+    active: true
+    # -- You can optionally add your own composables here that will count as content emitters
+    # contentEmitters: MyComposable,MyOtherComposable
+    # -- You can add composables here that you don't want to count as content emitters (e.g. custom dialogs or modals)
+    # contentEmittersDenylist: MyNonEmitterComposable
+  MutableParams:
+    active: true
+  MutableStateAutoboxing:
+    active: true
+  MutableStateParam:
+    active: true
+  ParameterNaming:
+    active: true
+    # -- You can optionally have a list of types to be treated as lambdas (e.g. typedefs or fun interfaces not picked up automatically)
+    # treatAsLambda: MyLambdaType
+  PreviewAnnotationNaming:
+    active: true
+  PreviewPublic:
+    active: true
+  RememberMissing:
+    active: true
+  RememberContentMissing:
+    active: true
+  UnstableCollections:
+    active: false # Opt-in, disabled by default. Turn on if you want to enforce this (e.g. you have strong skipping disabled)
+  ViewModelForwarding:
+    active: true
+    # -- You can optionally use this rule on things other than types ending in "ViewModel" or "Presenter" (which are the defaults). You can add your own via a regex here:
+    # allowedStateHolderNames: .*ViewModel,.*Presenter
+    # -- You can optionally add an allowlist for Composable names that won't be affected by this rule
+    # allowedForwarding: .*Content,.*FancyStuff
+    # -- You can optionally add an allowlist for ViewModel/StateHolder names that won't be affected by this rule
+    # allowedForwardingOfTypes: PotatoViewModel,(Apple|Banana)ViewModel,.*FancyViewModel
+  ViewModelInjection:
+    active: true
+    # -- You can optionally add your own ViewModel factories here
+    # viewModelFactories: hiltViewModel,potatoViewModel

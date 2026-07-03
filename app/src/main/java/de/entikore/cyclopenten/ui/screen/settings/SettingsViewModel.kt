@@ -8,24 +8,26 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import de.entikore.cyclopenten.data.UserPreferencesRepository
 import de.entikore.cyclopenten.domain.usecases.DeleteScoreboardUseCase
 import de.entikore.cyclopenten.ui.theme.randomTheme
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(
+class SettingsViewModel
+@Inject
+constructor(
     private val deleteScoreboardUseCase: DeleteScoreboardUseCase,
-    private val userPreferencesRepository: UserPreferencesRepository
+    private val userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
-
     val prefFlow = userPreferencesRepository.userPreferencesFlow
     val userPrefs = prefFlow.asLiveData()
 
     val colorTheme = MutableStateFlow(randomTheme())
 
-    val initialSetupEvent = liveData {
-        emit(userPreferencesRepository.fetchInitialPreferences())
-    }
+    val initialSetupEvent =
+        liveData {
+            emit(userPreferencesRepository.fetchInitialPreferences())
+        }
 
     fun updateMusicSetting(musicOn: Boolean) {
         viewModelScope.launch {

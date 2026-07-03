@@ -1,20 +1,22 @@
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.dagger.hilt.android)
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.jetbrains.kotlin.plugin.compose)
-    alias(libs.plugins.jlleitschuh.gradle.ktlint)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.detekt)
 }
 
 android {
-    compileSdk = 35
-
+    namespace = "de.entikore.cyclopenten"
+    compileSdk {
+        version = release(37)
+    }
     defaultConfig {
         applicationId = "de.entikore.cyclopenten"
         minSdk = 24
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 
@@ -27,51 +29,39 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            optimization {
+                enable = false
+            }
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
+    testOptions {
+        unitTests.isReturnDefaultValues = true
     }
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.2"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    namespace = "de.entikore.cyclopenten"
 }
 
-ktlint {
-    android.set(true)
-    ignoreFailures.set(false)
-    reporters {
-        reporter(ReporterType.PLAIN)
-        reporter(ReporterType.CHECKSTYLE)
-        reporter(ReporterType.SARIF)
-    }
+detekt {
+    config.setFrom("$rootDir/config/detekt.yml")
+    buildUponDefaultConfig = true
+    allRules = false
+    parallel = true
+    autoCorrect = true
 }
+
 
 dependencies {
+    detektPlugins(libs.detekt.formatting)
+    detektPlugins(libs.detekt.compose)
+
     // App dependencies
     implementation(libs.timber)
-    implementation(libs.moshi)
-    implementation(libs.moshi.kotlin)
-    ksp(libs.moshi.kotlin.codegen)
-    implementation(libs.gson)
+    implementation(libs.kotlinx.serialization.json)
 
     // Architecture Components
     implementation(libs.core.ktx)
@@ -94,7 +84,6 @@ dependencies {
     implementation(libs.runtime.livedata)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material)
-    implementation(libs.material.icons.extended)
     implementation(libs.navigation.compose)
 
     // Dependencies for local unit tests

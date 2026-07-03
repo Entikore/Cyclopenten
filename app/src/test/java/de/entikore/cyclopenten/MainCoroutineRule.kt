@@ -12,9 +12,8 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
 @ExperimentalCoroutinesApi
-class MainCoroutineRule(
-    private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
-) : TestWatcher(),
+class MainCoroutineRule(private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()) :
+    TestWatcher(),
     CoroutineScope by TestScope(testDispatcher) {
     override fun starting(description: Description?) {
         super.starting(description)
