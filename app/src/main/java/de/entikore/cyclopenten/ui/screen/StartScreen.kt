@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.entikore.cyclopenten.R
 import de.entikore.cyclopenten.ui.components.ColoredButton
 import de.entikore.cyclopenten.ui.components.Title
@@ -35,8 +36,8 @@ fun StartScreen(
     onScoreClick: () -> Unit,
     onSettingsClick: () -> Unit,
 ) {
-    val continueEnabled = viewModel.enabled.collectAsState(initial = false)
-    val saveGame = viewModel.saveGame.collectAsState()
+    val continueEnabled = viewModel.enabled.collectAsStateWithLifecycle(initialValue = false)
+    val saveGame = viewModel.saveGame.collectAsStateWithLifecycle()
     val saveGameDifficulty = saveGame.value?.difficulty ?: false
     val newGameClickListener: () -> Unit = {
         viewModel::deleteSaveGame.invoke()
@@ -87,13 +88,16 @@ fun StartScreen(
             modifier =
             Modifier
                 .fillMaxWidth()
+                .widthIn(max = 300.dp)
                 .padding(horizontal = 48.dp),
         )
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(bottom = 8.dp),
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+                .widthIn(max = 400.dp),
         ) {
             val buttonModifier =
                 Modifier

@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -22,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.TextUnit
@@ -51,7 +54,7 @@ fun ColoredButton(
             backgroundColor = color,
             disabledBackgroundColor = disabledColor,
         ),
-        modifier = modifier,
+        modifier = modifier.heightIn(min = 48.dp),
     ) {
         Text(
             text = buttonText,
@@ -73,7 +76,9 @@ fun Title(
         text = title,
         color = textColor,
         fontSize = fontSize,
-        modifier = modifier.padding(8.dp),
+        modifier = modifier
+            .padding(8.dp)
+            .semantics { heading() },
     )
 }
 

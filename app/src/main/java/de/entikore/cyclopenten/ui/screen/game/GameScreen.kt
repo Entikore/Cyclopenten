@@ -1,5 +1,6 @@
 package de.entikore.cyclopenten.ui.screen.game
 
+import android.content.res.Configuration
 import android.media.MediaPlayer
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -17,19 +18,20 @@ import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.entikore.cyclopenten.R
 import de.entikore.cyclopenten.ui.components.ColoredButton
 import de.entikore.cyclopenten.ui.components.ColoredTextInput
@@ -43,8 +45,8 @@ fun GameScreen(
     hardDifficulty: Boolean = false,
     onGameOver: (Int, Boolean, Boolean) -> Unit,
 ) {
-    val gameState by viewModel.gameState.collectAsState()
-    val soundEffectOn by viewModel.soundEffect.collectAsState()
+    val gameState by viewModel.gameState.collectAsStateWithLifecycle()
+    val soundEffectOn by viewModel.soundEffect.collectAsStateWithLifecycle()
 
     val onButtonClick = viewModel::evaluateAnswer
 
@@ -77,7 +79,7 @@ fun GameScreen(
         }
     }
 
-    val showLoading by viewModel.showLoading.collectAsState()
+    val showLoading by viewModel.showLoading.collectAsStateWithLifecycle()
     AnimatedGameScreen(
         gameState,
         showLoading,
@@ -96,6 +98,10 @@ fun AnimatedGameScreen(
     modifier: Modifier = Modifier,
     hardDifficulty: Boolean = false,
 ) {
+    val configuration = LocalConfiguration.current
+    val useWideLayout = configuration.screenWidthDp >= 600 ||
+        configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -103,55 +109,137 @@ fun AnimatedGameScreen(
         modifier
             .fillMaxSize()
             .background(gameState.colorTheme.primary)
-            .semantics { contentDescription = CD_GAME_SCREEN },
+            .semantics { contentDescription = CD_GAME_SCREEN }
+            .padding(16.dp),
     ) {
         Title(
             title = stringResource(R.string.txt_game_title),
             textColor = gameState.colorTheme.accent,
         )
 
-        GameStatus(
-            gameState.colorTheme.accent,
-            gameState.lives,
-            gameState.lostLives,
-            gameState.score,
-        )
+        if (useWideLayout) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                // Left Pane: Status & Card
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    GameStatus(
+                        gameState.colorTheme.accent,
+                        gameState.lives,
+                        gameState.lostLives,
+                        gameState.score,
+                    )
 
-        ElementCard(
-            gameState.colorTheme.primary,
-            gameState.colorTheme.dark,
-            gameState.colorTheme.accent,
-            gameState.atomicNumber.toString(),
-            gameState.symbol,
-            gameState.hiddenElementName(),
-        )
+                    ElementCard(
+                        gameState.colorTheme.primary,
+                        gameState.colorTheme.dark,
+                        gameState.colorTheme.accent,
+                        gameState.atomicNumber.toString(),
+                        gameState.symbol,
+                        gameState.hiddenElementName(),
+                        modifier = Modifier
+                            .fillMaxWidth(0.7f)
+                            .aspectRatio(1f),
+                    )
 
-        LinearProgressIndicator(
-            modifier =
-            Modifier
-                .padding(8.dp)
-                .alpha(if (showLoading) 1f else 0f),
-            color = gameState.colorTheme.dark,
-            backgroundColor = gameState.colorTheme.accent,
-        )
-        if (hardDifficulty) {
-            AnswerInputHard(
-                gameState.element,
-                gameState.colorTheme,
-                correctAnswerClick,
-                wrongAnswerClick,
-            )
+                    LinearProgressIndicator(
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .alpha(if (showLoading) 1f else 0f),
+                        color = gameState.colorTheme.dark,
+                        backgroundColor = gameState.colorTheme.accent,
+                    )
+                }
+
+                // Right Pane: Input Options (max width capped to avoid stretched layouts)
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(16.dp)
+                        .fillMaxWidth(0.9f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    if (hardDifficulty) {
+                        AnswerInputHard(
+                            gameState.element,
+                            gameState.colorTheme,
+                            correctAnswerClick,
+                            wrongAnswerClick,
+                        )
+                    } else {
+                        AnswerInput(
+                            gameState.element,
+                            gameState.answerOptions,
+                            gameState.hidden,
+                            gameState.colorTheme.accent,
+                            gameState.colorTheme.dark,
+                            gameState.colorTheme.dark,
+                            correctAnswerClick,
+                            wrongAnswerClick,
+                        )
+                    }
+                }
+            }
         } else {
-            AnswerInput(
-                gameState.element,
-                gameState.answerOptions,
-                gameState.hidden,
+            // Normal vertical portrait layout
+            GameStatus(
                 gameState.colorTheme.accent,
-                gameState.colorTheme.dark,
-                gameState.colorTheme.dark,
-                correctAnswerClick,
-                wrongAnswerClick,
+                gameState.lives,
+                gameState.lostLives,
+                gameState.score,
             )
+
+            ElementCard(
+                gameState.colorTheme.primary,
+                gameState.colorTheme.dark,
+                gameState.colorTheme.accent,
+                gameState.atomicNumber.toString(),
+                gameState.symbol,
+                gameState.hiddenElementName(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 64.dp)
+                    .aspectRatio(1f),
+            )
+
+            LinearProgressIndicator(
+                modifier =
+                Modifier
+                    .padding(8.dp)
+                    .alpha(if (showLoading) 1f else 0f),
+                color = gameState.colorTheme.dark,
+                backgroundColor = gameState.colorTheme.accent,
+            )
+            if (hardDifficulty) {
+                AnswerInputHard(
+                    gameState.element,
+                    gameState.colorTheme,
+                    correctAnswerClick,
+                    wrongAnswerClick,
+                )
+            } else {
+                AnswerInput(
+                    gameState.element,
+                    gameState.answerOptions,
+                    gameState.hidden,
+                    gameState.colorTheme.accent,
+                    gameState.colorTheme.dark,
+                    gameState.colorTheme.dark,
+                    correctAnswerClick,
+                    wrongAnswerClick,
+                )
+            }
         }
     }
 }
@@ -165,9 +253,14 @@ fun GameStatus(uiColor: Color, lives: Int, lostLives: Int, score: Int, modifier:
             .fillMaxWidth()
             .padding(top = 8.dp, bottom = 24.dp),
     ) {
+        val totalLives = lives + lostLives
+        val livesAccessibilityText = stringResource(R.string.txt_lives_accessibility, lives, totalLives)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.semantics(mergeDescendants = true) {
+                contentDescription = livesAccessibilityText
+            },
         ) {
             Text(
                 text = stringResource(R.string.txt_lives),
@@ -213,15 +306,13 @@ fun ElementCard(
         verticalArrangement = Arrangement.SpaceBetween,
         modifier =
         modifier
-            .fillMaxWidth()
-            .padding(horizontal = 64.dp)
-            .aspectRatio(1f)
             .background(backgroundColor, RoundedCornerShape(8.dp))
             .border(
                 width = 8.dp,
                 color = borderColor,
                 shape = RoundedCornerShape(8.dp),
-            ),
+            )
+            .semantics(mergeDescendants = true) {},
     ) {
         Text(
             text = atomicNumber,
