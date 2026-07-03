@@ -17,7 +17,6 @@ import de.entikore.cyclopenten.data.local.ChemicalElementDatabase
 import de.entikore.cyclopenten.data.local.entity.ChemicalElement
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import javax.inject.Provider
@@ -26,10 +25,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-    @Suppress("InjectDispatcher")
-    @Provides
-    fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
-
     @Provides
     @Singleton
     fun provideJson(): Json = Json {
@@ -42,7 +37,7 @@ object DatabaseModule {
         @ApplicationContext context: Context,
         json: Json,
         daoProvider: Provider<ChemicalElementDao>,
-        ioDispatcher: CoroutineDispatcher,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher,
     ): ChemicalElementDatabase = Room
         .databaseBuilder(
             context.applicationContext,
@@ -50,8 +45,8 @@ object DatabaseModule {
             "elements-db",
         ).addCallback(
             object : RoomDatabase.Callback() {
-                override fun onOpen(db: SupportSQLiteDatabase) {
-                    super.onOpen(db)
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    super.onCreate(db)
                     CoroutineScope(ioDispatcher).launch {
                         val jsonString =
                             context.resources
@@ -71,6 +66,8 @@ object DatabaseModule {
     fun provideChemicalElementDao(database: ChemicalElementDatabase): ChemicalElementDao = database.chemicalElementDao()
 
     @Provides
-    fun provideChemicalElementRepository(elementDao: ChemicalElementDao): ChemicalElementRepository =
-        DefaultChemicalElementRepository(dao = elementDao)
+    fun provideChemicalElementRepository(
+        elementDao: ChemicalElementDao,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher,
+    ): ChemicalElementRepository = DefaultChemicalElementRepository(dao = elementDao, ioDispatcher = ioDispatcher)
 }

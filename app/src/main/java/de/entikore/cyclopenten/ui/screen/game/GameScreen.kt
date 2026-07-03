@@ -24,8 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -51,6 +53,7 @@ fun GameScreen(
     val onButtonClick = viewModel::evaluateAnswer
 
     val mContext = LocalContext.current
+    val hapticFeedback = LocalHapticFeedback.current
 
     val correctAnswer = MediaPlayer.create(mContext, R.raw.correct_answer)
     val wrongAnswer = MediaPlayer.create(mContext, R.raw.wrong_answer)
@@ -67,6 +70,7 @@ fun GameScreen(
 
     val correctAnswerClick: (String) -> Unit = {
         onButtonClick(it)
+        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
         if (soundEffectOn) {
             correctAnswer.start()
         }
@@ -74,6 +78,7 @@ fun GameScreen(
 
     val wrongAnswerClick: (String) -> Unit = {
         onButtonClick(it)
+        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
         if (soundEffectOn) {
             wrongAnswer.start()
         }
