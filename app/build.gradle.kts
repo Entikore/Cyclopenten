@@ -1,9 +1,7 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.dagger.hilt.android)
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.jetbrains.kotlin.plugin.compose)
@@ -12,11 +10,14 @@ plugins {
 }
 
 android {
-    compileSdk = 37
-
+    namespace = "de.entikore.cyclopenten"
+    compileSdk {
+        version = release(37)
+    }
     defaultConfig {
         applicationId = "de.entikore.cyclopenten"
         minSdk = 24
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 
@@ -29,11 +30,9 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            optimization {
+                enable = false
+            }
         }
     }
     compileOptions {
@@ -43,23 +42,9 @@ android {
     testOptions {
         unitTests.isReturnDefaultValues = true
     }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.2"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    namespace = "de.entikore.cyclopenten"
 }
 
 ktlint {
@@ -73,6 +58,7 @@ ktlint {
 }
 
 dependencies {
+    ktlintRuleset(libs.ktlint.compose)
     // App dependencies
     implementation(libs.timber)
     implementation(libs.kotlinx.serialization.json)
