@@ -1,70 +1,104 @@
 name: Android CI
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+    tags: [ 'v*.*.*' ]
+
+env:
+  API: 36
 
 jobs:
-  codesmell:
-    name: Lint
-    uses: ./.github/workflows/launch_gradle_commands.yml
-    secrets:
-      GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
-    with:
-      commands: lint ktlintCheck
-
-  unitTest:
-    name: Unit Tests
-    uses: ./.github/workflows/launch_gradle_commands.yml
-    secrets:
-      GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
-    with:
-      commands: testReleaseUnitTest
-
-  generateApks:
-    name: Generate APKs
-    uses: ./.github/workflows/launch_gradle_commands.yml
-    secrets:
-      GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
-    with:
-      commands: assembleDebug assembleDebugAndroidTest
-      uploadArtifacts: true
-
-  uiTests:
-    name: UI Tests on Firebase Test Labs
-    needs: generateApks
+  build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Download App Debug APK
-        id: app-debug-download
-        uses: actions/download-artifact@v4
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          name: app-debug
+          distribution: 'adopt'
+          java-version: 17
+          cache: gradle
 
-      - name: Download Android Test APK
-        id: android-test-download
-        uses: actions/download-artifact@v4
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run detekt
+        run: ./gradlew detektMain detektTest --stacktrace
+
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest --stacktrace
+
+      # API 30+ emulators only have x86_64 system images.
+      - name: Get AVD info
+        uses: ./.github/actions/get-avd-info
+        id: avd-info
         with:
-          name: android-test
+          api-level: ${{ env.API }}
 
-      - id: auth
-        uses: google-github-actions/auth@v1
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run Android tests
+        uses: reactivecircus/android-emulator-runner@v2
         with:
-          credentials_json: ${{ secrets.GCLOUD_AUTH }}
-      - name: Login to Google Cloud
-        uses: google-github-actions/setup-gcloud@v2
+          profile: Nexus 4
+          api-level: ${{ env.API }}
+          arch: ${{ steps.avd-info.outputs.arch }}
+          target: default
+          script: mv .github/debug.keystore ~/.android; ./gradlew connectedDebugAndroidTest
 
-      - name: Set current project
-        run: gcloud config set project ${{ secrets.FIREBASE_PROJECT_ID }}
+      - name: Build with Gradle
+        run: ./gradlew assembleDebug --build-cache --stacktrace
 
-      - name: Run Instrumentation Tests in Firebase Test Lab
-        env:
-          APP_DEBUG_LOCATION: app-debug.apk
-          ANDROID_TEST_LOCATION: app-debug-androidTest.apk
-          DEVICE_MODEL: Nexus9,version=24,locale=en,orientation=portrait
-        run: gcloud firebase test android run --type instrumentation --app $APP_DEBUG_LOCATION --test $ANDROID_TEST_LOCATION --device model=$DEVICE_MODEL --use-orchestrator --num-flaky-test-attempts 2
+      - name: Collect artifacts
+        run: |
+          mkdir app/build/zip
+          cp -r app/build/reports/tests/testDebugUnitTest app/build/zip/testReport
+          cp -r app/build/reports/androidTests/connected/debug/ app/build/zip/androidTestReport
+          cp -r app/build/outputs/apk/debug/app-debug.apk app/build/zip
+          cp -r README.md app/build/zip
+          cp -r LICENSE app/build/zip 
+          cp -r CHANGELOG.md app/build/zip
+
+      - name: Upload build artifacts and test reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: cyclopenten
+          path: app/build/zip/
+
+      - name: Set zip file name for release
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          echo ZIP_FILE_NAME=Cyclopenten-${{ github.ref_name }}.zip >> $GITHUB_ENV
+
+      - name: Install zip
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: montudor/action-zip@v1
+
+      - name: Zip artifacts
+        if: startsWith(github.ref, 'refs/tags/')
+        working-directory: app/build/zip
+        run: |
+          zip -qq -r ${{ env.ZIP_FILE_NAME }} .
+
+      - name: Publish artifacts
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            app/build/zip/${{ env.ZIP_FILE_NAME }}
+            CHANGELOG.md
+          body_path: CHANGELOG.md
