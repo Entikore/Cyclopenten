@@ -78,6 +78,7 @@ runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", versi
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 ui = { module = "androidx.compose.ui:ui", version.ref = "composeVersion" }
+ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "composeVersion" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "composeVersion" }
 
 [plugins]

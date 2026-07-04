@@ -128,6 +128,7 @@ dependencies {
     androidTestImplementation(libs.mockito.android)
     androidTestImplementation(libs.mockito.kotlin)
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // AndroidX Test - Hilt testing
