@@ -71,7 +71,7 @@ fun DifficultyScreen(onClick: (Boolean) -> Unit, modifier: Modifier = Modifier) 
                 modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
+                    .padding(horizontal = 32.dp, vertical = 4.dp)
                     .testTag(Semantics.BTN_DIFFICULTY_EASY),
             )
             ColoredButton(
@@ -85,7 +85,7 @@ fun DifficultyScreen(onClick: (Boolean) -> Unit, modifier: Modifier = Modifier) 
                 modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
+                    .padding(horizontal = 32.dp, vertical = 4.dp)
                     .testTag(Semantics.BTN_DIFFICULTY_HARD),
             )
         }
