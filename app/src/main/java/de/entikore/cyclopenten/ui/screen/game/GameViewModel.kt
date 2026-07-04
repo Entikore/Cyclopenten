@@ -19,6 +19,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -49,44 +51,46 @@ constructor(
         )
 
     private val _showLoading = MutableStateFlow(false)
-    val showLoading: StateFlow<Boolean> = _showLoading
+    val showLoading: StateFlow<Boolean> = _showLoading.asStateFlow()
 
     private val _soundEffect = MutableStateFlow(false)
-    val soundEffect: StateFlow<Boolean> = _soundEffect
+    val soundEffect: StateFlow<Boolean> = _soundEffect.asStateFlow()
 
     init {
         viewModelScope.launch {
-            val elementsResult = getChemicalElementsUseCase()
-            if (elementsResult is Result.Success && elementsResult.data.isNotEmpty()) {
-                allElements.addAll(elementsResult.data.shuffled())
-                val element = allElements[0]
-                _gameState.update { state ->
-                    state
-                        .copyWithNewElement(element)
-                        .copyWithDifficulty(hardMode = argument)
+            // Collect sound preferences concurrently
+            launch {
+                soundEffectPreferenceUseCase.invoke().collect {
+                    _soundEffect.value = it.soundEffectOn
                 }
             }
-            loadSaveGame()
-            soundEffectPreferenceUseCase.invoke().collect {
-                _soundEffect.value = it.soundEffectOn
-            }
-        }
-    }
 
-    private fun loadSaveGame() {
-        viewModelScope.launch {
-            getSaveGameUseCase().collect { saveGame ->
-                if (saveGame is Result.Success && saveGame.data != null) {
-                    allElements.retainAll(saveGame.data.remainingQuestions)
+            // Sequentially load elements and check for any existing save game
+            val elementsResult = getChemicalElementsUseCase()
+            if (elementsResult is Result.Success && elementsResult.data.isNotEmpty()) {
+                val shuffledElements = elementsResult.data.shuffled()
+                val saveGameResult = getSaveGameUseCase().first()
+
+                if (saveGameResult is Result.Success && saveGameResult.data != null) {
+                    val saveGame = saveGameResult.data
+                    allElements.addAll(saveGame.remainingQuestions)
                     _gameState.update {
                         it.copy(
-                            lives = saveGame.data.lives,
-                            lostLives = saveGame.data.lostLives,
-                            score = saveGame.data.score,
-                            hardDifficulty = saveGame.data.difficulty,
-                        )
+                            lives = saveGame.lives,
+                            lostLives = saveGame.lostLives,
+                            score = saveGame.score,
+                            hardDifficulty = saveGame.difficulty,
+                            hidden = true,
+                        ).copyWithNewElement(saveGame.currentElement)
                     }
-                    updateGameState(saveGame.data.currentElement)
+                } else {
+                    allElements.addAll(shuffledElements)
+                    val element = allElements[0]
+                    _gameState.update { state ->
+                        state
+                            .copyWithNewElement(element)
+                            .copyWithDifficulty(hardMode = argument)
+                    }
                 }
             }
         }
@@ -104,6 +108,9 @@ constructor(
     }
 
     fun evaluateAnswer(guess: String) {
+        // Prevent double answer submission/clicks while loading or if answer is already revealed
+        if (!_gameState.value.hidden || _showLoading.value) return
+
         viewModelScope.launch {
             if (guess != _gameState.value.element) {
                 wrongAnswer()

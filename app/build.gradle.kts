@@ -69,6 +69,7 @@ dependencies {
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
     implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.runtime.compose)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.datastore.preferences)
@@ -127,6 +128,7 @@ dependencies {
     androidTestImplementation(libs.mockito.android)
     androidTestImplementation(libs.mockito.kotlin)
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // AndroidX Test - Hilt testing

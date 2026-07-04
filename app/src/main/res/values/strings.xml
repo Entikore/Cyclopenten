@@ -28,6 +28,7 @@
     <!-- Game Screen -->
     <string name="txt_game_title">Name the element</string>
     <string name="txt_lives">Lives:</string>
+    <string name="txt_lives_accessibility">Lives: %1$d out of %2$d</string>
     <string name="txt_score">Score:</string>
     <string name="txt_final_score">"You got %1$s points."</string>
     <string name="content_description_lives_symbol">Lives left symbol</string>

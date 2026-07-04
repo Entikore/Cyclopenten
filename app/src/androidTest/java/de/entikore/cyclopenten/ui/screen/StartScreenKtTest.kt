@@ -28,6 +28,7 @@ class StartScreenKtTest {
                 onSettingsClick = { },
                 isContinueEnabled = false,
                 saveGameDifficulty = false,
+                useWideLayout = false,
             )
         }
         assertButtonNodeIsDisplayedEnabledAndHasAction(R.string.btn_new_game)
@@ -46,6 +47,7 @@ class StartScreenKtTest {
                 onSettingsClick = { },
                 isContinueEnabled = true,
                 saveGameDifficulty = false,
+                useWideLayout = false,
             )
         }
         assertButtonNodeIsDisplayedEnabledAndHasAction(R.string.btn_new_game)

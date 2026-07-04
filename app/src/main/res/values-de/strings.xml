@@ -29,6 +29,7 @@
     <!-- Game Screen -->
     <string name="txt_game_title">Welches Element wird gesucht?</string>
     <string name="txt_lives">Leben:</string>
+    <string name="txt_lives_accessibility">Leben: %1$d von %2$d</string>
     <string name="txt_score">Punkte:</string>
     <string name="txt_final_score">"Du hast %1$s Punkte."</string>
     <string name="content_description_lives_symbol">Restliche Leben Symbol</string>

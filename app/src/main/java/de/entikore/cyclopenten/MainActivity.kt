@@ -8,12 +8,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import de.entikore.cyclopenten.ui.navigation.NavGraph
 import de.entikore.cyclopenten.ui.screen.settings.SettingsViewModel
 import de.entikore.cyclopenten.ui.theme.CyclopentenTheme
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -27,10 +31,24 @@ class MainActivity : ComponentActivity() {
 
         viewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
-        viewModel.initialSetupEvent.observe(this) { initialSetupEvent ->
-            playMusic = initialSetupEvent.musicOn
-            observePreferenceChanges()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.userPrefs.collect { prefs ->
+                    playMusic = prefs.musicOn
+                    if (playMusic) {
+                        if (!mediaPlayer.isPlaying) {
+                            mediaPlayer.start()
+                            mediaPlayer.isLooping = true
+                        }
+                    } else {
+                        if (mediaPlayer.isPlaying) {
+                            mediaPlayer.pause()
+                        }
+                    }
+                }
+            }
         }
+
         setContent {
             CyclopentenTheme {
                 val navController = rememberNavController()
@@ -55,18 +73,6 @@ class MainActivity : ComponentActivity() {
         super.onPause()
         if (mediaPlayer.isPlaying) {
             mediaPlayer.pause()
-        }
-    }
-
-    private fun observePreferenceChanges() {
-        viewModel.userPrefs.observe(this) { tasksUiModel ->
-            playMusic = tasksUiModel.musicOn
-            if (playMusic) {
-                mediaPlayer.start()
-                mediaPlayer.isLooping = true
-            } else {
-                if (mediaPlayer.isPlaying) mediaPlayer.pause()
-            }
         }
     }
 

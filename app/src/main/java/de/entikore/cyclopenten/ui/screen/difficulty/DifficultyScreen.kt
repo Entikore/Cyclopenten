@@ -6,10 +6,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -57,6 +58,7 @@ fun DifficultyScreen(onClick: (Boolean) -> Unit, modifier: Modifier = Modifier) 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier.widthIn(max = 400.dp),
         ) {
             ColoredButton(
                 buttonText = stringResource(R.string.btn_difficulty_easy),
@@ -69,7 +71,7 @@ fun DifficultyScreen(onClick: (Boolean) -> Unit, modifier: Modifier = Modifier) 
                 modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
+                    .padding(horizontal = 32.dp, vertical = 4.dp)
                     .testTag(Semantics.BTN_DIFFICULTY_EASY),
             )
             ColoredButton(
@@ -83,7 +85,7 @@ fun DifficultyScreen(onClick: (Boolean) -> Unit, modifier: Modifier = Modifier) 
                 modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
+                    .padding(horizontal = 32.dp, vertical = 4.dp)
                     .testTag(Semantics.BTN_DIFFICULTY_HARD),
             )
         }
@@ -94,7 +96,7 @@ fun DifficultyScreen(onClick: (Boolean) -> Unit, modifier: Modifier = Modifier) 
             onClick = { openDialog.value = !openDialog.value },
             modifier =
             Modifier
-                .padding(horizontal = 144.dp)
+                .size(48.dp)
                 .border(2.dp, colorTheme.value.dark)
                 .background(color = colorTheme.value.accent)
                 .testTag(Semantics.BTN_DIFFICULTY_HELP),
@@ -103,10 +105,6 @@ fun DifficultyScreen(onClick: (Boolean) -> Unit, modifier: Modifier = Modifier) 
                 painterResource(R.drawable.question_mark),
                 stringResource(R.string.txt_icon_content_description),
                 tint = colorTheme.value.dark,
-                modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f),
             )
         }
         if (openDialog.value) {

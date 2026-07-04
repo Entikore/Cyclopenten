@@ -1,5 +1,6 @@
 package de.entikore.cyclopenten.ui.screen.game
 
+import android.content.res.Configuration
 import android.media.MediaPlayer
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -17,24 +18,31 @@ import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.entikore.cyclopenten.R
 import de.entikore.cyclopenten.ui.components.ColoredButton
 import de.entikore.cyclopenten.ui.components.ColoredTextInput
 import de.entikore.cyclopenten.ui.components.Title
 import de.entikore.cyclopenten.ui.theme.ColorTheme
+import de.entikore.cyclopenten.util.Constants.CAT_NON_METALS
 import de.entikore.cyclopenten.util.Semantics.CD_GAME_SCREEN
 
 @Composable
@@ -43,47 +51,111 @@ fun GameScreen(
     hardDifficulty: Boolean = false,
     onGameOver: (Int, Boolean, Boolean) -> Unit,
 ) {
-    val gameState by viewModel.gameState.collectAsState()
-    val soundEffectOn by viewModel.soundEffect.collectAsState()
+    val gameState by viewModel.gameState.collectAsStateWithLifecycle()
+    val soundEffectOn by viewModel.soundEffect.collectAsStateWithLifecycle()
 
     val onButtonClick = viewModel::evaluateAnswer
 
     val mContext = LocalContext.current
+    val hapticFeedback = LocalHapticFeedback.current
 
-    val correctAnswer = MediaPlayer.create(mContext, R.raw.correct_answer)
-    val wrongAnswer = MediaPlayer.create(mContext, R.raw.wrong_answer)
+    val correctAnswer = remember { MediaPlayer.create(mContext, R.raw.correct_answer) }
+    val wrongAnswer = remember { MediaPlayer.create(mContext, R.raw.wrong_answer) }
 
-    if (gameState.gameOver) {
-        correctAnswer.release()
-        wrongAnswer.release()
-        val finalScore = gameState.score
-        val winner = gameState.won()
-        val difficulty = gameState.hardDifficulty
-        viewModel.resetGameState()
-        onGameOver(finalScore, winner, difficulty)
+    DisposableEffect(Unit) {
+        onDispose {
+            correctAnswer?.release()
+            wrongAnswer?.release()
+        }
+    }
+
+    LaunchedEffect(onGameOver) {
+        if (gameState.gameOver) {
+            val finalScore = gameState.score
+            val winner = gameState.won()
+            val difficulty = gameState.hardDifficulty
+            viewModel.resetGameState()
+            onGameOver(finalScore, winner, difficulty)
+        }
     }
 
     val correctAnswerClick: (String) -> Unit = {
         onButtonClick(it)
+        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
         if (soundEffectOn) {
-            correctAnswer.start()
+            correctAnswer?.start()
         }
     }
 
     val wrongAnswerClick: (String) -> Unit = {
         onButtonClick(it)
+        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
         if (soundEffectOn) {
-            wrongAnswer.start()
+            wrongAnswer?.start()
         }
     }
 
-    val showLoading by viewModel.showLoading.collectAsState()
+    val showLoading by viewModel.showLoading.collectAsStateWithLifecycle()
+    val configuration = LocalConfiguration.current
+    val useWideLayout = configuration.screenWidthDp >= 600 ||
+        configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     AnimatedGameScreen(
         gameState,
         showLoading,
         correctAnswerClick,
         wrongAnswerClick,
+        useWideLayout,
         hardDifficulty = hardDifficulty,
+    )
+}
+
+@Preview(showBackground = true, device = "spec:width=411dp,height=891dp,orientation=landscape")
+@Composable
+private fun HorizontalAnimatedGameScreenPreview() {
+    AnimatedGameScreen(
+        GameScreenState().copy(
+            lives = 2,
+            lostLives = 1,
+            score = 100,
+            atomicNumber = 1,
+            element = "Hydrogen",
+            symbol = "H",
+            answerOptions = listOf("Hydrogen", "Hafnium", "Helium", "Holmium"),
+            category = CAT_NON_METALS,
+            colorTheme = ColorTheme(CAT_NON_METALS),
+            hidden = false,
+            gameOver = false,
+            hardDifficulty = false,
+        ),
+        false,
+        { _ -> },
+        { _ -> },
+        true,
+    )
+}
+
+@Preview(showBackground = true, device = "spec:width=411dp,height=891dp")
+@Composable
+private fun VerticalAnimatedGameScreenPreview() {
+    AnimatedGameScreen(
+        GameScreenState().copy(
+            lives = 2,
+            lostLives = 1,
+            score = 100,
+            atomicNumber = 1,
+            element = "Hydrogen",
+            symbol = "H",
+            answerOptions = listOf("Hydrogen", "Hafnium", "Helium", "Holmium"),
+            category = CAT_NON_METALS,
+            colorTheme = ColorTheme(CAT_NON_METALS),
+            hidden = false,
+            gameOver = false,
+            hardDifficulty = false,
+        ),
+        false,
+        { _ -> },
+        { _ -> },
+        false,
     )
 }
 
@@ -93,6 +165,7 @@ fun AnimatedGameScreen(
     showLoading: Boolean,
     correctAnswerClick: (String) -> Unit,
     wrongAnswerClick: (String) -> Unit,
+    useWideLayout: Boolean,
     modifier: Modifier = Modifier,
     hardDifficulty: Boolean = false,
 ) {
@@ -103,55 +176,137 @@ fun AnimatedGameScreen(
         modifier
             .fillMaxSize()
             .background(gameState.colorTheme.primary)
-            .semantics { contentDescription = CD_GAME_SCREEN },
+            .semantics { contentDescription = CD_GAME_SCREEN }
+            .padding(16.dp),
     ) {
         Title(
             title = stringResource(R.string.txt_game_title),
             textColor = gameState.colorTheme.accent,
         )
 
-        GameStatus(
-            gameState.colorTheme.accent,
-            gameState.lives,
-            gameState.lostLives,
-            gameState.score,
-        )
+        if (useWideLayout) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                // Left Pane: Status & Card
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    GameStatus(
+                        gameState.colorTheme.accent,
+                        gameState.lives,
+                        gameState.lostLives,
+                        gameState.score,
+                        modifier = Modifier.padding(bottom = 8.dp),
+                    )
 
-        ElementCard(
-            gameState.colorTheme.primary,
-            gameState.colorTheme.dark,
-            gameState.colorTheme.accent,
-            gameState.atomicNumber.toString(),
-            gameState.symbol,
-            gameState.hiddenElementName(),
-        )
+                    ElementCard(
+                        gameState.colorTheme.primary,
+                        gameState.colorTheme.dark,
+                        gameState.colorTheme.accent,
+                        gameState.atomicNumber.toString(),
+                        gameState.symbol,
+                        gameState.hiddenElementName(),
+                        modifier = Modifier
+                            .fillMaxWidth(0.6f)
+                            .aspectRatio(1f),
+                    )
+                }
 
-        LinearProgressIndicator(
-            modifier =
-            Modifier
-                .padding(8.dp)
-                .alpha(if (showLoading) 1f else 0f),
-            color = gameState.colorTheme.dark,
-            backgroundColor = gameState.colorTheme.accent,
-        )
-        if (hardDifficulty) {
-            AnswerInputHard(
-                gameState.element,
-                gameState.colorTheme,
-                correctAnswerClick,
-                wrongAnswerClick,
-            )
+                // Right Pane: Input Options (max width capped to avoid stretched layouts)
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(16.dp)
+                        .fillMaxWidth(0.9f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    if (hardDifficulty) {
+                        AnswerInputHard(
+                            gameState.element,
+                            gameState.colorTheme,
+                            correctAnswerClick,
+                            wrongAnswerClick,
+                        )
+                    } else {
+                        AnswerInput(
+                            gameState.element,
+                            gameState.answerOptions,
+                            gameState.hidden,
+                            gameState.colorTheme.accent,
+                            gameState.colorTheme.dark,
+                            gameState.colorTheme.dark,
+                            correctAnswerClick,
+                            wrongAnswerClick,
+                        )
+                    }
+                    LinearProgressIndicator(
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .alpha(if (showLoading) 1f else 0f),
+                        color = gameState.colorTheme.dark,
+                        backgroundColor = gameState.colorTheme.accent,
+                    )
+                }
+            }
         } else {
-            AnswerInput(
-                gameState.element,
-                gameState.answerOptions,
-                gameState.hidden,
+            // Normal vertical portrait layout
+            GameStatus(
                 gameState.colorTheme.accent,
-                gameState.colorTheme.dark,
-                gameState.colorTheme.dark,
-                correctAnswerClick,
-                wrongAnswerClick,
+                gameState.lives,
+                gameState.lostLives,
+                gameState.score,
             )
+
+            ElementCard(
+                gameState.colorTheme.primary,
+                gameState.colorTheme.dark,
+                gameState.colorTheme.accent,
+                gameState.atomicNumber.toString(),
+                gameState.symbol,
+                gameState.hiddenElementName(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 64.dp)
+                    .aspectRatio(1f),
+            )
+
+            LinearProgressIndicator(
+                modifier =
+                Modifier
+                    .padding(8.dp)
+                    .alpha(if (showLoading) 1f else 0f),
+                color = gameState.colorTheme.dark,
+                backgroundColor = gameState.colorTheme.accent,
+            )
+            if (hardDifficulty) {
+                AnswerInputHard(
+                    gameState.element,
+                    gameState.colorTheme,
+                    correctAnswerClick,
+                    wrongAnswerClick,
+                )
+            } else {
+                AnswerInput(
+                    gameState.element,
+                    gameState.answerOptions,
+                    gameState.hidden,
+                    gameState.colorTheme.accent,
+                    gameState.colorTheme.dark,
+                    gameState.colorTheme.dark,
+                    correctAnswerClick,
+                    wrongAnswerClick,
+                )
+            }
         }
     }
 }
@@ -165,9 +320,14 @@ fun GameStatus(uiColor: Color, lives: Int, lostLives: Int, score: Int, modifier:
             .fillMaxWidth()
             .padding(top = 8.dp, bottom = 24.dp),
     ) {
+        val totalLives = lives + lostLives
+        val livesAccessibilityText = stringResource(R.string.txt_lives_accessibility, lives, totalLives)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.semantics(mergeDescendants = true) {
+                contentDescription = livesAccessibilityText
+            },
         ) {
             Text(
                 text = stringResource(R.string.txt_lives),
@@ -210,18 +370,16 @@ fun ElementCard(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.SpaceEvenly,
         modifier =
         modifier
-            .fillMaxWidth()
-            .padding(horizontal = 64.dp)
-            .aspectRatio(1f)
             .background(backgroundColor, RoundedCornerShape(8.dp))
             .border(
                 width = 8.dp,
                 color = borderColor,
                 shape = RoundedCornerShape(8.dp),
-            ),
+            )
+            .semantics(mergeDescendants = true) {},
     ) {
         Text(
             text = atomicNumber,
@@ -230,7 +388,7 @@ fun ElementCard(
             modifier =
             Modifier
                 .align(Alignment.Start)
-                .padding(start = 16.dp, top = 16.dp),
+                .padding(start = 16.dp, top = 8.dp),
         )
         Text(
             text = symbol,
@@ -267,7 +425,7 @@ fun AnswerInput(
             choices.shuffled()
         }
 
-    Column(verticalArrangement = Arrangement.Center, modifier = modifier.padding(16.dp)) {
+    Column(verticalArrangement = Arrangement.Center, modifier = modifier.padding(8.dp)) {
         ButtonRow(
             correctAnswer,
             answerOptions.subList(0, 2),
@@ -277,6 +435,7 @@ fun AnswerInput(
             textColor,
             correctAnswerClick,
             wrongAnswerClick,
+            modifier = Modifier.padding(4.dp),
         )
         ButtonRow(
             correctAnswer,
@@ -287,6 +446,7 @@ fun AnswerInput(
             textColor,
             correctAnswerClick,
             wrongAnswerClick,
+            modifier = Modifier.padding(4.dp),
         )
     }
 }
@@ -300,7 +460,7 @@ fun AnswerInputHard(
     modifier: Modifier = Modifier,
 ) {
     val onClick: (String) -> Unit = { answer ->
-        if (answer.lowercase() == correctAnswer.lowercase()) {
+        if (answer.equals(correctAnswer, ignoreCase = true)) {
             correctAnswerClick(answer)
         } else {
             wrongAnswerClick(answer)

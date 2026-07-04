@@ -16,9 +16,7 @@ import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,8 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.entikore.cyclopenten.R
-import de.entikore.cyclopenten.data.UserPreferences
 import de.entikore.cyclopenten.ui.components.ColoredButton
 import de.entikore.cyclopenten.ui.components.Title
 import de.entikore.cyclopenten.util.Semantics.ALERT_SETTINGS
@@ -42,16 +40,11 @@ import de.entikore.cyclopenten.util.Semantics.SWITCH_SETTINGS_SOUND
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel) {
-    val colorTheme by viewModel.colorTheme.collectAsState()
+    val colorTheme by viewModel.colorTheme.collectAsStateWithLifecycle()
     val updateMusicSetting = viewModel::updateMusicSetting
     val updateSoundEffectSetting = viewModel::updateSoundEffectSetting
     val clearScoreboard = viewModel::clearScoreboard
-    val userPres by viewModel.userPrefs.observeAsState(
-        UserPreferences(
-            musicOn = true,
-            soundEffectOn = true,
-        ),
-    )
+    val userPres by viewModel.userPrefs.collectAsStateWithLifecycle()
     SettingScreen(
         SettingsScreenState(userPres, colorTheme),
         updateMusicSetting,

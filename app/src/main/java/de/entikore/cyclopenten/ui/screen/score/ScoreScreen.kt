@@ -15,7 +15,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.entikore.cyclopenten.R
 import de.entikore.cyclopenten.data.local.entity.Highscore
 import de.entikore.cyclopenten.ui.components.ColoredTextInput
@@ -34,9 +34,9 @@ import de.entikore.cyclopenten.util.Semantics.CD_SCORE_SCREEN
 
 @Composable
 fun ScoreScreen(viewModel: ScoreViewModel, score: Int, won: Boolean, hardMode: Boolean) {
-    val scoreboard by viewModel.scoreBoard.collectAsState()
-    val showNameField by viewModel.showNameField.collectAsState()
-    val colorTheme by viewModel.colorTheme.collectAsState()
+    val scoreboard by viewModel.scoreBoard.collectAsStateWithLifecycle()
+    val showNameField by viewModel.showNameField.collectAsStateWithLifecycle()
+    val colorTheme by viewModel.colorTheme.collectAsStateWithLifecycle()
     val gameEndMessage =
         if (won) stringResource(R.string.txt_game_won) else stringResource(R.string.txt_game_lost)
     val scoreMessage = stringResource(R.string.txt_final_score, score)
@@ -107,8 +107,8 @@ fun ScoreNameField(
 
 @Composable
 fun ScoreScreen(viewModel: ScoreViewModel) {
-    val scoreboard by viewModel.scoreBoard.collectAsState()
-    val colorTheme by viewModel.colorTheme.collectAsState()
+    val scoreboard by viewModel.scoreBoard.collectAsStateWithLifecycle()
+    val colorTheme by viewModel.colorTheme.collectAsStateWithLifecycle()
     ScoreBoard(scoreboard, colorTheme = colorTheme)
 }
 
@@ -178,11 +178,11 @@ fun ScoreboardEntry(place: Int, entry: Highscore, color: Color, modifier: Modifi
             .fillMaxWidth()
             .padding(horizontal = 40.dp, vertical = 16.dp),
     ) {
-        val difficulty: String = if (entry.hardMode) "Hard" else ""
+        val difficulty: String = if (entry.hardMode) " ${stringResource(R.string.btn_difficulty_hard)}" else ""
         Text(text = "$place.", color = color)
         Spacer(modifier = Modifier.padding(horizontal = 8.dp))
         Text(text = entry.name, color = color)
         Spacer(modifier = Modifier.padding(horizontal = 8.dp))
-        Text(text = "${entry.score} $difficulty", color = color)
+        Text(text = "${entry.score}$difficulty", color = color)
     }
 }
